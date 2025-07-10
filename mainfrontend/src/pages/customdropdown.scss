@@ -1,0 +1,93 @@
+.custom-dropdown-container {
+  position: relative; // Bu, açılır menünün kendisine göre konumlanmasını sağlar
+  width: 100%;
+  max-width: 350px; // Ana bileşendeki stil ile uyumlu
+  margin: 0 auto;
+}
+
+.custom-dropdown-button {
+  // Mevcut select stilinizden uyarlandı
+  background: #f8fafc;
+  border: 1.5px solid #e3eafc;
+  color: #1976d2;
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border 0.2s;
+  outline: none;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+
+  &:focus {
+    border: 1.5px solid #1976d2;
+  }
+
+  .arrow {
+    border: solid #1976d2;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .arrow.down {
+    transform: rotate(45deg);
+  }
+  
+  .arrow.up {
+    transform: rotate(-135deg);
+  }
+}
+
+.custom-dropdown-options {
+  position: absolute; // Butonun altına açılması için
+  top: 100%; // Butonun hemen altından başla
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1.5px solid #e3eafc;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(21, 101, 192, 0.1);
+  list-style: none;
+  padding: 0.5rem 0;
+  margin-top: 0.5rem; // Buton ile menü arasında küçük bir boşluk
+  z-index: 100; // Diğer elementlerin üzerinde kalması için
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.custom-dropdown-option {
+  padding: 0.75rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #f8fafc;
+  }
+
+  &.selected {
+    background-color: #e3eafc;
+    font-weight: 700;
+    color: #1565c0;
+  }
+}
+
+// Mobil uyumluluk için
+@media (max-width: 700px) {
+  .custom-dropdown-container {
+    width: 90%;
+    max-width: 300px;
+  }
+  .custom-dropdown-button {
+    font-size: 0.95rem;
+    padding: 0.6rem 1rem;
+  }
+}

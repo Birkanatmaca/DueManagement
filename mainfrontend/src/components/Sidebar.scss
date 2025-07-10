@@ -1,0 +1,144 @@
+// src/components/Sidebar.scss
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 240px;
+    background: #1565c0;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    z-index: 3000; // Mobil'de en üstte olması için z-index artırıldı
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+  
+    &.closed {
+      transform: translateX(-100%);
+    }
+    &.open {
+      transform: translateX(0);
+    }
+  
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      // GÜNCELLEME: Butonu sağa yaslamak için justify-content eklendi
+      justify-content: flex-end; 
+      padding: 0 1rem; // Buton için padding ayarlandı
+
+      height: 56px;
+    }
+
+    // YENİDEN EKLENDİ: Sidebar içi kapatma butonu stilleri
+    .sidebar-close-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      line-height: 1;
+    }
+  
+    .sidebar-menu {
+      list-style: none;
+      padding: 0;
+      margin: 2rem 0 0;
+      flex: 1;
+  
+      li {
+        margin: 0.5rem 0;
+  
+        a {
+          color: #fff;
+          text-decoration: none;
+          padding: 0.75rem 2rem;
+          display: block;
+          border-radius: 0 20px 20px 0;
+          transition: background 0.2s, color 0.2s;
+        }
+  
+        &.active a,
+        a:hover {
+          background: #fff;
+          color: #1565c0;
+        }
+      }
+    }
+  
+    .sidebar-logout {
+      margin: 1rem;
+      padding: 0.75rem 0;
+      background: #fff;
+      color: #1565c0;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+  
+      &:hover {
+        background: #1976d2;
+        color: #fff;
+      }
+    }
+  
+    @media (max-width: 900px) {
+      width: 200px;
+    }
+  
+    @media (max-width: 700px) {
+      // GÜNCELLEME: Butonun mobilde görünür hale getirilmesi
+      .sidebar-close-btn {
+        display: block;
+      }
+
+      .sidebar-header {
+        // Mobilde başlık olmayacağı için justify-content'i koruyoruz
+        justify-content: flex-end;
+      }
+    }
+  }
+
+// Mobilde sidebar açıldığında ekranı kaplayan overlay
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.3);
+  z-index: 2999;
+}
+
+@media (max-width: 700px) {
+  .sidebar-close-btn {
+    display: block;
+  }
+  .sidebar-header {
+    justify-content: flex-end;
+  }
+  .sidebar-overlay.open {
+    display: block;
+  }
+}
+
+.sidebar-title {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  text-align: center;
+  flex: 1;
+  margin-right: auto;
+}
+@media (max-width: 700px) {
+  .sidebar-title {
+    display: none;
+  }
+}

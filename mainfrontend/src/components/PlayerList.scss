@@ -1,0 +1,45 @@
+.players-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.player-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.player-actions button {
+  margin-left: 8px;
+  padding: 4px 12px;
+  border-radius: 5px;
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.edit-btn { background: #e6f7ff; color: #1890ff; }
+.view-btn { background: #f6ffed; color: #52c41a; }
+.delete-btn { background: #fff1f0; color: #ff4d4f; }
+
+.players-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 18px;
+}
+.players-pagination button {
+  padding: 4px 14px;
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+  background: #fafafa;
+  cursor: pointer;
+}
+.players-pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+} 

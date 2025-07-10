@@ -1,0 +1,265 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #0a3d62, #74b9ff);
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.auth-box {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+
+  .title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+
+    h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    p {
+      font-size: 0.95rem;
+      color: #636e72;
+      margin-top: 0.5rem;
+    }
+  }
+
+  .tab-switch {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+
+    button {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+
+      &.active {
+        background-color: #0984e3;
+        color: white;
+      }
+
+      &.inactive {
+        background-color: #dfe6e9;
+        color: #2d3436;
+      }
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    input {
+      padding: 0.9rem 1rem;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      background-color: #ecf0f1;
+      font-size: 1rem;
+      color: #2d3436; // 👈 Yazı rengi siyah yapıldı
+
+      &:focus {
+        outline: none;
+        border-color: #74b9ff;
+        box-shadow: 0 0 0 2px #74b9ff66;
+      }
+    }
+
+    .error-message {
+      color: red;
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: -0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    button[type='submit'] {
+      background-color: #0984e3;
+      color: white;
+      padding: 1rem;
+      font-weight: bold;
+      font-size: 1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background-color: #0a75d1;
+      }
+
+      &:disabled {
+        background-color: #b2bec3;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  // ✅ Şifre doğrulama listesi
+  .password-checklist {
+    margin-top: -5px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+
+    p {
+      margin: 0.2rem 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      svg {
+        font-size: 18px;
+      }
+
+      &.valid {
+        color: #2ecc71; // yeşil
+      }
+
+      &.invalid {
+        color: #e74c3c; // kırmızı
+      }
+    }
+  }
+}
+
+.verify-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+  margin-top: 1.2rem;
+}
+.verify-info {
+  font-size: 1.05rem;
+  color: #2d3436;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.verify-form input[type="text"] {
+  letter-spacing: 0.25em;
+  font-size: 1.3rem;
+  text-align: center;
+  width: 180px;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  border: 1.5px solid #74b9ff;
+  background: #ecf0f1;
+}
+.verify-timer {
+  font-size: 1.05rem;
+  color: #636e72;
+  margin-bottom: 0.5rem;
+}
+.resend-btn {
+  background: #2ecc71;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.resend-btn:disabled {
+  background: #b2bec3;
+  cursor: not-allowed;
+}
+.resend-btn:not(:disabled):hover {
+  background: #27ae60;
+}
+.verify-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 2.5rem;
+  font-size: 1.15rem;
+  color: #2ecc71;
+  text-align: center;
+}
+
+.verify-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 4000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.verify-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 8px 32px rgba(21, 101, 192, 0.15);
+  min-width: 320px;
+  max-width: 95vw;
+  text-align: center;
+  position: relative;
+  z-index: 4100;
+}
+.verify-modal-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 4001;
+}
+
+// ✅ RESPONSIVE TASARIM
+@media (max-width: 768px) {
+  .auth-box {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .tab-switch {
+    flex-direction: column;
+    gap: 0.5rem;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-box {
+    padding: 1.2rem;
+  }
+
+  form {
+    input {
+      font-size: 0.95rem;
+    }
+
+    button[type='submit'] {
+      font-size: 0.95rem;
+      padding: 0.9rem;
+    }
+  }
+}
