@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './AuthPage.scss';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import api from '../api';
+import api from '../../utils/api';
 import React from 'react';
 
 export default function AuthPage() {
@@ -104,9 +104,10 @@ function LoginForm() {
         const role = response.data.response.role;
         const token = response.data.response.token;
         localStorage.setItem('token', token);
-        if (role === 'admin') navigate('/admin');
+        localStorage.setItem('role', role);
+        if (role === 'admin') navigate('/dashboard');
         else if (role === 'manager') navigate('/manager');
-        else if (role === 'user') navigate('/user');
+        else if (role === 'user') navigate('/dashboard');
         else if (role === 'veli' || role === 'parent') navigate('/veli');
         else setError('Geçersiz rol');
       } else {

@@ -3,30 +3,36 @@
 import React from 'react';
 import './Sidebar.scss';
 import { Link, useLocation } from 'react-router-dom';
-import { FaTimes } from 'react-icons/fa'; // Sadece 'X' ikonu için FaTimes'ı import ediyoruz
+import { FaTimes } from 'react-icons/fa';
 
 const Sidebar = ({ open, setOpen }) => {
   const location = useLocation();
+  const role = localStorage.getItem('role');
 
-  const menuItems = [
-    { name: 'Ana Sayfa', path: '/admin' },
-    { name: 'Oyuncular', path: '/admin/sports-players' },
-    { name: 'Veliler', path: '/admin/parents' },
-    { name: 'Aidatlar', path: '/admin/dues-operations' },
+  const adminMenuItems = [
+    { name: 'Ana Sayfa', path: '/dashboard' },
+    { name: 'Oyuncular', path: '/dashboard/sports-players' },
+    { name: 'Veliler', path: '/dashboard/parents' },
+    { name: 'Aidatlar', path: '/dashboard/dues-operations' },
   ];
+  const userMenuItems = [
+    { name: 'Anasayfa', path: '/dashboard' },
+    { name: 'Sporcum', path: '/dashboard/my-child' },
+    { name: 'Aidatlarım', path: '/dashboard/my-dues' },
+    { name: 'Bilgilerim', path: '/dashboard/my-info' },
+  ];
+  const menuItems = role === 'admin' ? adminMenuItems : userMenuItems;
 
   const handleLinkClick = () => {
-    // Mobil ekranda bir linke tıklanınca menüyü kapat
     if (window.innerWidth <= 700) {
       setOpen(false);
     }
   };
 
   return (
-    <nav className={`sidebar ${open ? ' open' : ' closed'}`}>  
+    <nav className={`sidebar${open ? ' open' : ' closed'}`}>  
       <div className="sidebar-header">
-        {/* Sadece masaüstünde görünecek ADMIN PANEL başlığı */}
-        <span className="sidebar-title">ADMIN PANEL</span>
+        <span className="sidebar-title">DASHBOARD</span>
         <button className="sidebar-close-btn" onClick={() => setOpen(false)}>
           <FaTimes />
         </button>

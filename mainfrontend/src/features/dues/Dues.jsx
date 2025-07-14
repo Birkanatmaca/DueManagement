@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import './dues.scss';
-import CustomDropdown from './CustomDropdown'; // YENİ: Özel dropdown bileşeni import edildi
-import './customDropdown.scss'; // YENİ: Özel dropdown stilleri import edildi
-import { listDues, addDue, updateDue, deleteDue, getDue } from '../api/dues';
-import ErrorToast from '../components/ErrorToast';
+import CustomDropdown from '../../components/CustomDropdown.jsx'; // YENİ: Özel dropdown bileşeni import edildi
+import '../../components/customdropdown.scss'; // YENİ: Özel dropdown stilleri import edildi
+import ErrorToast from '../../components/ErrorToast';
+import { listDues, addDue, updateDue, deleteDue, getDue } from './dues.js';
 
 const months = [
   'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',

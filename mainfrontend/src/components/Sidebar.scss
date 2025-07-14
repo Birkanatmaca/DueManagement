@@ -103,6 +103,18 @@
     }
   }
 
+.sidebar.open ~ * {
+  overflow-x: hidden !important;
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    width: 80vw;
+    min-width: 0;
+    max-width: 320px;
+  }
+}
+
 // Mobilde sidebar açıldığında ekranı kaplayan overlay
 .sidebar-overlay {
   display: none;

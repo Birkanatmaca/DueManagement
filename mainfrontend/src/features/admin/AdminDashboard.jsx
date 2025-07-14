@@ -1,26 +1,44 @@
 // src/pages/AdminDashboard.jsx
 
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../components/Sidebar';
-import Navbar from '../components/Navbar';
-import './admindashboard.scss';
-import { Routes, Route, useNavigate, Outlet } from 'react-router-dom';
-import SportsPlayers from './SportsPlayers';
-import Parents from './Parents';
-import Dues from './Dues';
-import api from '../api';
-import { listParents } from '../api/parents';
+import Sidebar from '../../components/Sidebar';
+import Navbar from '../../components/Navbar';
+import './dashboard.scss';
+import { Routes, Route, useNavigate, Outlet, Navigate } from 'react-router-dom';
+import SportsPlayers from '../players/SportsPlayers.jsx';
+import Parents from '../parents/Parents.jsx';
+import Dues from '../dues/Dues.jsx';
+import api from '../../utils/api';
+import { listParents } from '../parents/parents.js';
+import UserHome from '../user/UserHome.jsx';
+import UserChild from '../user/UserChild.jsx';
+import UserDues from '../user/UserDues.jsx';
+import UserInfo from '../user/UserInfo.jsx';
 
-// Örnek veriler aynı kalabilir
-const samplePlayers = Array.from({ length: 30 }, (_, i) => ({
-  name: `Sporcu${i + 1}`,
-  surname: `Soyad${i + 1}`,
-  number: 1000 + i,
-}));
+function getRoleFromToken() {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    // Token JWT ise decode edilebilir, değilse backend login response'unda role localStorage'a da yazılabilir.
+    // Şimdilik role'u localStorage'dan da okuyalım (gerekirse login'de set edilecek şekilde ayarlanır)
+    const role = localStorage.getItem('role');
+    return role;
+  } catch {
+    return null;
+  }
+}
 
-const AdminDashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 700);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 700);
+const Dashboard = () => {
+  const role = getRoleFromToken();
+  if (!role) return <Navigate to="/login" />;
+  if (role === 'admin') return <AdminDashboardContent />;
+  if (role === 'user') return <UserDashboardContent />;
+  return <div>Yetkisiz erişim</div>;
+};
+
+function AdminDashboardContent() {
+  const [sidebarOpen, setSidebarOpen] = React.useState(window.innerWidth > 700);
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 700);
   const [playerPage, setPlayerPage] = useState(1);
   const [parentPage, setParentPage] = useState(1);
   
@@ -44,11 +62,7 @@ const AdminDashboard = () => {
     const handleResize = () => {
       const mobile = window.innerWidth <= 700;
       setIsMobile(mobile);
-      if (mobile) {
-        setSidebarOpen(false); // Mobilde sidebar kapalı olsun
-      } else {
-        setSidebarOpen(true); // Masaüstüne geçince sidebar açık olsun
-      }
+      setSidebarOpen(!mobile); // Mobilde kapalı, masaüstünde açık
     };
     
     // İlk yüklemede de kontrol et
@@ -174,7 +188,7 @@ const AdminDashboard = () => {
 
   return (
     <div className={`admin-dashboard ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
-      <Navbar onSidebarOpen={() => setSidebarOpen(o => !o)} />
+      <Navbar onSidebarOpen={() => setSidebarOpen(true)} />
       <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
       {isMobile && (
         <div 
@@ -287,6 +301,48 @@ const AdminDashboard = () => {
       </main>
     </div>
   );
-};
+}
 
-export default AdminDashboard;
+function UserDashboardContent() {
+  const [sidebarOpen, setSidebarOpen] = React.useState(window.innerWidth > 700);
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 700);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 700;
+      setIsMobile(mobile);
+      setSidebarOpen(!mobile);
+    };
+    const initialMobile = window.innerWidth <= 700;
+    setIsMobile(initialMobile);
+    if (initialMobile) {
+      setSidebarOpen(false);
+    }
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return (
+    <div className="user-dashboard">
+      <Navbar onSidebarOpen={() => setSidebarOpen(true)} />
+      <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
+      {isMobile && (
+        <div
+          className={`sidebar-overlay${sidebarOpen ? ' open' : ''}`}
+          style={{ display: sidebarOpen ? undefined : 'none' }}
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      <main className="dashboard-content">
+        <Routes>
+          <Route path="/" element={<UserHome />} />
+          <Route path="/my-child" element={<UserChild />} />
+          <Route path="/my-dues" element={<UserDues />} />
+          <Route path="/my-info" element={<UserInfo />} />
+        </Routes>
+      </main>
+    </div>
+  );
+}
+
+export default Dashboard;

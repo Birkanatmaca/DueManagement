@@ -1,7 +1,8 @@
 // src/App.jsx
 import { Routes, Route } from 'react-router-dom';
-import AuthPage from './pages/AuthPage';
-import AdminDashboard from './pages/AdminDashboard';
+import AuthPage from './features/auth/AuthPage.jsx';
+import Dashboard from './features/admin/AdminDashboard.jsx';
+// import ParentDashboard from './features/parentDashboard/ParentDashboard.jsx';
 
 
 function App() {
@@ -9,7 +10,7 @@ function App() {
     <Routes>
       <Route path="/" element={<AuthPage />} />
       <Route path="/login" element={<AuthPage />} />
-      <Route path="/admin/*" element={<AdminDashboard />} />
+      <Route path="/dashboard/*" element={<Dashboard />} />
     </Routes>
   );
 }

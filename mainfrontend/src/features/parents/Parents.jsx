@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './parents.scss';
-import ErrorToast from '../components/ErrorToast';
-import { listParents, addParent, updateParent, deleteParent, getParentDetails } from '../api/parents';
-import { listPlayers } from '../api/players';
-import { matchChildToParentAdmin, unmatchChildFromParent } from '../api/parents';
+import ErrorToast from '../../components/ErrorToast';
+import { listParents } from './parents.js';
+import { listPlayers } from '../players/players.js';
 
 const Parents = () => {
   const [parents, setParents] = useState([]);

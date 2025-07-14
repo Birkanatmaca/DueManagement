@@ -25,7 +25,7 @@ const Navbar = ({ onSidebarOpen }) => {
           </button>
         </div>
         <div className="navbar-right">
-          <span className="navbar-title-mobile">ADMIN PANEL</span>
+          <span className="navbar-title-mobile">DASHBOARD</span>
           <button className="logout-btn" onClick={() => setShowLogout(true)}>Çıkış</button>
         </div>
       </div>

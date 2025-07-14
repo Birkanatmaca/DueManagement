@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './sportsplayers.scss';
-import ErrorToast from '../components/ErrorToast';
-import PlayerForm from '../components/PlayerForm';
-import PlayerList from '../components/PlayerList';
-import PlayerModal from '../components/PlayerModal';
-import ConfirmModal from '../components/ConfirmModal';
-import { listPlayers, addPlayer, updatePlayer, deletePlayer } from '../api/players';
+import ErrorToast from '../../components/ErrorToast';
+import PlayerForm from '../../components/PlayerForm';
+import PlayerList from '../../components/PlayerList';
+import PlayerModal from '../../components/PlayerModal';
+import ConfirmModal from '../../components/ConfirmModal';
+import { listPlayers, addPlayer, updatePlayer, deletePlayer } from './players.js';
 
 const playersPerPage = 20;
 const emptyForm = { number: '', name: '', surname: '', birthdate: '', parent: '', contact: '' };
