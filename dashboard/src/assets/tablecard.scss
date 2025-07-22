@@ -1,0 +1,212 @@
+.tablecard-row {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.tablecard {
+  flex: 1 1 220px;
+  min-width: 220px;
+  max-width: 100%;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(26,35,126,0.08);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.tablecard__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 16px 8px 16px;
+  border-bottom: 1px solid #eee;
+  justify-content: center;
+}
+
+.tablecard__icon {
+  font-size: 24px;
+  color: #1a237e;
+}
+
+.tablecard__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a237e;
+}
+
+.tablecard__body-responsive {
+  width: 100%;
+  overflow-x: hidden; /* changed from auto to hidden to prevent horizontal movement */
+  padding-bottom: 2px;
+}
+
+.tablecard__table {
+  width: 100%;
+  min-width: unset; /* remove min-width to prevent unnecessary horizontal scroll */
+  table-layout: fixed; /* ensure columns are fixed width */
+  background: #fff;
+}
+.tablecard__table th, .tablecard__table td {
+  padding: 10px 22px;
+  border-right: 1px solid #e0e3ef;
+  border-bottom: 1.5px solid #e0e3ef;
+  background: #fff;
+  transition: background 0.18s;
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+}
+.tablecard__table th {
+  text-align: left;
+  color: #1a237e;
+  font-weight: 600;
+  background: #f5f6fa;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  font-size: 15px;
+}
+.tablecard__table td:last-child, .tablecard__table th:last-child {
+  border-right: none;
+}
+.tablecard__table tr {
+  transition: background 0.18s;
+}
+.tablecard__table tr:nth-child(even) td {
+  background: #f8faff;
+}
+.tablecard__table tr:hover td {
+  background: #e8eafc;
+}
+.tablecard__table td {
+  word-break: break-word;
+  font-size: 14px;
+}
+.tablecard__table tr:last-child td {
+  border-bottom: none;
+}
+.tablecard__footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 16px;
+  border-top: 1px solid #eee;
+  background: #fafbff;
+  font-size: 22px;
+}
+.tablecard__nav-btn {
+  background: none;
+  border: none;
+  color: #1a237e;
+  font-size: 26px;
+  cursor: pointer;
+  padding: 8px 16px;
+  margin: 0 10px;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+.tablecard__nav-btn:disabled {
+  color: #bbb;
+  cursor: not-allowed;
+  background: none;
+}
+.tablecard__footer span {
+  font-size: 24px;
+  font-weight: 700;
+}
+.paid {
+  color: #43a047;
+  font-weight: 600;
+}
+.unpaid {
+  color: #e53935;
+  font-weight: 600;
+}
+
+.athletes-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.athletes-table th {
+  position: sticky;
+  top: 0;
+  background: #f5f6fa;
+  z-index: 2;
+  text-align: left;
+  font-weight: 700;
+  color: #1a237e;
+  padding: 8px 4px;
+}
+.athletes-table th:last-child,
+.athletes-table td:last-child {
+  text-align: center;
+  min-width: 120px;
+}
+.athletes-table td {
+  padding: 8px 4px;
+  border-bottom: 1px solid #e0e3ef;
+  word-break: break-word;
+}
+.athletes-table tr:last-child td {
+  border-bottom: none;
+} 
+
+@media (max-width: 900px) {
+  .tablecard {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(26,35,126,0.06);
+  }
+  .tablecard__header {
+    padding: 16px 10px 10px 10px;
+    gap: 8px;
+    justify-content: center;
+    text-align: center;
+  }
+  .tablecard__icon, .tablecard__title {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+  .tablecard__icon {
+    font-size: 28px;
+  }
+  .tablecard__title {
+    font-size: 20px;
+  }
+  .tablecard__body-responsive {
+    padding: 0 0 2px 0;
+    overflow-x: hidden; /* changed from auto to hidden for mobile as well */
+  }
+  .tablecard__table {
+    min-width: unset; /* remove min-width for mobile */
+    width: 100%;
+    table-layout: fixed;
+  }
+  .tablecard__table th, .tablecard__table td {
+    padding: 14px 10px;
+    font-size: 20px;
+  }
+  .tablecard__table th {
+    font-size: 18px;
+  }
+  .tablecard__table td {
+    font-size: 17px;
+  }
+  .tablecard__footer {
+    padding: 12px 10px;
+    font-size: 20px;
+  }
+  .tablecard__nav-btn {
+    font-size: 17px;
+    padding: 5px 10px;
+    margin: 0 6px;
+  }
+} 

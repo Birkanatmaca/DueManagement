@@ -1,0 +1,112 @@
+.duesedit-modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(30, 34, 60, 0.32);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.duesedit-modal {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(30,34,60,0.18);
+  padding: 32px 28px 24px 28px;
+  min-width: 320px;
+  max-width: 90vw;
+  min-height: 220px;
+  position: relative;
+  animation: modalFadeIn 0.2s;
+}
+
+@keyframes modalFadeIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.duesedit-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.duesedit-modal__close:hover {
+  color: #d32f2f;
+}
+
+.duesedit-modal__content {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 17px;
+}
+
+.duesedit-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.duesedit-modal__field label {
+  font-weight: 600;
+  color: #1a237e;
+  margin-bottom: 2px;
+  font-size: 15px;
+}
+
+.duesedit-modal__field input {
+  background: #f4f6fb;
+  border: 1.5px solid #d1d5db;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 16px;
+  color: #222;
+  outline: none;
+  transition: border 0.2s;
+  font-family: inherit;
+}
+
+.duesedit-modal__field input[readonly] {
+  background: #f4f6fb;
+  color: #222;
+  cursor: default;
+}
+
+.duesedit-modal__field input:focus {
+  border: 1.5px solid #1a237e;
+}
+
+.duesedit-modal h2 {
+  margin: 0 0 10px 0;
+  font-size: 22px;
+  color: #1a237e;
+  text-align: center;
+}
+
+.duesedit-modal__save {
+  margin-top: 18px;
+  width: 100%;
+  padding: 10px 0;
+  background: #1a237e;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s;
+  box-shadow: 0 2px 8px rgba(26,35,126,0.08);
+}
+.duesedit-modal__save:hover {
+  background: #26308c;
+} 
