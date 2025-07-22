@@ -1,76 +1,112 @@
+/* ...existing code... */
+
+.confirm-modal__title {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+
+  /* Mobilde de görünür olmasını sağla */
+  @media (max-width: 900px) {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    /* Gerekirse padding veya height ekleyin */
+  }
+}
+
+/* ...existing code... */
 .confirm-modal-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.32);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* Removed fixed padding here to use max-width and margin for spacing */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.32);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Removed fixed padding here to use max-width and margin for spacing */
+}
+
+.confirm-modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px 24px 20px 24px;
+  max-width: 360px;
+  width: calc(100% - 32px);
+  /* Calculate width to account for 16px side margins */
+  box-sizing: border-box;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.12);
+  text-align: center;
+  margin: 16px;
+  /* This creates the 16px left and right spacing */
+}
+
+.confirm-modal__title {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 11px;
+  text-align: center;
+  color: #222;
+
+  @media (max-width: 900px) {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    /* Gerekirse padding veya height ekleyin */
   }
-  
+}
+
+.confirm-modal__desc {
+  margin: 0 0 24px 0;
+  font-size: 14px;
+  color: #333;
+  font-style: italic;
+}
+
+.confirm-modal__actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.confirm-modal__btn {
+  min-width: 80px;
+  padding: 8px 0;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.confirm-modal__btn--cancel {
+  background: #e53935;
+  color: #fff;
+}
+
+.confirm-modal__btn--cancel:hover {
+  background: #b71c1c;
+}
+
+.confirm-modal__btn--confirm {
+  background: #43a047;
+  color: #fff;
+}
+
+.confirm-modal__btn--confirm:hover {
+  background: #1b5e20;
+}
+
+@media (max-width: 400px) {
   .confirm-modal {
-    background: #fff;
-    border-radius: 12px;
-    padding: 32px 24px 20px 24px;
-    max-width: 360px;
-    width: calc(100% - 32px); /* Calculate width to account for 16px side margins */
-    box-sizing: border-box;
-    box-shadow: 0 4px 32px rgba(0,0,0,0.12);
-    text-align: center;
-    margin: 16px; /* This creates the 16px left and right spacing */
+    padding: 20px 8px 12px 8px;
+    margin: 8px;
+    /* Reduce margin on smaller screens */
+    width: calc(100% - 16px);
+    /* Adjust width for 8px side margins */
   }
-  
-  .confirm-modal__title {
-    margin: 0 0 12px 0;
-    font-size: 16px;
-    font-weight: 700;
-  }
-  
-  .confirm-modal__desc {
-    margin: 0 0 24px 0;
-    font-size: 14px;
-    color: #333;
-    font-style: italic;
-  }
-  
-  .confirm-modal__actions {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-  }
-  
-  .confirm-modal__btn {
-    min-width: 80px;
-    padding: 8px 0;
-    border: none;
-    border-radius: 6px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  
-  .confirm-modal__btn--cancel {
-    background: #e53935;
-    color: #fff;
-  }
-  .confirm-modal__btn--cancel:hover {
-    background: #b71c1c;
-  }
-  
-  .confirm-modal__btn--confirm {
-    background: #43a047;
-    color: #fff;
-  }
-  .confirm-modal__btn--confirm:hover {
-    background: #1b5e20;
-  }
-  
-  @media (max-width: 400px) {
-    .confirm-modal {
-      padding: 20px 8px 12px 8px;
-      margin: 8px; /* Reduce margin on smaller screens */
-      width: calc(100% - 16px); /* Adjust width for 8px side margins */
-    }
-  }
+}

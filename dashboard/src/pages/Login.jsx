@@ -22,8 +22,10 @@ const Login = () => {
       }
       if (role === 'admin') {
         navigate('/admin/Dashboard');
+        localStorage.setItem('role', 'admin');
       } else {
         navigate('/user/Dashboard');
+        localStorage.setItem('role', 'user');
       }
     } else {
       setError(response.message || 'Giriş başarısız.');

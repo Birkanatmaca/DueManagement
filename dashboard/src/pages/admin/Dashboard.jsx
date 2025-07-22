@@ -59,18 +59,16 @@ const AdminDashboard = () => {
     const fetchAllDues = async () => {
       const now = new Date();
       const year = now.getFullYear();
-      let paid = 0;
-      let total = 0;
-      for (let month = 1; month <= 12; month++) {
-        try {
-          const res = await listDues(token, month, year);
-          const dues = res?.data?.response?.dues || [];
-          total += dues.length;
-          paid += dues.filter(d => d.status === 'Ödendi').length;
-        } catch {}
+      try {
+        // Ay parametresi olmadan çağır (backend bu desteği vermeli)
+        const res = await listDues(token, undefined, year);
+        const dues = res?.data?.response?.dues || [];
+        setTotalDues(dues.length);
+        setPaidDues(dues.filter(d => d.status === 'Ödendi').length);
+      } catch {
+        setTotalDues(0);
+        setPaidDues(0);
       }
-      setPaidDues(paid);
-      setTotalDues(total);
     };
     fetchAllDues();
   }, []);
@@ -82,6 +80,7 @@ const AdminDashboard = () => {
         setExpanded={setSidebarExpanded}
         mobileOpen={mobileOpen}
         onToggle={isMobile ? () => setMobileOpen(false) : undefined}
+        role="admin"
       />
       <Navbar
         title="ADMIN PANEL"

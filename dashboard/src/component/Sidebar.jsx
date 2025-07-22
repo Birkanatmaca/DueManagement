@@ -1,29 +1,59 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../assets/sidebar.scss';
-import { MdHome, MdPeople, MdGroup, MdPayment } from 'react-icons/md';
-import { MdLogout } from 'react-icons/md';
+import { MdHome, MdPeople, MdGroup, MdPayment, MdPerson, MdLogout } from 'react-icons/md';
 import ConfirmModal from './ConfirmModal';
 
-const links = [
-  { name: 'Anasayfa', icon: <MdHome />, path: '/admin/Dashboard' },
-  { name: 'Sporcu Listesi', icon: <MdPeople />, path: '/admin/athletes' },
-  { name: 'Veli Listesi', icon: <MdGroup />, path: '/admin/parents' },
-  { name: 'Aidat Listesi', icon: <MdPayment />, path: '/admin/dues' },
-];
+const getSidebarLinks = (role) => {
+  if (role === 'admin') {
+    return [
+      { name: 'Anasayfa', icon: <MdHome />, path: '/admin/Dashboard' },
+      { name: 'Sporcu Listesi', icon: <MdPeople />, path: '/admin/athletes' },
+      { name: 'Veli Listesi', icon: <MdGroup />, path: '/admin/parents' },
+      { name: 'Aidat Listesi', icon: <MdPayment />, path: '/admin/dues' },
+    ];
+  }
+  return [
+    { name: 'Anasayfa', icon: <MdHome />, path: '/user/dashboard' },
+    { name: 'Bilgilerim', icon: <MdPerson />, path: '/user/information' },
+    { name: 'Aidatlarım', icon: <MdPayment />, path: '/user/dues' },
+  ];
+};
 
-const Sidebar = ({ expanded = true, setExpanded, mobileOpen, onToggle }) => {
-  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 900);
-  const [showLogoutModal, setShowLogoutModal] = React.useState(false);
+const Sidebar = ({ expanded = true, setExpanded, mobileOpen, onToggle, role: propRole }) => {
+  const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [currentRole, setCurrentRole] = useState(propRole || localStorage.getItem('role') || 'user');
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 900);
     window.addEventListener('resize', handleResize);
+
+    // Update role when prop changes
+    if (propRole) {
+      setCurrentRole(propRole);
+    }
+
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [propRole]);
 
   const handleLogout = () => {
     localStorage.clear();
-    window.location.href = '/login';
+    navigate('/login');
+  };
+
+  const handleLinkClick = (path, e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+        navigate('/login');
+        return;
+    }
+    
+    if (isMobile) onToggle();
+    navigate(path);
   };
 
   const sidebarClass = [
@@ -32,16 +62,22 @@ const Sidebar = ({ expanded = true, setExpanded, mobileOpen, onToggle }) => {
     isMobile && mobileOpen ? 'mobile-open' : '',
   ].join(' ').trim();
 
+  const links = getSidebarLinks(currentRole);
+
   return (
     <>
-      {/* Overlay for mobile */}
       {isMobile && mobileOpen && (
         <div className="sidebar-overlay" onClick={onToggle} />
       )}
+
       <aside className={sidebarClass}>
         <div className="sidebar__header">
           <span className="sidebar__logo">LOGO</span>
-          {expanded && <span className="sidebar__admin">Admin</span>}
+          {expanded && (
+            <span className="sidebar__admin">
+              {currentRole === 'admin' ? 'Admin Panel' : 'Kullanıcı Panel'}
+            </span>
+          )}
         </div>
         <nav className="sidebar__nav">
           {links.map(link => (
@@ -50,7 +86,7 @@ const Sidebar = ({ expanded = true, setExpanded, mobileOpen, onToggle }) => {
               href={link.path}
               className="sidebar__link"
               style={{ justifyContent: expanded ? 'flex-start' : 'center' }}
-              onClick={isMobile ? onToggle : undefined}
+              onClick={(e) => handleLinkClick(link.path, e)}
             >
               <span className="sidebar__icon">{link.icon}</span>
               {expanded && <span>{link.name}</span>}
@@ -70,6 +106,7 @@ const Sidebar = ({ expanded = true, setExpanded, mobileOpen, onToggle }) => {
         </div>
         <div className="sidebar__footer">
           <span className="sidebar__copyright">© 2025 BIACA SOFTWARE & MEDIA</span>
+
           <ConfirmModal
             open={showLogoutModal}
             title="Çıkış yapmak istediğinize emin misiniz?"
@@ -82,4 +119,4 @@ const Sidebar = ({ expanded = true, setExpanded, mobileOpen, onToggle }) => {
   );
 };
 
-export default Sidebar; 
+export default Sidebar;

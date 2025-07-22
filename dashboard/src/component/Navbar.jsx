@@ -1,15 +1,8 @@
-import React, { useState } from 'react';
-import ConfirmModal from './ConfirmModal';
+
 import '../assets/navbar.scss';
 import { MdPerson } from 'react-icons/md';
 
 const Navbar = ({ title = 'Dashboard', onMenuClick, onMenuClose, mobileOpen }) => {
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
-
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = '/login';
-  };
 
   return (
     <>
