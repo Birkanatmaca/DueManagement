@@ -187,6 +187,12 @@ func assignChildToParent(jsonParsed *gabs.Container) string {
 		return clearerrorreturn(fmt.Sprintf("Failed to assign child to parent: %v", err))
 	}
 
+	// matched_child_count'u artır
+	_, err = DB.Exec("UPDATE users SET matched_child_count = matched_child_count + 1 WHERE id = $1", parentID)
+	if err != nil {
+		return clearerrorreturn(fmt.Sprintf("Failed to update matched_child_count: %v", err))
+	}
+
 	return clearokreturn("Child successfully assigned to parent")
 }
 
@@ -224,6 +230,12 @@ func matchChildToParentAdmin(jsonParsed *gabs.Container) string {
 	_, err = DB.Exec("UPDATE children SET parent_id = $1 WHERE id = $2", parentID, childID)
 	if err != nil {
 		return clearerrorreturn(fmt.Sprintf("Failed to assign child to parent: %v", err))
+	}
+
+	// matched_child_count'u artır
+	_, err = DB.Exec("UPDATE users SET matched_child_count = matched_child_count + 1 WHERE id = $1", parentID)
+	if err != nil {
+		return clearerrorreturn(fmt.Sprintf("Failed to update matched_child_count: %v", err))
 	}
 
 	return clearokreturn("Child successfully assigned to parent")
@@ -267,6 +279,12 @@ func unmatchChildFromParentAdmin(jsonParsed *gabs.Container) string {
 	_, err = DB.Exec("UPDATE children SET parent_id = NULL WHERE id = $1", childID)
 	if err != nil {
 		return clearerrorreturn(fmt.Sprintf("Failed to unassign child from parent: %v", err))
+	}
+
+	// matched_child_count'u azalt
+	_, err = DB.Exec("UPDATE users SET matched_child_count = matched_child_count - 1 WHERE id = $1 AND matched_child_count > 0", parentID)
+	if err != nil {
+		return clearerrorreturn(fmt.Sprintf("Failed to decrease matched_child_count: %v", err))
 	}
 
 	return clearokreturn("Child successfully unassigned from parent")

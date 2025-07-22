@@ -69,3 +69,30 @@ func adminHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprintf(w, adminHandler(request))
 }
+
+func resendCodeHandlerHttp(w http.ResponseWriter, r *http.Request) {
+	request, err := middlew(w, r)
+	if err != nil {
+		fmt.Fprintf(w, clearerrorreturn("Invalid request format"))
+		return
+	}
+	fmt.Fprintf(w, resendCodeHandler(request))
+}
+
+func requestPasswordChangeCodeHandlerHttp(w http.ResponseWriter, r *http.Request) {
+	request, err := middlew(w, r)
+	if err != nil {
+		fmt.Fprintf(w, clearerrorreturn("Invalid request format"))
+		return
+	}
+	fmt.Fprintf(w, requestPasswordChangeCodeHandler(request))
+}
+
+func confirmPasswordChangeHandlerHttp(w http.ResponseWriter, r *http.Request) {
+	request, err := middlew(w, r)
+	if err != nil {
+		fmt.Fprintf(w, clearerrorreturn("Invalid request format"))
+		return
+	}
+	fmt.Fprintf(w, confirmPasswordChangeHandler(request))
+}

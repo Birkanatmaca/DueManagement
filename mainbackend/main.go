@@ -35,11 +35,14 @@ func main() {
 	http.HandleFunc("/login", loginHandlerHttp)
 	http.HandleFunc("/register", registerHandlerHttp)
 	http.HandleFunc("/verify-code", verifyCodeHandlerHttp)
+	http.HandleFunc("/resend-code", resendCodeHandlerHttp)
 
 	http.HandleFunc("/request-password-reset", requestPasswordResetHandlerHttp)
 	http.HandleFunc("/reset-password", resetPasswordWithTokenHandlerHttp)
 	http.HandleFunc("/user", userHandlerHttp)
 	http.HandleFunc("/admin", adminHandlerHttp)
+	http.HandleFunc("/request-password-change", requestPasswordChangeCodeHandlerHttp)
+	http.HandleFunc("/confirm-password-change", confirmPasswordChangeHandlerHttp)
 
 	handler := c.Handler(http.DefaultServeMux)
 	err := http.ListenAndServe(":8080", handler)

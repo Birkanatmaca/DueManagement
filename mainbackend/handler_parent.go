@@ -24,8 +24,6 @@ func userHandler(jsonParsed *gabs.Container) string {
 		return viewChild(user.ID)
 	case "dues":
 		return viewDues(user.ID)
-	case "receipt":
-		return viewReceipt(user.ID)
 	case "matchChildToParent":
 		return matchChildToParent(jsonParsed)
 	default:
@@ -73,6 +71,12 @@ func matchChildToParent(jsonParsed *gabs.Container) string {
 		return clearerrorreturn("Failed to update parent_id in children table")
 	}
 
+	// matched_child_count'u artır
+	_, err = DB.Exec("UPDATE users SET matched_child_count = matched_child_count + 1 WHERE id = $1", user.ID)
+	if err != nil {
+		return clearerrorreturn("Failed to update matched_child_count in users table")
+	}
+
 	// users tablosundan sil
 	_, err = DB.Exec("DELETE FROM users WHERE id = $1", user.ID)
 	if err != nil {
@@ -82,8 +86,8 @@ func matchChildToParent(jsonParsed *gabs.Container) string {
 	return clearokreturn("Child successfully assigned to parent, parent moved to parents table, children.parent_id updated")
 }
 
-func viewChild(userID int) string {
-	rows, err := DB.Query("SELECT id, name, birth_date, created_at FROM children WHERE user_id = $1", userID)
+func viewChild(parentID int) string {
+	rows, err := DB.Query("SELECT id, name, birth_date, athlete_number, created_at FROM children WHERE parent_id = $1", parentID)
 	if err != nil {
 		return clearerrorreturn("DB error (children)")
 	}
@@ -91,15 +95,16 @@ func viewChild(userID int) string {
 	children := make([]map[string]interface{}, 0)
 	for rows.Next() {
 		var child Child
-		err := rows.Scan(&child.ID, &child.Name, &child.BirthDate, &child.CreatedAt)
+		err := rows.Scan(&child.ID, &child.Name, &child.BirthDate, &child.AthleteNumber, &child.CreatedAt)
 		if err != nil {
 			continue
 		}
 		children = append(children, map[string]interface{}{
-			"id":         child.ID,
-			"name":       child.Name,
-			"birth_date": child.BirthDate,
-			"created_at": child.CreatedAt,
+			"id":             child.ID,
+			"name":           child.Name,
+			"birth_date":     child.BirthDate,
+			"athlete_number": child.AthleteNumber,
+			"created_at":     child.CreatedAt,
 		})
 	}
 	resp := gabs.New()
@@ -109,8 +114,13 @@ func viewChild(userID int) string {
 	return resp.String()
 }
 
-func viewDues(userID int) string {
-	rows, err := DB.Query(`SELECT due.id, due.child_id, due.month, due.year, due.amount, due.is_paid, due.due_date, due.paid_at, child.name FROM dues due JOIN children child ON due.child_id = child.id WHERE child.user_id = $1`, userID)
+func viewDues(parentID int) string {
+	rows, err := DB.Query(`
+        SELECT d.id, d.child_id, d.month, d.year, d.amount, d.is_paid, d.due_date, d.paid_at
+        FROM dues d
+        JOIN children c ON d.child_id = c.id
+        WHERE c.parent_id = $1
+    `, parentID)
 	if err != nil {
 		return clearerrorreturn("DB error (dues)")
 	}
@@ -118,21 +128,19 @@ func viewDues(userID int) string {
 	dues := make([]map[string]interface{}, 0)
 	for rows.Next() {
 		var due Due
-		var childName string
-		err := rows.Scan(&due.ID, &due.ChildID, &due.Month, &due.Year, &due.Amount, &due.IsPaid, &due.DueDate, &due.PaidAt, &childName)
+		err := rows.Scan(&due.ID, &due.ChildID, &due.Month, &due.Year, &due.Amount, &due.IsPaid, &due.DueDate, &due.PaidAt)
 		if err != nil {
 			continue
 		}
 		dueMap := map[string]interface{}{
-			"id":         due.ID,
-			"child_id":   due.ChildID,
-			"child_name": childName,
-			"month":      due.Month,
-			"year":       due.Year,
-			"amount":     due.Amount,
-			"is_paid":    due.IsPaid,
-			"due_date":   due.DueDate,
-			"paid_at":    due.PaidAt,
+			"id":       due.ID,
+			"child_id": due.ChildID,
+			"month":    due.Month,
+			"year":     due.Year,
+			"amount":   due.Amount,
+			"is_paid":  due.IsPaid,
+			"due_date": due.DueDate,
+			"paid_at":  due.PaidAt,
 		}
 		dues = append(dues, dueMap)
 	}
@@ -140,37 +148,5 @@ func viewDues(userID int) string {
 	resp.Set("OK", "data", "status")
 	resp.Set("DuesList", "data", "type")
 	resp.Set(dues, "data", "response", "dues")
-	return resp.String()
-}
-
-func viewReceipt(userID int) string {
-	rows, err := DB.Query(`SELECT r.id, r.due_id, r.file_url, r.uploaded_at, d.child_id, c.name FROM receipts r JOIN dues d ON r.due_id = d.id JOIN children c ON d.child_id = c.id WHERE c.user_id = $1`, userID)
-	if err != nil {
-		return clearerrorreturn("DB error (receipts)")
-	}
-	defer rows.Close()
-	receipts := make([]map[string]interface{}, 0)
-	for rows.Next() {
-		var receipt Receipt
-		var childID int
-		var childName string
-		err := rows.Scan(&receipt.ID, &receipt.DueID, &receipt.FileURL, &receipt.UploadedAt, &childID, &childName)
-		if err != nil {
-			continue
-		}
-		receiptMap := map[string]interface{}{
-			"id":          receipt.ID,
-			"due_id":      receipt.DueID,
-			"file_url":    receipt.FileURL,
-			"uploaded_at": receipt.UploadedAt,
-			"child_id":    childID,
-			"child_name":  childName,
-		}
-		receipts = append(receipts, receiptMap)
-	}
-	resp := gabs.New()
-	resp.Set("OK", "data", "status")
-	resp.Set("ReceiptList", "data", "type")
-	resp.Set(receipts, "data", "response", "receipts")
 	return resp.String()
 }
