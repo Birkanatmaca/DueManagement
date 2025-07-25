@@ -4,6 +4,7 @@ import Sidebar from '../../component/Sidebar';
 import Navbar from '../../component/Navbar';
 import CrudTableCard from '../../component/CrudTableCard';
 import CustomDropdown from '../../component/CustomDropdown';
+import UserDuesCard from '../../component/UserDuesCard';
 
 const Dues = () => {
     const navigate = useNavigate();
@@ -76,56 +77,26 @@ const Dues = () => {
                 minHeight: 'calc(100vh - 64px)'
             }}>
                 <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-                    {/* Year Selector */}
-                    <div style={{
-                        marginBottom: 20,
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        width: '200px',
-                        marginLeft: 'auto'
+                    <div style={{ 
+                        marginBottom: 20, 
+                        display: 'flex', 
+                        justifyContent: 'center', // değiştirildi
+                        width: '100%', // değiştirildi
                     }}>
-                        <CustomDropdown
-                            options={yearOptions}
-                            value={selectedYear}
-                            onChange={setSelectedYear}
-                            placeholder="Yıl Seçiniz"
-                        />
+                        <div style={{ width: '200px' }}> {/* yeni div eklendi */}
+                            <CustomDropdown
+                                options={yearOptions}
+                                value={selectedYear}
+                                onChange={setSelectedYear}
+                                placeholder="Yıl Seçiniz"
+                            />
+                        </div>
                     </div>
 
-                    <CrudTableCard
+                    <UserDuesCard
                         title="Aidat Ödemeleri"
-                        iconType="payment"
-                        columns={[
-                            {
-                                label: 'Ay',
-                                key: 'month',
-                                style: { textAlign: 'left' }
-                            },
-                            {
-                                label: 'Tutar',
-                                key: 'amount',
-                                style: { textAlign: 'center' }
-                            },
-                            {
-                                label: 'Durum',
-                                key: 'status',
-                                style: { textAlign: 'right' },
-                                render: (status) => (
-                                    <span style={{
-                                        color: status === 'Ödendi' ? '#4caf50' : '#f44336',
-                                        fontWeight: 500,
-                                        padding: '4px 12px',
-                                        borderRadius: '4px',
-                                        backgroundColor: status === 'Ödendi'
-                                            ? 'rgba(76, 175, 80, 0.1)'
-                                            : 'rgba(244, 67, 54, 0.1)'
-                                    }}>
-                                        {status}
-                                    </span>
-                                )
-                            }
-                        ]}
                         data={formattedData}
+                        year={selectedYear}
                     />
                 </div>
             </div>

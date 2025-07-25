@@ -4,6 +4,7 @@ import Sidebar from '../../component/Sidebar';
 import Navbar from '../../component/Navbar';
 import TableCard from '../../component/TableCard';
 import Card from '../../component/Card';
+import WelcomeCard from '../../component/WelcomeCard';
 import { MdPerson, MdInfo } from 'react-icons/md';
 
 const UserDashboard = () => {
@@ -49,25 +50,14 @@ const UserDashboard = () => {
           marginTop: 64,
           padding: 24,
           transition: 'margin-left 0.2s',
+          background: '#f5f5f5',
+          minHeight: 'calc(100vh - 64px)'
         }}
       >
-        <div style={{ marginBottom: 24 }}>
-          <Card
-            title="Aidat Takip Sistemine Hoşgeldiniz"
-            icon={<MdPerson />}
-            footer={
-              <button
-                className="card__view-link"
-                type="button"
-                onClick={() => navigate('/user/profile')}
-              >
-                Görüntüle
-              </button>
-            }
-          >
-            Bilgilerinizi görüntülemek için tıklayın
-          </Card>
-        </div>
+        <WelcomeCard
+          username="Ahmet Yılmaz"
+          onViewProfile={() => navigate('/user/information')}
+        />
 
         <div style={{ marginTop: 24 }}>
           <TableCard

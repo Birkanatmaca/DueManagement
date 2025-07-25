@@ -3,34 +3,42 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../component/Sidebar';
 import Navbar from '../../component/Navbar';
 import InformationCard from '../../component/InformationCard';
+import { getUserInfo } from '../../services/userServices';
 
 const Information = () => {
     const navigate = useNavigate();
     const [sidebarExpanded, setSidebarExpanded] = useState(true);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
     const [mobileOpen, setMobileOpen] = useState(false);
-
-    // Token kontrolünü kaldırdık çünkü PrivateRoute zaten kontrol ediyor
-
-    // Örnek veri (backend'den gelecek)
-    const parentData = {
-        'Ad Soyad': 'Ahmet Yılmaz',
-        'E-posta': 'ahmet@example.com',
-        'Telefon': '+90 555 123 4567',
-        'Adres': 'Örnek Mahallesi, İstanbul'
-    };
-
-    const childData = {
-        'Ad Soyad': 'Mehmet Yılmaz',
-        'Doğum Tarihi': '12.05.2015',
-        'Spor Dalı': 'Yüzme',
-        'Lisans No': 'ABC123456'
-    };
+    const [childData, setChildData] = useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 900);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        const fetchChildData = async () => {
+            try {
+                const response = await getUserInfo('child');
+                if (!response.data || !response.data.response) {
+                    setError('Veri formatı hatalı');
+                    return;
+                }
+
+                // Format the data for the InformationCard
+                const athlete = response.data.response.children[0];
+                const formattedData = {
+                    'Sporcu No': athlete.athlete_number,
+                    'Ad': athlete.name,
+                    'Doğum Tarihi': new Date(athlete.birth_date).toLocaleDateString('tr-TR'),
+                    'Kayıt Tarihi': new Date(athlete.created_at).toLocaleDateString('tr-TR')
+                };
+
+                setChildData(formattedData);
+            } catch (err) {
+                setError('Sporcu bilgileri yüklenirken bir hata oluştu');
+                console.error('Error:', err);
+            }
+        };
+
+        fetchChildData();
     }, []);
 
     return (
@@ -59,23 +67,20 @@ const Information = () => {
                     minHeight: 'calc(100vh - 64px)'
                 }}
             >
-                <div style={{ 
-                    maxWidth: 1200, 
-                    margin: '0 auto',
-                    display: 'grid',
-                    gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
-                    gap: 24
-                }}>
-                    <InformationCard
-                        title="Veli Bilgileri"
-                        data={parentData}
-                        type="parent"
-                    />
-                    <InformationCard
-                        title="Sporcu Bilgileri"
-                        data={childData}
-                        type="child"
-                    />
+                <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+                    {error && (
+                        <div style={{ color: 'red', marginBottom: '20px' }}>
+                            {error}
+                        </div>
+                    )}
+
+                    {childData && (
+                        <InformationCard
+                            title="Sporcu Bilgileri"
+                            data={childData}
+                            type="child"
+                        />
+                    )}
                 </div>
             </div>
         </>
