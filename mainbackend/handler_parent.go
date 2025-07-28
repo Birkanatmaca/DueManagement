@@ -10,8 +10,8 @@ func userHandler(jsonParsed *gabs.Container) string {
 		return clearerrorreturn("Json Parse Error :: token")
 	}
 	user, exists := userTokenMap[token]
-	if !exists || user.Role != "user" {
-		return clearerrorreturn("Unauthorized Access: Customer only")
+	if !exists {
+		return clearerrorreturn("Unauthorized Access: Invalid token")
 	}
 
 	requestType, ok := jsonParsed.Path("data.request.type").Data().(string)
@@ -21,14 +21,60 @@ func userHandler(jsonParsed *gabs.Container) string {
 
 	switch requestType {
 	case "child":
+		if user.Role != "user" {
+			return clearerrorreturn("Unauthorized Access: User only")
+		}
 		return viewChild(user.ID)
 	case "dues":
+		if user.Role != "user" {
+			return clearerrorreturn("Unauthorized Access: User only")
+		}
 		return viewDues(user.ID)
 	case "matchChildToParent":
+		if user.Role != "user" {
+			return clearerrorreturn("Unauthorized Access: User only")
+		}
 		return matchChildToParent(jsonParsed)
+	case "parentinformation":
+		if user.Role != "user" {
+			return clearerrorreturn("Unauthorized Access: User only")
+		}
+		return getParentHandler(jsonParsed)
 	default:
 		return clearerrorreturn("Unknown request type")
 	}
+}
+
+func getParentHandler(jsonParsed *gabs.Container) string {
+	token, err := jsonCheckerString(jsonParsed, "data.request.token")
+	if err != nil {
+		return clearerrorreturn("Json Parse Error :: token")
+	}
+
+	user, exists := userTokenMap[token]
+	if !exists || user.Role != "user" {
+		return clearerrorreturn("Unauthorized Access: User only")
+	}
+
+	resp := gabs.New()
+	resp.Set("OK", "data", "status")
+	resp.Set("UserInfo", "data", "type")
+
+	parentMap := map[string]interface{}{
+		"id":                  user.ID,
+		"name":                user.Name,
+		"last_name":           user.LastName,
+		"phone":               user.Phone,
+		"created_at":          user.CreatedAt,
+		"role":                user.Role,
+		"email":               user.Email,
+		"is_verified":         user.IsVerified,
+		"matched_child_count": user.MatchedChildCount,
+	}
+
+	resp.Set(parentMap, "data", "response", "parent")
+
+	return resp.String()
 }
 
 func matchChildToParent(jsonParsed *gabs.Container) string {
@@ -41,49 +87,29 @@ func matchChildToParent(jsonParsed *gabs.Container) string {
 		return clearerrorreturn("Unauthorized Access: Customer only")
 	}
 
-	name, _ := jsonCheckerString(jsonParsed, "data.request.name")
-	surname, _ := jsonCheckerString(jsonParsed, "data.request.surname")
 	birthDate, _ := jsonCheckerString(jsonParsed, "data.request.birth_date")
 	athleteNumber, _ := jsonCheckerString(jsonParsed, "data.request.athlete_number")
 
 	var childID int
 	err = DB.QueryRow(
-		"SELECT id FROM children WHERE name = $1 AND surname = $2 AND birth_date = $3 AND athlete_number = $4 AND parent_id IS NULL",
-		name, surname, birthDate, athleteNumber,
+		"SELECT id FROM children WHERE birth_date = $1 AND athlete_number = $2 AND parent_id IS NULL",
+		birthDate, athleteNumber,
 	).Scan(&childID)
 	if err != nil {
 		return clearerrorreturn("No matching child found or already assigned")
 	}
 
-	// parents tablosuna ekle ve yeni parent id'sini al
-	var parentID int
-	err = DB.QueryRow(
-		"INSERT INTO parents (parent_name, parent_last_name, child_id, child_name, child_surname) VALUES ($1, $2, $3, $4, $5) RETURNING id",
-		user.Name, user.LastName, childID, name, surname,
-	).Scan(&parentID)
-	if err != nil {
-		return clearerrorreturn("Failed to insert into parents table")
-	}
-
-	// children tablosunda parent_id'yi güncelle
-	_, err = DB.Exec("UPDATE children SET parent_id = $1 WHERE id = $2", parentID, childID)
+	_, err = DB.Exec("UPDATE children SET parent_id = $1 WHERE id = $2", user.ID, childID)
 	if err != nil {
 		return clearerrorreturn("Failed to update parent_id in children table")
 	}
 
-	// matched_child_count'u artır
 	_, err = DB.Exec("UPDATE users SET matched_child_count = matched_child_count + 1 WHERE id = $1", user.ID)
 	if err != nil {
 		return clearerrorreturn("Failed to update matched_child_count in users table")
 	}
 
-	// users tablosundan sil
-	_, err = DB.Exec("DELETE FROM users WHERE id = $1", user.ID)
-	if err != nil {
-		return clearerrorreturn("Failed to delete user from users table")
-	}
-
-	return clearokreturn("Child successfully assigned to parent, parent moved to parents table, children.parent_id updated")
+	return clearokreturn("Child successfully assigned to parent, children.parent_id updated")
 }
 
 func viewChild(parentID int) string {

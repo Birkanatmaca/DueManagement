@@ -62,10 +62,23 @@ func addChild(jsonParsed *gabs.Container) string {
 		return clearerrorreturn(fmt.Sprintf("Failed to set athlete number: %v", err))
 	}
 
+	// 2025 yılının tüm ayları için dues tablosuna kayıt ekle
+	months := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
+	for _, month := range months {
+		dueDate := fmt.Sprintf("2025-%02d-01", month)
+		_, err = DB.Exec(
+			"INSERT INTO dues (child_id, month, year, amount, is_paid, due_date) VALUES ($1, $2, $3, $4, $5, $6)",
+			childID, month, 2025, 0, false, dueDate,
+		)
+		if err != nil {
+			return clearerrorreturn(fmt.Sprintf("Failed to add due for month %d: %v", month, err))
+		}
+	}
+
 	resp := gabs.New()
 	resp.Set("OK", "data", "status")
 	resp.Set("ChildAdded", "data", "type")
-	resp.Set(fmt.Sprintf("Child with ID %d successfully added.", childID), "data", "message")
+	resp.Set(fmt.Sprintf("Child with ID %d successfully added with 2025 payment plan.", childID), "data", "message")
 	resp.Set(childID, "data", "response", "child_id")
 	resp.Set(athleteNumber, "data", "response", "athlete_number")
 	return resp.String()
@@ -116,12 +129,34 @@ func deleteChild(jsonParsed *gabs.Container) string {
 		return clearerrorreturn("Child ID is required")
 	}
 
+	// Önce çocuğun hangi parent'a bağlı olduğunu kontrol et
+	var parentID *int
+	err = DB.QueryRow("SELECT parent_id FROM children WHERE id = $1", childID).Scan(&parentID)
+	if err != nil {
+		return clearerrorreturn(fmt.Sprintf("Child not found: %v", err))
+	}
+
+	// Çocuğun dues tablosundaki tüm verilerini sil
+	_, err = DB.Exec("DELETE FROM dues WHERE child_id = $1", childID)
+	if err != nil {
+		return clearerrorreturn(fmt.Sprintf("Failed to delete child's dues: %v", err))
+	}
+
+	// Çocuğu sil
 	_, err = DB.Exec("DELETE FROM children WHERE id = $1", childID)
 	if err != nil {
 		return clearerrorreturn(fmt.Sprintf("Failed to delete child: %v", err))
 	}
 
-	return clearokreturn("Child successfully deleted")
+	// Eğer çocuk bir parent'a bağlıysa, parent'ın match_child_count'unu azalt
+	if parentID != nil {
+		_, err = DB.Exec("UPDATE users SET matched_child_count = matched_child_count - 1 WHERE id = $1 AND matched_child_count > 0", *parentID)
+		if err != nil {
+			return clearerrorreturn(fmt.Sprintf("Failed to update parent's matched_child_count: %v", err))
+		}
+	}
+
+	return clearokreturn("Child and all associated dues successfully deleted")
 }
 
 func listChildren(jsonParsed *gabs.Container) string {
