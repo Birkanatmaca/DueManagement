@@ -17,15 +17,18 @@ const Login = () => {
     if (response.success || (response.data && response.data.status === 'OK')) {
       const role = response.data?.response?.role;
       const token = response.data?.response?.token;
+      const name = response.data?.response?.name;
       if (token) {
         localStorage.setItem('token', token);
       }
       if (role === 'admin') {
-        navigate('/admin/Dashboard');
         localStorage.setItem('role', 'admin');
+        localStorage.setItem('name', 'admin');
+        navigate('/admin/Dashboard');
       } else {
-        navigate('/user/Dashboard');
         localStorage.setItem('role', 'user');
+        localStorage.setItem('name', name || '');
+        navigate('/user/Dashboard');
       }
     } else {
       setError(response.message || 'Giriş başarısız.');
@@ -35,19 +38,19 @@ const Login = () => {
   return (
     <div className="auth-container">
       <form className="auth-form" onSubmit={handleLogin}>
-        <h2>Login</h2>
+        <h2>Giriş Yap</h2>
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input type="email" id="email" name="email"
             value={email} onChange={e => setEmail(e.target.value)} required />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Şifre</label>
           <input type="password" id="password" name="password"
             value={password} onChange={e => setPassword(e.target.value)} required />
         </div>
         {error && <div className="error-message">{error}</div>}
-        <button type="submit" className="auth-btn">Login</button>
+        <button type="submit" className="auth-btn">Giriş Yap</button>
         <div className="auth-switch-text">
           Üye değil misin?{' '}
           <Link to="/register" className="auth-link">Üye ol</Link>

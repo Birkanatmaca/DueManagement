@@ -5,6 +5,7 @@ import Navbar from '../../component/Navbar';
 import CrudTableCard from '../../component/CrudTableCard';
 import CustomDropdown from '../../component/CustomDropdown';
 import UserDuesCard from '../../component/UserDuesCard';
+import { getParentInformation, getUserDues } from '../../services/userServices';
 
 const Dues = () => {
     const navigate = useNavigate();
@@ -12,39 +13,65 @@ const Dues = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [selectedYear, setSelectedYear] = useState('2025');
+    const [parentName, setParentName] = useState(localStorage.getItem('name') || '');
+    const [duesData, setDuesData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    // Yıl seçenekleri
+    useEffect(() => {
+        const fetchParent = async () => {
+            const res = await getParentInformation();
+            if (res.data && res.data.response && res.data.response.parent && res.data.response.parent.name) {
+                setParentName(res.data.response.parent.name);
+                localStorage.setItem('name', res.data.response.parent.name);
+            }
+        };
+        fetchParent();
+    }, []);
+
+    // API'den aidat verilerini çek
+    useEffect(() => {
+        const fetchDues = async () => {
+            setLoading(true);
+            try {
+                const res = await getUserDues();
+                if (res.data && res.data.response && Array.isArray(res.data.response.dues)) {
+                    setDuesData(res.data.response.dues);
+                } else {
+                    setDuesData([]);
+                }
+            } catch (error) {
+                console.error('Aidat verileri çekilemedi:', error);
+                setDuesData([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchDues();
+    }, []);
+
+    // Yıl seçenekleri - sadece 2025
     const yearOptions = [
-        { value: '2023', label: '2023' },
-        { value: '2024', label: '2024' },
-        { value: '2025', label: '2025' },
-        { value: '2026', label: '2026' }
+        { value: '2025', label: '2025' }
     ];
 
-    // Örnek aidat verileri (API'den gelecek)
-    const allDuesData = [
-        { mount: 'Ocak', year: '2025', amount: 500, status: 'Ödendi' },
-        { mount: 'Şubat', year: '2025', amount: 500, status: 'Ödenmedi' },
-        { mount: 'Mart', year: '2025', amount: 500, status: 'Ödendi' },
-        { mount: 'Nisan', year: '2025', amount: 500, status: 'Ödenmedi' },
-        { mount: 'Mayıs', year: '2025', amount: 500, status: 'Ödendi' },
-        { mount: 'Haziran', year: '2025', amount: 500, status: 'Ödenmedi' },
-        { mount: 'Temmuz', year: '2025', amount: 500, status: 'Ödendi' },
-        { mount: 'Ağustos', year: '2025', amount: 500, status: 'Ödenmedi' },
-        { mount: 'Eylül', year: '2025', amount: 500, status: 'Ödendi' },
-        { mount: 'Ekim', year: '2025', amount: 500, status: 'Ödenmedi' },
-        { mount: 'Kasım', year: '2025', amount: 500, status: 'Ödendi' },
-        { mount: 'Aralık', year: '2025', amount: 500, status: 'Ödenmedi' }
-    ];
-
-    // Filter data by selected year and format for display
-    const formattedData = allDuesData
-        .filter(item => item.year === selectedYear)
-        .map(item => ({
-            month: item.mount,
-            amount: `${item.amount}₺`,
-            status: item.status
-        }));
+    // API'den gelen verileri formatla ve ay sırasına göre sırala
+    const formattedData = duesData
+        .filter(item => item.year === Number(selectedYear) && item.month >= 1 && item.month <= 12)
+        .sort((a, b) => a.month - b.month) // Ay sırasına göre sırala
+        .map(item => {
+            // Ay numarasını ay adına çevir
+            const monthNames = [
+                'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+                'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+            ];
+            const monthName = monthNames[item.month - 1] || '';
+            
+            return {
+                month: monthName,
+                amount: `${item.amount || 0}₺`,
+                status: item.is_paid ? 'Ödendi' : 'Ödenmedi'
+            };
+        });
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 900);
@@ -66,6 +93,7 @@ const Dues = () => {
                 onMenuClick={() => setMobileOpen(true)}
                 onMenuClose={() => setMobileOpen(false)}
                 mobileOpen={mobileOpen}
+                username={parentName}
             />
 
             <div style={{
@@ -80,10 +108,10 @@ const Dues = () => {
                     <div style={{ 
                         marginBottom: 20, 
                         display: 'flex', 
-                        justifyContent: 'center', // değiştirildi
-                        width: '100%', // değiştirildi
+                        justifyContent: 'center',
+                        width: '100%',
                     }}>
-                        <div style={{ width: '200px' }}> {/* yeni div eklendi */}
+                        <div style={{ width: '200px' }}>
                             <CustomDropdown
                                 options={yearOptions}
                                 value={selectedYear}
@@ -93,11 +121,17 @@ const Dues = () => {
                         </div>
                     </div>
 
-                    <UserDuesCard
-                        title="Aidat Ödemeleri"
-                        data={formattedData}
-                        year={selectedYear}
-                    />
+                    {loading ? (
+                        <div style={{ textAlign: 'center', padding: '50px' }}>
+                            <div>Yükleniyor...</div>
+                        </div>
+                    ) : (
+                        <UserDuesCard
+                            title="Aidat Ödemeleri"
+                            data={formattedData}
+                            year={selectedYear}
+                        />
+                    )}
                 </div>
             </div>
         </>

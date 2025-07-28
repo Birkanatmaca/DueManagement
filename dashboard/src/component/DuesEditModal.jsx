@@ -1,5 +1,6 @@
 import React from 'react';
 import CustomDropdown from './CustomDropdown';
+import ConfirmModal from './ConfirmModal';
 import '../assets/dueseditmodal.scss';
 
 const statusOptions = [
@@ -9,17 +10,16 @@ const statusOptions = [
 
 const DuesEditModal = ({ open, onClose, dues, onSave }) => {
   const [form, setForm] = React.useState({
-    parent: '',
     status: '',
-    athleteNumber: '',
+    amount: '',
   });
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (dues) {
       setForm({
-        parent: dues.parent || '',
         status: dues.status || '',
-        athleteNumber: dues.athleteNumber || '',
+        amount: dues.amount || '',
       });
     }
   }, [dues, open]);
@@ -28,39 +28,79 @@ const DuesEditModal = ({ open, onClose, dues, onSave }) => {
     setForm({ ...form, status: val });
   };
 
+  const handleInputChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave && onSave({ ...dues, ...form });
+    setConfirmOpen(true);
+  };
+
+  const handleConfirm = () => {
+    setConfirmOpen(false);
+    // Gerekli alanları gönder
+    onSave && onSave({ 
+      id: dues.id,
+      amount: parseFloat(form.amount) || 0,
+      status: form.status 
+    });
+  };
+
+  const handleCancel = () => {
+    setConfirmOpen(false);
   };
 
   if (!open) return null;
   return (
-    <div className="duesedit-modal__overlay">
-      <div className="duesedit-modal">
-        <button className="duesedit-modal__close" onClick={onClose}>&times;</button>
-        <h2>Aidat Düzenle</h2>
-        <form className="duesedit-modal__content" onSubmit={handleSubmit}>
-          <div className="duesedit-modal__field">
-            <label>Veli Ad Soyad:</label>
-            <input name="parent" type="text" value={form.parent} readOnly />
-          </div>
-          <div className="duesedit-modal__field">
-            <label>Aidat Durumu:</label>
-            <CustomDropdown
-              options={statusOptions}
-              value={form.status}
-              onChange={handleDropdownChange}
-              placeholder="Durum seçiniz"
-            />
-          </div>
-          <div className="duesedit-modal__field">
-            <label>Sporcu Numarası:</label>
-            <input name="athleteNumber" type="text" value={form.athleteNumber} readOnly />
-          </div>
-          <button type="submit" className="duesedit-modal__save">Kaydet</button>
-        </form>
+    <>
+      <div className="duesedit-modal__overlay">
+        <div className="duesedit-modal">
+          <button className="duesedit-modal__close" onClick={onClose}>&times;</button>
+          <h2>Aidat Düzenle</h2>
+          <form className="duesedit-modal__content" onSubmit={handleSubmit}>
+            <div className="duesedit-modal__field">
+              <label>Çocuk Adı Soyadı:</label>
+              <input name="athlete" type="text" value={dues.athlete || ''} readOnly />
+            </div>
+            <div className="duesedit-modal__field">
+              <label>Aidat Tutarı (₺):</label>
+              <input 
+                name="amount" 
+                type="number" 
+                value={form.amount} 
+                onChange={handleInputChange}
+                placeholder="Tutar giriniz"
+                min="0"
+                step="0.01"
+                required
+              />
+            </div>
+            <div className="duesedit-modal__field">
+              <label>Ödeme Bilgisi:</label>
+              <CustomDropdown
+                options={statusOptions}
+                value={form.status}
+                onChange={handleDropdownChange}
+                placeholder="Durum seçiniz"
+              />
+            </div>
+            <div className="duesedit-modal__field">
+              <label>Sporcu Numarası:</label>
+              <input name="athleteNumber" type="text" value={dues.athleteNumber || ''} readOnly />
+            </div>
+            <button type="submit" className="duesedit-modal__save">Kaydet</button>
+          </form>
+        </div>
       </div>
-    </div>
+      <ConfirmModal
+        open={confirmOpen}
+        title="Değişiklikleri kaydetmek istediğinize emin misiniz?"
+        description="Aidat tutarı ve ödeme durumu güncellenecek."
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
+    </>
   );
 };
 

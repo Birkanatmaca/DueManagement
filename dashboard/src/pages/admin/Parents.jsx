@@ -71,7 +71,7 @@ const Parents = () => {
 
   const iconSize = isMobile ? 20 : 24;
 
-  const handleEditSave = async (form) => {
+  const handleEditSave = async (form, shouldRefresh = false) => {
     const token = localStorage.getItem('token') || 'demo-token';
     // Find the parent being edited to get the id
     const editingParent = parents.find(p => p.email === form.email && p.name === form.name);
@@ -81,11 +81,22 @@ const Parents = () => {
     const last_name = form.surname;
     const email = form.email;
     const phone = form.phone;
-    const password = form.password || '';
+    
+    // Şifre alanı boşsa undefined gönder (şifre değişmesin)
+    // Şifre alanı doluysa yeni şifreyi gönder
+    const password = form.password && form.password.trim() !== '' ? form.password : undefined;
+    
     await updateParent(token, parent_id, name, last_name, email, phone, password);
-    refreshParentsList();
+    
+    // Eğer çocuk eşleştirme işlemi yapıldıysa parent listesini yenile
+    if (shouldRefresh) {
+      refreshParentsList();
+      setToastMsg('Veli bilgileri ve çocuk eşleştirmeleri başarıyla güncellendi.');
+    } else {
+      setToastMsg('Veli bilgileri başarıyla güncellendi.');
+    }
+    
     setEditModalOpen(false);
-    setToastMsg('Veli bilgileri başarıyla güncellendi.');
     setToastOpen(true);
   };
 
@@ -236,6 +247,7 @@ const Parents = () => {
           getParentDetails={getParentDetails}
           matchChildToParentAdmin={matchChildToParentAdmin}
           unmatchChildFromParentAdmin={unmatchChildFromParentAdmin}
+          isAddMode={true}
         />
         <ConfirmModal
           open={deleteConfirmOpen}

@@ -17,18 +17,24 @@ const UserDuesCard = ({ title, iconType, data, year }) => {
                 </div>
             </div>
             <div className="user-dues-card__content">
-                {data.map((item, index) => (
-                    <div key={index} className="user-dues-card__item">
-                        <div className="user-dues-card__month">{item.month}</div>
-                        <div className="user-dues-card__amount">{item.amount}</div>
-                        <div className={`user-dues-card__status ${item.status === 'Ödendi' ? 'paid' : 'unpaid'}`}>
-                            <span className="user-dues-card__status-icon">
-                                {item.status === 'Ödendi' ? <MdCheck /> : <MdClose />}
-                            </span>
-                            <span className="user-dues-card__status-text">{item.status}</span>
+                {data && data.length > 0 ? (
+                    data.map((item, index) => (
+                        <div key={index} className="user-dues-card__item">
+                            <div className="user-dues-card__month">{item.month}</div>
+                            <div className="user-dues-card__amount">{item.amount}</div>
+                            <div className={`user-dues-card__status ${item.status === 'Ödendi' ? 'paid' : 'unpaid'}`}>
+                                <span className="user-dues-card__status-icon">
+                                    {item.status === 'Ödendi' ? <MdCheck /> : <MdClose />}
+                                </span>
+                                <span className="user-dues-card__status-text">{item.status}</span>
+                            </div>
                         </div>
+                    ))
+                ) : (
+                    <div style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+                        Bu yıl için aidat kaydı bulunamadı.
                     </div>
-                ))}
+                )}
             </div>
         </div>
     );

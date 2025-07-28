@@ -267,8 +267,9 @@ const Athletes = () => {
         <AthleteEditModal
           open={addModalOpen}
           onClose={() => setAddModalOpen(false)}
-          athlete={{ ad: '', soyad: '', numara: '', dogumTarihi: '', veliAd: '', veliTelefon: '' }}
+          athlete={{ ad: '', soyad: '', dogumTarihi: '' }}
           onSave={handleAddSave}
+          isAdding={true}
         />
         <ConfirmModal
           open={deleteConfirmOpen}

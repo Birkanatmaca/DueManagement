@@ -2,7 +2,7 @@
 import '../assets/navbar.scss';
 import { MdPerson } from 'react-icons/md';
 
-const Navbar = ({ title = 'Dashboard', onMenuClick, onMenuClose, mobileOpen }) => {
+const Navbar = ({ title = 'Dashboard', onMenuClick, onMenuClose, mobileOpen, username }) => {
 
   return (
     <>
@@ -22,7 +22,7 @@ const Navbar = ({ title = 'Dashboard', onMenuClick, onMenuClose, mobileOpen }) =
           <span className="navbar-title">{title}</span>
         </div>
         <div className="navbar-user-area">
-          <span className="navbar-username">Admin</span>
+          <span className="navbar-username">{username || 'Admin'}</span>
           <MdPerson className="navbar-usericon" size={26} />
         </div>
       </header>

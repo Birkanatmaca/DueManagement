@@ -105,7 +105,7 @@ const AdminDashboard = () => {
           <Card title="Ödenen Aidat Sayısı" icon={<MdPayment />} color="yellow" footer={<button className="card__view-link" type="button">Görüntüle</button>}>
             {paidDues}/{athletes.length}
           </Card>
-          <Card title="Ciro" icon={<MdAttachMoney />} color="pink" footer={<button className="card__view-link" type="button">Görüntüle</button>}>123</Card>
+          <Card title="Ciro" icon={<MdAttachMoney />} color="pink" footer={<button className="card__view-link" type="button">Görüntüle</button>}>1500</Card>
         </div>
         {/* 2 tablo kartı yan yana */}
         <div className="tablecard-row" style={{ marginTop: 24 }}>

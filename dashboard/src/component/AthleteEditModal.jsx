@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../assets/athletedetailmodal.scss';
 import ConfirmModal from './ConfirmModal';
 
-const AthleteEditModal = ({ open, onClose, athlete, onSave }) => {
+const AthleteEditModal = ({ open, onClose, athlete, onSave, isAdding = false }) => {
   const [form, setForm] = useState({
     ad: '',
     soyad: '',
@@ -30,6 +30,10 @@ const AthleteEditModal = ({ open, onClose, athlete, onSave }) => {
   };
 
   const isChanged = () => {
+    if (isAdding) {
+      // For adding new athlete, check if required fields are filled
+      return form.ad.trim() && form.soyad.trim() && form.dogumTarihi;
+    }
     return Object.keys(form).some(key => form[key] !== initialForm[key]);
   };
 
@@ -53,7 +57,7 @@ const AthleteEditModal = ({ open, onClose, athlete, onSave }) => {
     <div className="athlete-modal__overlay">
       <div className="athlete-modal">
         <button className="athlete-modal__close" onClick={onClose}>&times;</button>
-        <h2>Sporcu Düzenle</h2>
+        <h2>{isAdding ? 'Sporcu Ekle' : 'Sporcu Düzenle'}</h2>
         <form className="athlete-modal__content" onSubmit={handleSubmit}>
           <div className="athlete-modal__field">
             <label>Sporcu Adı:</label>
@@ -63,20 +67,24 @@ const AthleteEditModal = ({ open, onClose, athlete, onSave }) => {
             <label>Sporcu Soyadı:</label>
             <input name="soyad" type="text" value={form.soyad} onChange={handleChange} required />
           </div>
-          <div className="athlete-modal__field">
-            <label>Sporcu Numarası:</label>
-            <input name="numara" type="text" value={form.numara} onChange={handleChange} required />
-          </div>
+          {!isAdding && (
+            <div className="athlete-modal__field">
+              <label>Sporcu Numarası:</label>
+              <input name="numara" type="text" value={form.numara} onChange={handleChange} required />
+            </div>
+          )}
           <div className="athlete-modal__field">
             <label>Doğum Tarihi:</label>
             <input name="dogumTarihi" type="date" value={form.dogumTarihi} onChange={handleChange} required />
           </div>
-          <button type="submit" className="athlete-modal__save" disabled={!isChanged()}>Kaydet</button>
+          <button type="submit" className="athlete-modal__save" disabled={!isChanged()}>
+            {isAdding ? 'Ekle' : 'Kaydet'}
+          </button>
         </form>
         <ConfirmModal
           open={confirmOpen}
-          title="Kaydetmek istediğinize emin misiniz?"
-          description="Yaptığınız değişiklikler kaydedilecek."
+          title={isAdding ? "Eklemek istediğinize emin misiniz?" : "Kaydetmek istediğinize emin misiniz?"}
+          description={isAdding ? "Yeni sporcu eklenecek." : "Yaptığınız değişiklikler kaydedilecek."}
           onConfirm={handleConfirm}
           onCancel={handleCancel}
         />

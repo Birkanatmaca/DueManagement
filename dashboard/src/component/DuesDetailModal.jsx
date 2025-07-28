@@ -10,11 +10,11 @@ const DuesDetailModal = ({ open, onClose, dues }) => {
         <h2>Aidat Detayları</h2>
         <div className="duesdetail-modal__content">
           <div className="duesdetail-modal__field">
-            <label>Veli Ad Soyad:</label>
-            <input type="text" value={dues.parent || ''} readOnly />
+            <label>Çocuk Adı Soyadı:</label>
+            <input type="text" value={dues.athlete || ''} readOnly />
           </div>
           <div className="duesdetail-modal__field">
-            <label>Aidat Durumu:</label>
+            <label>Ödeme Bilgisi:</label>
             <input type="text" value={dues.status || ''} readOnly />
           </div>
           <div className="duesdetail-modal__field">

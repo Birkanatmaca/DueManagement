@@ -66,9 +66,9 @@ const Dues = () => {
       let duesArr = [];
       if (res.data && res.data.response && Array.isArray(res.data.response.dues)) {
         duesArr = res.data.response.dues.map((item) => ({
-          id: item.due_id,
+          id: item.id || item.due_id,
           parent: (item.parent_name && item.parent_surname) ? `${item.parent_name} ${item.parent_surname}` : '',
-          status: item.status,
+          status: item.status || (item.is_paid ? 'Ödendi' : 'Ödenmedi'),
           athlete: (item.child_name && item.child_surname) ? `${item.child_name} ${item.child_surname}` : '',
           athleteNumber: item.athlete_number || '',
           athleteBirth: '', // API'de yok, boş bırak
@@ -112,6 +112,7 @@ const Dues = () => {
     setEditModalOpen(false);
     try {
       const token = localStorage.getItem('token');
+      // Aidat tutarını ve ödeme durumunu güncelle
       await updateDue(token, form.id, form.amount, form.status === 'Ödendi');
       setToastMsg('Aidat bilgileri başarıyla kaydedildi.');
       setToastOpen(true);

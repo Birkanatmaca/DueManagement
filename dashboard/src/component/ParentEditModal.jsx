@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../assets/parentmodal.scss';
 
-const ParentEditModal = ({ open, onClose, parent, onSave, listChildren, getParentDetails, matchChildToParentAdmin, unmatchChildFromParentAdmin }) => {
+const ParentEditModal = ({ open, onClose, parent, onSave, listChildren, getParentDetails, matchChildToParentAdmin, unmatchChildFromParentAdmin, isAddMode = false }) => {
   const [form, setForm] = useState({
     name: '',
     surname: '',
@@ -28,13 +28,20 @@ const ParentEditModal = ({ open, onClose, parent, onSave, listChildren, getParen
         if (childrenRes && childrenRes.data && Array.isArray(childrenRes.data.response?.children)) {
           children = childrenRes.data.response.children;
         }
-        setAllChildren(children);
+        
         let matched = [];
         if (parentDetailsRes && parentDetailsRes.data && Array.isArray(parentDetailsRes.data.response?.children)) {
           matched = parentDetailsRes.data.response.children;
         }
+        
+        // Eşleşmiş çocukları tüm çocuklar listesinden çıkar
+        const matchedIds = matched.map(child => child.id);
+        const availableChildren = children.filter(child => !matchedIds.includes(child.id));
+        
+        setAllChildren(availableChildren);
         setMatchedChildren(matched);
         setInitialMatchedChildren(matched);
+        
         if (parentDetailsRes && parentDetailsRes.data && parentDetailsRes.data.response?.parent) {
           const p = parentDetailsRes.data.response.parent;
           setForm(f => ({
@@ -86,6 +93,14 @@ const ParentEditModal = ({ open, onClose, parent, onSave, listChildren, getParen
       ];
 
       await Promise.all(promises);
+      
+      // Çocuk eşleştirme işlemlerinden sonra parent listesini yenile
+      if (typeof onSave === 'function') {
+        // onSave fonksiyonuna özel bir parametre göndererek yenileme işlemini tetikleyebiliriz
+        // veya ayrı bir callback fonksiyonu kullanabiliriz
+        onSave(form, true); // true parametresi yenileme işlemini tetikler
+      }
+      
       onClose();
     } catch (error) {
       console.error('Error updating parent:', error);
@@ -93,7 +108,7 @@ const ParentEditModal = ({ open, onClose, parent, onSave, listChildren, getParen
     }
   };
 
-  // Arama filtresi
+  // Arama filtresi - sadece eşleşmemiş çocukları göster
   const filteredChildren = allChildren.filter(child => {
     const search = childSearch.toLowerCase();
     return (
@@ -108,7 +123,7 @@ const ParentEditModal = ({ open, onClose, parent, onSave, listChildren, getParen
       <div className="parent-modal">
         <button className="parent-modal__close" onClick={onClose}>&times;</button>
         <div className="parent-modal__header">
-          <h2>Veli Düzenle</h2>
+          <h2>{isAddMode ? 'Veli Ekle' : 'Veli Düzenle'}</h2>
         </div>
         <form className="parent-modal__content" onSubmit={handleSubmit}>
           <div className="parent-modal__field">
@@ -128,8 +143,15 @@ const ParentEditModal = ({ open, onClose, parent, onSave, listChildren, getParen
             <input name="email" type="email" value={form.email} onChange={handleChange} required />
           </div>
           <div className="parent-modal__field">
-            <label>Şifre (opsiyonel):</label>
-            <input name="password" type="password" value={form.password || ''} onChange={handleChange} />
+            <label>Şifre:</label>
+            <input 
+              name="password" 
+              type="password" 
+              value={form.password || ''} 
+              onChange={handleChange} 
+              placeholder={isAddMode ? "Şifre girin" : "Yeni şifre girmek için doldurun, boş bırakırsanız şifre değişmez"}
+              required={isAddMode}
+            />
           </div>
           {/* Eşleşmiş çocuklar */}
           <div style={{ margin: '18px 0 8px 0' }}>
