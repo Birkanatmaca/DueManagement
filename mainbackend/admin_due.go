@@ -3,45 +3,8 @@ package main
 import (
 	"fmt"
 	"strconv"
-	// "database/sql" // Gerçek kodda bu ve veritabanı sürücüsü import edilmelidir.
-
 	"github.com/Jeffail/gabs/v2"
 )
-
-/*
-// --- YARDIMCI DEĞİŞKEN VE FONKSİYONLAR (ÖRNEKTİR) ---
-// Bu kısımların projenizde zaten tanımlı olduğu varsayılmıştır.
-var DB *sql.DB // Veritabanı bağlantınız
-
-func jsonCheckerString(jsonParsed *gabs.Container, path string) (string, error) {
-	if !jsonParsed.ExistsP(path) {
-		return "", fmt.Errorf("path not found: %s", path)
-	}
-	val, ok := jsonParsed.Path(path).Data().(string)
-	if !ok {
-        // Gelen verinin string olmadığını ancak string'e çevrilebilir (örn: sayı) olduğunu kontrol et
-        // Bu örnekte basit tutulmuştur.
-		return "", fmt.Errorf("value at path is not a string: %s", path)
-	}
-	return val, nil
-}
-
-func clearerrorreturn(message string) string {
-	resp := gabs.New()
-	resp.Set("Error", "data", "status")
-	resp.Set(message, "data", "message")
-	return resp.String()
-}
-
-func clearokreturn(message string) string {
-	resp := gabs.New()
-	resp.Set("OK", "data", "status")
-	resp.Set(message, "data", "message")
-	return resp.String()
-}
-// --- YARDIMCI DEĞİŞKEN VE FONKSİYONLARIN SONU ---
-*/
-
 func adminDueRouter(jsonParsed *gabs.Container) string {
 	requestType, _ := jsonCheckerString(jsonParsed, "data.request.type")
 

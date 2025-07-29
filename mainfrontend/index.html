@@ -1,13 +1,381 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
+    <title>Ata Mahallesi Spor Kulübü - Futbol Okulu</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="images/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/logo.png">
+    <link rel="shortcut icon" href="images/logo.png">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-container">
+                    <div class="logo-image">
+                        <img src="images/logo.png" alt="Ata Mahallesi Spor Kulübü Logo">
+                    </div>
+                    <div class="logo-text">
+                        <h2>Ata Mahallesi Spor Kulübü</h2>
+                    </div>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link">Ana Sayfa</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">Hakkımızda</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#coaches" class="nav-link">Antrenörler</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#programs" class="nav-link">Programlar</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">İletişim</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#login" class="nav-link login-btn" data-tooltip="Aidat Takip Sistemine gitmek için tıklayın">
+                        <span>Giriş</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <!-- Animated Background Logos -->
+        <div class="animated-logos">
+            <div class="logo-item" style="--delay: 0s; --position: 15%">
+                <img src="images/logo.png" alt="Logo">
+            </div>
+            <div class="logo-item" style="--delay: 3s; --position: 25%">
+                <img src="images/logo.png" alt="Logo">
+            </div>
+            <div class="logo-item" style="--delay: 6s; --position: 35%">
+                <img src="images/logo.png" alt="Logo">
+            </div>
+            <div class="logo-item" style="--delay: 9s; --position: 45%">
+                <img src="images/logo.png" alt="Logo">
+            </div>
+            <div class="logo-item" style="--delay: 12s; --position: 55%">
+                <img src="images/logo.png" alt="Logo">
+            </div>
+            <div class="logo-item" style="--delay: 15s; --position: 65%">
+                <img src="images/logo.png" alt="Logo">
+            </div>
+            <div class="logo-item" style="--delay: 18s; --position: 75%">
+                <img src="images/logo.png" alt="Logo">
+            </div>
+            <div class="logo-item" style="--delay: 21s; --position: 85%">
+                <img src="images/logo.png" alt="Logo">
+            </div>
+            <div class="logo-item" style="--delay: 24s; --position: 95%">
+                <img src="images/logo.png" alt="Logo">
+            </div>
+        </div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Futbol Okuluna Hoş Geldiniz</h1>
+                <p class="hero-description">Çocuklarınızın futbol becerilerini geliştirirken, takım ruhu ve spor ahlakını öğrendiği profesyonel futbol okulumuza hoş geldiniz. Uzman antrenörlerimiz eşliğinde geleceğin yıldızlarını yetiştiriyoruz.</p>
+                <div class="hero-buttons">
+                    <button class="cta-button primary">Kayıt Ol</button>
+                    <button class="cta-button secondary">Daha Fazla Bilgi</button>
+                </div>
+            </div>
+            
+            <div class="hero-image-container">
+                <div class="hero-slider">
+                    <div class="hero-slide active">
+                        <div class="slide-image">
+                            <img src="images/home-kid.png" alt="Futbol Okulu Öğrencisi">
+                        </div>
+                    </div>
+                    <div class="hero-slide">
+                        <div class="slide-image">
+                            <img src="images/home-kid1.png" alt="Futbol Okulu Öğrencisi">
+                        </div>
+                    </div>
+                    <div class="hero-slide">
+                        <div class="slide-image">
+                            <img src="images/home-keeperkid.png" alt="Futbol Okulu Kaleci">
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-slider-dots">
+                    <span class="hero-dot active"></span>
+                    <span class="hero-dot"></span>
+                    <span class="hero-dot"></span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">Hakkımızda</h2>
+            <!-- Vision & Mission within About -->
+            <div class="vision-content">
+                <div class="vision-card">
+                    <div class="vision-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Vizyonumuz</h3>
+                    <p>Futbol sporunu seven, teknik becerileri gelişmiş, takım ruhuna sahip, spor ahlakı yüksek gençler yetiştirmek. Geleceğin profesyonel futbolcularını ve spor kültürüne sahip bireylerini topluma kazandırmak.</p>
+                </div>
+                <div class="vision-card">
+                    <div class="vision-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Misyonumuz</h3>
+                    <p>Çocukların fiziksel ve zihinsel gelişimini destekleyerek, futbol becerilerini geliştirmek, takım çalışmasını öğretmek, disiplin ve öz güven duygularını geliştirmek. Modern eğitim yöntemleri ve uzman antrenörlerimizle kaliteli futbol eğitimi sunmak.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coaches Section -->
+    <section id="coaches" class="coaches">
+        <div class="container">
+            <h2 class="section-title">Antrenörlerimiz</h2>
+            <div class="coaches-grid">
+                <div class="coach-card" data-coach="ahmet">
+                    <div class="coach-image">
+                        <div class="coach-photo">
+                            <img src="images/orhan.jpg" alt="Orhan Şenel">
+                        </div>
+                    </div>
+                    <div class="coach-info">
+                        <h3>Orhan Şenel</h3>
+                        <button class="detail-btn" onclick="openCoachModal('ahmet')">Detay</button>
+                    </div>
+                </div>
+                <div class="coach-card" data-coach="mehmet">
+                    <div class="coach-image">
+                        <div class="coach-photo">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                    </div>
+                    <div class="coach-info">
+                        <h3>Mehmet Kaya</h3>
+                        <button class="detail-btn" onclick="openCoachModal('mehmet')">Detay</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coach Modal -->
+    <div id="coachModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-coach-info">
+                <div class="modal-coach-image">
+                    <div class="modal-coach-photo">
+                        <img src="images/orhan.jpg" alt="Orhan Şenel" id="modalCoachImage">
+                    </div>
+                </div>
+                <div class="modal-coach-details">
+                    <h2 id="modalCoachName">Ahmet Yılmaz</h2>
+                    <p class="modal-coach-title" id="modalCoachTitle">Baş Antrenör</p>
+                    <p class="modal-coach-description" id="modalCoachDescription">
+                        15 yıllık deneyimi ile çocukların futbol gelişiminde uzman. UEFA A lisansına sahip profesyonel antrenör. 
+                        Çocukların hem teknik hem de karakter gelişimine odaklanan modern eğitim metodları uygular.
+                    </p>
+                    <div class="modal-coach-stats">
+                        <div class="modal-coach-stat">
+                            <span class="modal-stat-number">15+</span>
+                            <span class="modal-stat-label">Yıl Deneyim</span>
+                        </div>
+                        <div class="modal-coach-stat">
+                            <span class="modal-stat-number">500+</span>
+                            <span class="modal-stat-label">Öğrenci</span>
+                        </div>
+                        <div class="modal-coach-stat">
+                            <span class="modal-stat-number">UEFA A</span>
+                            <span class="modal-stat-label">Lisans</span>
+                        </div>
+                    </div>
+                    <div class="modal-coach-expertise">
+                        <h4>Uzmanlık Alanları:</h4>
+                        <ul>
+                            <li>Teknik beceri geliştirme</li>
+                            <li>Takım oyunu stratejileri</li>
+                            <li>Fiziksel kondisyon</li>
+                            <li>Çocuk gelişimi ve psikolojisi</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section id="programs" class="programs">
+        <div class="container">
+            <h2 class="section-title">Futbol Eğitimi Programları</h2>
+            <div class="programs-slider-container">
+                <button class="slider-btn prev-btn" id="prevBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="programs-slider">
+                    <div class="programs-track">
+                        <div class="program-card">
+                            <div class="program-icon">
+                                <i class="fas fa-child"></i>
+                            </div>
+                            <h3>Minikler (5-7 Yaş)</h3>
+                            <p>Temel futbol becerileri ve koordinasyon geliştirme programı. Çocukların motor becerilerini geliştirirken futbol sevgisini aşılıyoruz.</p>
+                            <ul class="program-features">
+                                <li>Temel top kontrolü</li>
+                                <li>Koordinasyon egzersizleri</li>
+                                <li>Oyun tabanlı öğrenme</li>
+                                <li>Grup aktiviteleri</li>
+                            </ul>
+                        </div>
+                        <div class="program-card">
+                            <div class="program-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>Yıldızlar (8-12 Yaş)</h3>
+                            <p>Teknik beceriler ve takım oyunu geliştirme eğitimi. Futbolun temel tekniklerini öğrenirken takım ruhunu geliştiriyoruz.</p>
+                            <ul class="program-features">
+                                <li>Pas ve şut teknikleri</li>
+                                <li>Takım oyunu stratejileri</li>
+                                <li>Kondisyon geliştirme</li>
+                                <li>Müsabaka deneyimi</li>
+                            </ul>
+                        </div>
+                        <div class="program-card">
+                            <div class="program-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <h3>Gençler (13-16 Yaş)</h3>
+                            <p>İleri seviye teknik ve taktik eğitimi, müsabaka hazırlığı. Profesyonel futbol için gerekli tüm becerileri kazandırıyoruz.</p>
+                            <ul class="program-features">
+                                <li>İleri teknik beceriler</li>
+                                <li>Taktik analiz</li>
+                                <li>Fiziksel kondisyon</li>
+                                <li>Turnuva katılımı</li>
+                            </ul>
+                        </div>
+                        <div class="program-card">
+                            <div class="program-icon">
+                                <i class="fas fa-medal"></i>
+                            </div>
+                            <h3>Özel Eğitim</h3>
+                            <p>Bireysel gelişim için özel antrenman programları. Her öğrencinin ihtiyacına özel hazırlanmış eğitim planları.</p>
+                            <ul class="program-features">
+                                <li>Bireysel antrenman</li>
+                                <li>Özel teknik çalışma</li>
+                                <li>Performans analizi</li>
+                                <li>Kişisel gelişim planı</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <button class="slider-btn next-btn" id="nextBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="slider-dots">
+                <span class="dot active" data-slide="0"></span>
+                <span class="dot" data-slide="1"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">İletişim</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>atamahallesisporklubu@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3>Telefon(Orhan Şenel)</h3>
+                            <p>+90 555 123 4567</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Adres</h3>
+                            <p>Ata, 3509. Cd. No:1, 06460 Yenimahalle/Ankara</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3056.115258306645!2d32.6131302758363!3d40.00587297150866!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14d331be474f78bb%3A0xf8794075b6f11c76!2sAta%20Mahallesi%20Spor%20Kul%C3%BCb%C3%BC!5e0!3m2!1str!2str!4v1753728937335!5m2!1str!2str" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Ata Mahallesi Spor Kulübü</h3>
+                    <p>Sağlıklı yaşam ve spor kültürü için çalışıyoruz.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Hızlı Linkler</h3>
+                    <ul>
+                                        <li><a href="#home">Ana Sayfa</a></li>
+                <li><a href="#about">Hakkımızda</a></li>
+                <li><a href="#coaches">Antrenörler</a></li>
+                <li><a href="#programs">Programlar</a></li>
+                <li><a href="#contact">İletişim</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Sosyal Medya</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html> 
