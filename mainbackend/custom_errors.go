@@ -1,5 +1,6 @@
 package main
 
+// CustomErrors represents custom error types for the application
 type CustomErrors int
 
 const (
@@ -9,6 +10,7 @@ const (
 	userNotFound
 )
 
+// String returns the error message for each custom error type
 func (n CustomErrors) String() string {
 	switch n {
 	case jsonCheckerStringError:

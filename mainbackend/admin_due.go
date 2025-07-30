@@ -3,8 +3,11 @@ package main
 import (
 	"fmt"
 	"strconv"
+
 	"github.com/Jeffail/gabs/v2"
 )
+
+// Admin router for due operations
 func adminDueRouter(jsonParsed *gabs.Container) string {
 	requestType, _ := jsonCheckerString(jsonParsed, "data.request.type")
 
@@ -26,6 +29,7 @@ func adminDueRouter(jsonParsed *gabs.Container) string {
 	}
 }
 
+// Add new due for a child
 func addDue(jsonParsed *gabs.Container) string {
 	childID, err := jsonCheckerString(jsonParsed, "data.request.child_id")
 	if err != nil {
@@ -48,7 +52,7 @@ func addDue(jsonParsed *gabs.Container) string {
 		return clearerrorreturn("Due date is required")
 	}
 
-	// Aynı çocuk, ay ve yıl için zaten aidat var mı kontrolü
+	// Check if due already exists for same child, month and year
 	var existingID int
 	err = DB.QueryRow("SELECT id FROM dues WHERE child_id = $1 AND month = $2 AND year = $3", childID, month, year).Scan(&existingID)
 	if err == nil {
@@ -73,6 +77,7 @@ func addDue(jsonParsed *gabs.Container) string {
 	return resp.String()
 }
 
+// Update due information
 func updateDue(jsonParsed *gabs.Container) string {
 	dueID, err := jsonCheckerString(jsonParsed, "data.request.due_id")
 	if err != nil {

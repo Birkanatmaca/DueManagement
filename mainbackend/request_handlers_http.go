@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// HTTP handler for user login
 func loginHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	request, err := middlew(w, r)
 	if err != nil {
@@ -14,6 +15,7 @@ func loginHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, loginHandler(request, r))
 }
 
+// HTTP handler for user registration
 func registerHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	request, err := middlew(w, r)
 	if err != nil {
@@ -23,6 +25,7 @@ func registerHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, registerHandler(request, r))
 }
 
+// HTTP handler for verification code
 func verifyCodeHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	jsonParsed, err := middlew(w, r)
 	if err != nil {
@@ -34,6 +37,7 @@ func verifyCodeHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(response))
 }
 
+// HTTP handler for password reset request
 func requestPasswordResetHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	request, err := middlew(w, r)
 	if err != nil {
@@ -43,6 +47,7 @@ func requestPasswordResetHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, requestPasswordResetHandler(request))
 }
 
+// HTTP handler for password reset with token
 func resetPasswordWithTokenHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	request, err := middlew(w, r)
 	if err != nil {
@@ -52,6 +57,7 @@ func resetPasswordWithTokenHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, resetPasswordWithTokenHandler(request))
 }
 
+// HTTP handler for user operations
 func userHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	request, err := middlew(w, r)
 	if err != nil {
@@ -61,6 +67,7 @@ func userHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, userHandler(request))
 }
 
+// HTTP handler for admin operations
 func adminHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	request, err := middlew(w, r)
 	if err != nil {
@@ -70,6 +77,7 @@ func adminHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, adminHandler(request))
 }
 
+// HTTP handler for resending verification code
 func resendCodeHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	request, err := middlew(w, r)
 	if err != nil {
@@ -79,6 +87,7 @@ func resendCodeHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, resendCodeHandler(request))
 }
 
+// HTTP handler for password change code request
 func requestPasswordChangeCodeHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	request, err := middlew(w, r)
 	if err != nil {
@@ -88,6 +97,7 @@ func requestPasswordChangeCodeHandlerHttp(w http.ResponseWriter, r *http.Request
 	fmt.Fprintf(w, requestPasswordChangeCodeHandler(request))
 }
 
+// HTTP handler for password change confirmation
 func confirmPasswordChangeHandlerHttp(w http.ResponseWriter, r *http.Request) {
 	request, err := middlew(w, r)
 	if err != nil {

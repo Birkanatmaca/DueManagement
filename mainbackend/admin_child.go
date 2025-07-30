@@ -9,6 +9,7 @@ import (
 	"github.com/Jeffail/gabs/v2"
 )
 
+// Admin router for child operations
 func adminChildRouter(jsonParsed *gabs.Container) string {
 	requestType, _ := jsonCheckerString(jsonParsed, "data.request.type")
 
@@ -32,6 +33,7 @@ func adminChildRouter(jsonParsed *gabs.Container) string {
 	}
 }
 
+// Add new child with automatic athlete number and dues
 func addChild(jsonParsed *gabs.Container) string {
 	name, err := jsonCheckerString(jsonParsed, "data.request.name")
 	if err != nil {
@@ -62,7 +64,7 @@ func addChild(jsonParsed *gabs.Container) string {
 		return clearerrorreturn(fmt.Sprintf("Failed to set athlete number: %v", err))
 	}
 
-	// 2025 yılının tüm ayları için dues tablosuna kayıt ekle
+	// Add dues records for all months of 2025
 	months := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
 	for _, month := range months {
 		dueDate := fmt.Sprintf("2025-%02d-01", month)
@@ -84,13 +86,14 @@ func addChild(jsonParsed *gabs.Container) string {
 	return resp.String()
 }
 
+// Update child information
 func updateChild(jsonParsed *gabs.Container) string {
 	childID, err := jsonCheckerString(jsonParsed, "data.request.child_id")
 	if err != nil {
 		return clearerrorreturn("Child ID is required")
 	}
 
-	// Dinamik sorgu oluşturma
+	// Build dynamic query
 	query := "UPDATE children SET"
 	args := []interface{}{}
 	argId := 1

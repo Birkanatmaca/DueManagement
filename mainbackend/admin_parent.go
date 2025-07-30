@@ -7,6 +7,7 @@ import (
 	"github.com/Jeffail/gabs/v2"
 )
 
+// Admin router for parent operations
 func adminParentRouter(jsonParsed *gabs.Container) string {
 	token, err := jsonCheckerString(jsonParsed, "data.request.token")
 	if err != nil {
@@ -35,7 +36,7 @@ func adminParentRouter(jsonParsed *gabs.Container) string {
 	}
 }
 
-// Veli ekleme
+// Add new parent
 func addParent(jsonParsed *gabs.Container) string {
 	name, err := jsonCheckerString(jsonParsed, "data.request.name")
 	if err != nil {
@@ -84,7 +85,7 @@ func addParent(jsonParsed *gabs.Container) string {
 	return response.String()
 }
 
-// Veli güncelleme
+// Update parent information
 func updateParent(jsonParsed *gabs.Container) string {
 	parentID, err := jsonCheckerString(jsonParsed, "data.request.parent_id")
 	if err != nil {

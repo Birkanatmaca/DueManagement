@@ -9,6 +9,7 @@ import (
 	"github.com/Jeffail/gabs/v2"
 )
 
+// Handle user login with email and password
 func loginHandler(jsonParsed *gabs.Container, r *http.Request) string {
 	email, err := jsonCheckerString(jsonParsed, "data.request.phone")
 	if err != nil {

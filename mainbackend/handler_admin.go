@@ -4,6 +4,7 @@ import (
 	"github.com/Jeffail/gabs/v2"
 )
 
+// Handle admin operations with different categories
 func adminHandler(jsonParsed *gabs.Container) string {
 	token, err := jsonCheckerString(jsonParsed, "data.request.token")
 	if err != nil {

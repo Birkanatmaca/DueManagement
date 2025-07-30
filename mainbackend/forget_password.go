@@ -9,6 +9,7 @@ import (
 	"github.com/Jeffail/gabs/v2"
 )
 
+// Handle password reset request
 func requestPasswordResetHandler(jsonParsed *gabs.Container) string {
 	email, err := jsonCheckerString(jsonParsed, "data.request.email")
 	if err != nil {
@@ -52,6 +53,7 @@ func requestPasswordResetHandler(jsonParsed *gabs.Container) string {
 	return clearokreturn("If a user with that email exists, a password reset link has been sent.")
 }
 
+// Handle password reset with token
 func resetPasswordWithTokenHandler(jsonParsed *gabs.Container) string {
 	token, err := jsonCheckerString(jsonParsed, "data.request.token")
 	if err != nil {

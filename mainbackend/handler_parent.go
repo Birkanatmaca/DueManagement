@@ -4,6 +4,7 @@ import (
 	"github.com/Jeffail/gabs/v2"
 )
 
+// Handle user operations with different request types
 func userHandler(jsonParsed *gabs.Container) string {
 	token, err := jsonCheckerString(jsonParsed, "data.request.token")
 	if err != nil {
@@ -45,6 +46,7 @@ func userHandler(jsonParsed *gabs.Container) string {
 	}
 }
 
+// Get parent information
 func getParentHandler(jsonParsed *gabs.Container) string {
 	token, err := jsonCheckerString(jsonParsed, "data.request.token")
 	if err != nil {
@@ -77,6 +79,7 @@ func getParentHandler(jsonParsed *gabs.Container) string {
 	return resp.String()
 }
 
+// Match child to parent using birth date and athlete number
 func matchChildToParent(jsonParsed *gabs.Container) string {
 	token, err := jsonCheckerString(jsonParsed, "data.request.token")
 	if err != nil {

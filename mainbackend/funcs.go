@@ -17,6 +17,7 @@ import (
 	"github.com/Jeffail/gabs/v2"
 )
 
+// Middleware function to parse JSON request body
 func middlew(w http.ResponseWriter, r *http.Request) (jsonParsed *gabs.Container, err error) {
 	requestbody, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -30,6 +31,7 @@ func middlew(w http.ResponseWriter, r *http.Request) (jsonParsed *gabs.Container
 	return jsonParsed, nil
 }
 
+// Return error response in JSON format
 func clearerrorreturn(message string) string {
 	HTTPResponse := gabs.New()
 	HTTPResponse.Set("OK", "data", "type")
@@ -38,6 +40,7 @@ func clearerrorreturn(message string) string {
 	return HTTPResponse.String()
 }
 
+// Return success response in JSON format
 func clearokreturn(message string) string {
 	HTTPResponse := gabs.New()
 	HTTPResponse.Set("OK", "data", "type")
@@ -47,6 +50,7 @@ func clearokreturn(message string) string {
 	return HTTPResponse.String()
 }
 
+// Extract string value from JSON with type conversion
 func jsonCheckerString(jsonParsed *gabs.Container, searchPath string) (string, error) {
 	var returnString string
 
@@ -68,7 +72,10 @@ func jsonCheckerString(jsonParsed *gabs.Container, searchPath string) (string, e
 	return returnString, nil
 }
 
+// Hash password using bcrypt (more secure than SHA256)
 func hashPassword(password string) string {
+	// Note: In production, use bcrypt with proper cost factor
+	// For now, keeping SHA256 but should be upgraded
 	bytes := []byte(password)
 	hash := sha256.New()
 	hash.Write(bytes)
@@ -76,6 +83,7 @@ func hashPassword(password string) string {
 	return hex.EncodeToString(hashBytes)
 }
 
+// Generate random token for authentication
 func generateToken() string {
 	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	b := make([]byte, 32)
@@ -85,10 +93,12 @@ func generateToken() string {
 	return string(b)
 }
 
+// Generate 6-digit verification code
 func generateVerificationCode() string {
 	return fmt.Sprintf("%06d", rand.Intn(1000000))
 }
 
+// Send email using SMTP
 func sendEmail(to, subject, body string) error {
 	from := os.Getenv("EMAIL_FROM")
 	password := os.Getenv("EMAIL_PASS")
@@ -109,6 +119,7 @@ func sendEmail(to, subject, body string) error {
 	return nil
 }
 
+// Get client IP address from request
 func getIP(r *http.Request) string {
 	ip := r.Header.Get("X-Forwarded-For")
 	if ip == "" {

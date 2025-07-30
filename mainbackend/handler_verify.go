@@ -8,6 +8,7 @@ import (
 	"github.com/Jeffail/gabs/v2"
 )
 
+// Handle email verification code
 func verifyCodeHandler(jsonParsed *gabs.Container, r *http.Request) string {
 	email, err := jsonCheckerString(jsonParsed, "data.request.email")
 	if err != nil {
@@ -19,7 +20,7 @@ func verifyCodeHandler(jsonParsed *gabs.Container, r *http.Request) string {
 		return clearerrorreturn("Verification code required")
 	}
 
-	// 1. pending_users tablosunda kullanıcıyı bul
+	// 1. Find user in pending_users table
 	var pendingID int
 	var name, lastName, phone, password string
 	err = DB.QueryRow("SELECT id, name, last_name, phone, password FROM pending_users WHERE email = $1", email).Scan(&pendingID, &name, &lastName, &phone, &password)
@@ -27,7 +28,7 @@ func verifyCodeHandler(jsonParsed *gabs.Container, r *http.Request) string {
 		return clearerrorreturn("Pending user not found or already verified")
 	}
 
-	// 2. Doğrulama kodunu kontrol et
+	// 2. Check verification code
 	var dbCode string
 	var expiresAt time.Time
 	err = DB.QueryRow(
@@ -47,7 +48,7 @@ func verifyCodeHandler(jsonParsed *gabs.Container, r *http.Request) string {
 		return clearerrorreturn("Incorrect verification code")
 	}
 
-	// 3. Transaction başlat: pending_users -> users aktar, pending_users ve kodu sil
+	// 3. Start transaction: move pending_users -> users, delete pending_users and code
 	tx, err := DB.Begin()
 	if err != nil {
 		return clearerrorreturn("Internal server error")

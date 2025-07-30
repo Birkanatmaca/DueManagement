@@ -10,6 +10,7 @@ import (
 	"github.com/Jeffail/gabs/v2"
 )
 
+// Handle user registration with verification
 func registerHandler(jsonParsed *gabs.Container, r *http.Request) string {
 	name, err := jsonCheckerString(jsonParsed, "data.request.name")
 	if err != nil {

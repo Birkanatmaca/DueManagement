@@ -11,6 +11,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// Initialize application on startup
 func init() {
 	err := godotenv.Load()
 	if err != nil {
@@ -18,18 +19,25 @@ func init() {
 	}
 
 	initDB()
+
+	// Run database migrations
+	if err := InitMigrations(); err != nil {
+		log.Printf("Migration error: %v", err)
+	}
+
 	GetAllDB()
 	go DBLoop()
 }
 
+// Main function - starts the HTTP server
 func main() {
 	fmt.Println("Starting Server...")
 
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"},                                                         // Tüm kaynaklara izin ver (Geliştirme için)
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},                   // İzin verilen HTTP metotları
-		AllowedHeaders:   []string{"Accept", "Content-Type", "Content-Length", "Authorization"}, // İzin verilen başlıklar
-		AllowCredentials: true,                                                                  // Çerezlere izin ver
+		AllowedOrigins:   []string{"http://localhost:3000", "https://yourdomain.com"},           // Specify allowed origins
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},                   // Allowed HTTP methods
+		AllowedHeaders:   []string{"Accept", "Content-Type", "Content-Length", "Authorization"}, // Allowed headers
+		AllowCredentials: true,                                                                  // Allow cookies
 	})
 
 	http.HandleFunc("/login", loginHandlerHttp)
@@ -47,7 +55,7 @@ func main() {
 	handler := c.Handler(http.DefaultServeMux)
 	err := http.ListenAndServe(":8080", handler)
 	if err != nil {
-		log.Fatal("Error not start server : ", err)
+		log.Fatal("Error starting server: ", err)
 		return
 	}
 }
