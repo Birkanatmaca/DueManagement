@@ -122,9 +122,7 @@ const ParentEditModal = ({ open, onClose, parent, onSave, listChildren, getParen
     <div className="parent-modal__overlay">
       <div className="parent-modal">
         <button className="parent-modal__close" onClick={onClose}>&times;</button>
-        <div className="parent-modal__header">
-          <h2>{isAddMode ? 'Veli Ekle' : 'Veli Düzenle'}</h2>
-        </div>
+        <h2>{isAddMode ? 'Veli Ekle' : 'Veli Düzenle'}</h2>
         <form className="parent-modal__content" onSubmit={handleSubmit}>
           <div className="parent-modal__field">
             <label>Veli Adı:</label>

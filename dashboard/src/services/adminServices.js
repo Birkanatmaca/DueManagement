@@ -330,3 +330,82 @@ export async function getDue(token, due_id) {
   });
   return response.json();
 }
+
+// Bekleyen veliler için API fonksiyonları
+
+// Bekleyen velileri listele
+export async function listPendingUsers(token) {
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      data: {
+        request: {
+          token,
+          category: 'user_management',
+          action: 'list_pending_users',
+          email_verified_only: 'true'
+        },
+      },
+    }),
+  });
+  return response.json();
+}
+
+// Bekleyen veli detaylarını getir
+export async function getPendingUserDetails(token, user_id) {
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      data: {
+        request: {
+          token,
+          category: 'user_management',
+          action: 'get_pending_user_details',
+          user_id
+        },
+      },
+    }),
+  });
+  return response.json();
+}
+
+// Veliyi onayla
+export async function approveUser(token, user_id) {
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      data: {
+        request: {
+          token,
+          category: 'user_management',
+          action: 'approve_user',
+          user_id
+        },
+      },
+    }),
+  });
+  return response.json();
+}
+
+// Veliyi reddet
+export async function rejectUser(token, user_id, rejection_reason) {
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      data: {
+        request: {
+          token,
+          category: 'user_management',
+          action: 'reject_user',
+          user_id,
+          rejection_reason
+        },
+      },
+    }),
+  });
+  return response.json();
+}

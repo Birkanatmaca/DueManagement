@@ -1,11 +1,71 @@
-body {
-  margin: 0;
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
   font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  outline: none !important;
+  border: none !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+}
+
+* {
+  outline: none !important;
+  border: none !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+}
+
+.navbar {
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Placeholder styles for dark theme */
+input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1;
+}
+
+input:-ms-input-placeholder {
+  color: #94a3b8 !important;
+}
+
+input::-ms-input-placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Aidat durumu badge'leri için stiller */
+.dues-status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dues-status-badge.paid {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.dues-status-badge.unpaid {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
 }

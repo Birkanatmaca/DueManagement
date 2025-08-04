@@ -1,14 +1,16 @@
 .info-card {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   padding: 24px;
   transition: all 0.3s ease;
-  border: 1px solid #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 24px;
+  max-width: 100%;
+
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
     transform: translateY(-2px);
   }
 
@@ -17,7 +19,7 @@
     align-items: center;
     margin-bottom: 24px;
     padding-bottom: 16px;
-    border-bottom: 2px solid #f5f5f5;
+    border-bottom: 2px solid #475569;
   }
 
   &__icon {
@@ -26,9 +28,10 @@
     justify-content: center;
     width: 48px;
     height: 48px;
-    background: #1976d2;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
     border-radius: 12px;
     margin-right: 16px;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 
     svg {
       font-size: 24px;
@@ -39,7 +42,7 @@
   &__title {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #2c3e50;
+    color: #ffffff;
     margin: 0;
   }
 
@@ -52,25 +55,31 @@
     display: flex;
     align-items: center;
     padding: 12px 16px;
-    background: #f8f9fa;
+    background: #1e293b;
     border-radius: 8px;
     transition: background 0.2s ease;
+    border: 1px solid #475569;
 
     &:hover {
-      background: #f1f3f5;
+      background: #334155;
+      border-color: #64748b;
     }
   }
 
   &__label {
     font-weight: 500;
-    color: #6c757d;
+    color: #94a3b8;
     width: 140px;
     flex-shrink: 0;
   }
 
   &__value {
-    color: #2c3e50;
+    color: #e2e8f0;
     font-weight: 500;
+  }
+
+  @media (max-width: 900px) {
+    padding: 20px;
   }
 
   @media (max-width: 600px) {
@@ -100,5 +109,9 @@
       width: 100%;
       margin-bottom: 4px;
     }
+  }
+
+  @media (max-width: 480px) {
+    padding: 12px;
   }
 }

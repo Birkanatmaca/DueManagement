@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../assets/sidebar.scss';
-import { MdHome, MdPeople, MdGroup, MdPayment, MdPerson, MdLogout } from 'react-icons/md';
+import { MdHome, MdPeople, MdGroup, MdPayment, MdPerson, MdLogout, MdPending } from 'react-icons/md';
 import ConfirmModal from './ConfirmModal';
 
 const getSidebarLinks = (role) => {
@@ -11,6 +11,7 @@ const getSidebarLinks = (role) => {
       { name: 'Sporcu Listesi', icon: <MdPeople />, path: '/admin/athletes' },
       { name: 'Veli Listesi', icon: <MdGroup />, path: '/admin/parents' },
       { name: 'Aidat Listesi', icon: <MdPayment />, path: '/admin/dues' },
+      { name: 'Bekleyenler', icon: <MdPending />, path: '/admin/waiting-parents' },
     ];
   }
   return [
@@ -22,12 +23,12 @@ const getSidebarLinks = (role) => {
 
 const Sidebar = ({ expanded = true, setExpanded, mobileOpen, onToggle, role: propRole }) => {
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [currentRole, setCurrentRole] = useState(propRole || localStorage.getItem('role') || 'user');
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 900);
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
     window.addEventListener('resize', handleResize);
 
     // Update role when prop changes
@@ -105,16 +106,16 @@ const Sidebar = ({ expanded = true, setExpanded, mobileOpen, onToggle, role: pro
           </a>
         </div>
         <div className="sidebar__footer">
-          <span className="sidebar__copyright">© 2025 BIACA SOFTWARE & MEDIA</span>
 
-          <ConfirmModal
-            open={showLogoutModal}
-            title="Çıkış yapmak istediğinize emin misiniz?"
-            onConfirm={handleLogout}
-            onCancel={() => setShowLogoutModal(false)}
-          />
         </div>
       </aside>
+
+      <ConfirmModal
+        open={showLogoutModal}
+        title="Çıkış yapmak istediğinize emin misiniz?"
+        onConfirm={handleLogout}
+        onCancel={() => setShowLogoutModal(false)}
+      />
     </>
   );
 };

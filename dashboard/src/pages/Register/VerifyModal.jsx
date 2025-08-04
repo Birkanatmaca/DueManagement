@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { backendVerifyCode, backendResendCode } from '../../services/authServices';
 import '../../assets/verify.scss';
@@ -79,17 +80,15 @@ const VerifyModal = ({ email, setStep }) => {
   // Calculate progress for timer circle (1 = full, 0 = empty)
   const timerProgress = timer > 0 ? timer / 60 : 0;
 
-  return (
+  return createPortal(
     <div className="verify-modal-overlay">
-      <div className="verify-modal-blur" />
-      <form onSubmit={handleVerify} className="verify-form verify-modal" onClick={e => e.stopPropagation()}>
+      <div className="verify-modal">
         <button type="button" className="verify-close" aria-label="Kapat" onClick={() => setStep('register')}>&times;</button>
         {success ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '32px 0' }}>
-            <div style={{ color: '#2ecc71', fontWeight: 600, fontSize: 18, marginBottom: 16 }}>
-              Başarıyla kaydoldunuz, giriş ekranına yönlendiriliyorsunuz...
-            </div>
-            <div style={{ position: 'relative', width: 60, height: 60, marginTop: 8 }}>
+          <div className="verify-success-content">
+            <h3 className="verify-success-title">Tebrikler! Başarıyla kaydoldunuz.</h3>
+            <p className="verify-success-desc">Hesabınız yaklaşık 1 saat içerisinde aktif olacaktır.</p>
+            <div className="verify-success-animation">
               <svg width={60} height={60}>
                 <circle
                   cx={30}
@@ -125,21 +124,27 @@ const VerifyModal = ({ email, setStep }) => {
           </div>
         ) : (
           <>
-            <div className="verify-info">E-posta adresine gelen doğrulama kodunu giriniz</div>
-            <label htmlFor="verify-code" className="verify-form-label">Doğrulama Kodu</label>
-            <input
-              id="verify-code"
-              className="verify-form-input"
-              type="text"
-              maxLength={6}
-              value={code}
-              onChange={e => setCode(e.target.value.replace(/\D/g, ''))}
-              autoFocus
-              required
-            />
-            <div className="verify-timer" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 12 }}>
+            <h3 className="verify-title">E-posta Doğrulama</h3>
+            <p className="verify-desc">E-posta adresine gelen doğrulama kodunu giriniz</p>
+            
+            <div className="verify-input-group">
+              <label htmlFor="verify-code" className="verify-label">Doğrulama Kodu</label>
+              <input
+                id="verify-code"
+                className="verify-input"
+                type="text"
+                maxLength={6}
+                value={code}
+                onChange={e => setCode(e.target.value.replace(/\D/g, ''))}
+                autoFocus
+                required
+                placeholder="000000"
+              />
+            </div>
+
+            <div className="verify-timer-container">
               {timer > 0 ? (
-                <div style={{ position: 'relative', width: 44, height: 44 }}>
+                <div className="verify-timer-circle">
                   <svg width={44} height={44}>
                     <circle
                       cx={22}
@@ -153,7 +158,7 @@ const VerifyModal = ({ email, setStep }) => {
                       cx={22}
                       cy={22}
                       r={CIRCLE_RADIUS}
-                      stroke="#2196f3"
+                      stroke="#667eea"
                       strokeWidth={4}
                       fill="none"
                       strokeDasharray={CIRCLE_CIRCUM}
@@ -161,25 +166,27 @@ const VerifyModal = ({ email, setStep }) => {
                       style={{ transition: 'stroke-dashoffset 1s linear' }}
                     />
                   </svg>
-                  <span style={{
-                    position: 'absolute',
-                    top: 0, left: 0, width: 44, height: 44,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontWeight: 600, color: '#2196f3', fontSize: 16
-                  }}>{timer}s</span>
+                  <span className="verify-timer-text">{timer}s</span>
                 </div>
               ) : (
-                <button type="button" className="resend-btn" onClick={handleResend} disabled={!resendActive}>
+                <button type="button" className="verify-resend-btn" onClick={handleResend} disabled={!resendActive}>
                   Kodu Tekrar Gönder
                 </button>
               )}
             </div>
-            {error && <p className="error-message">{error}</p>}
-            <button type="submit" className="auth-btn">Kodu Doğrula</button>
+
+            {error && <p className="verify-error">{error}</p>}
+            
+            <div className="verify-actions">
+              <button type="submit" className="verify-btn verify-btn--confirm" onClick={handleVerify}>
+                Kodu Doğrula
+              </button>
+            </div>
           </>
         )}
-      </form>
-    </div>
+      </div>
+    </div>,
+    document.body
   );
 };
 

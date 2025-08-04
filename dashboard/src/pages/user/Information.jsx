@@ -8,7 +8,7 @@ import { getUserInfo, getParentInformation, matchChildToParent } from '../../ser
 const Information = () => {
     const navigate = useNavigate();
     const [sidebarExpanded, setSidebarExpanded] = useState(true);
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [childData, setChildData] = useState(null);
     const [parentData, setParentData] = useState(null);
@@ -109,17 +109,31 @@ const Information = () => {
 
             <div
                 style={{
-                    marginLeft: isMobile ? 0 : (sidebarExpanded ? 260 : 72),
+                    marginLeft: isMobile ? 0 : (sidebarExpanded ? 240 : 80),
                     marginTop: 64,
-                    padding: 24,
+                    padding: isMobile ? '16px' : '24px',
                     transition: 'margin-left 0.2s',
-                    background: '#f5f5f5',
-                    minHeight: 'calc(100vh - 64px)'
+                    backgroundColor: '#0f172a',
+                    minHeight: '100vh',
                 }}
             >
-                <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+                <div style={{ 
+                    maxWidth: 800, 
+                    margin: '0 auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '24px'
+                }}>
                     {error && (
-                        <div style={{ color: 'red', marginBottom: '20px' }}>
+                        <div style={{ 
+                            color: '#ef4444', 
+                            marginBottom: '20px',
+                            padding: '12px 16px',
+                            background: 'rgba(239, 68, 68, 0.1)',
+                            border: '1px solid rgba(239, 68, 68, 0.2)',
+                            borderRadius: '8px',
+                            fontSize: '14px'
+                        }}>
                             {error}
                         </div>
                     )}
@@ -137,23 +151,48 @@ const Information = () => {
                             type="child"
                         />
                     ) : (
-                        <div style={{ textAlign: 'center', marginTop: 32 }}>
+                        <div style={{ 
+                            textAlign: 'center', 
+                            marginTop: 32,
+                            padding: '40px 20px',
+                            background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
+                            borderRadius: '16px',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+                        }}>
+                            <div style={{
+                                fontSize: '16px',
+                                color: '#94a3b8',
+                                marginBottom: '24px'
+                            }}>
+                                Henüz çocuk bilgisi eklenmemiş
+                            </div>
                             <button
                                 style={{
                                     padding: '12px 32px',
-                                    borderRadius: 8,
-                                    background: '#2196f3',
+                                    borderRadius: '12px',
+                                    background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
                                     color: '#fff',
                                     fontWeight: 600,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     border: 'none',
                                     cursor: 'pointer',
-                                    boxShadow: '0 2px 8px rgba(26,35,126,0.08)',
-                                    transition: 'background 0.18s',
+                                    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+                                    transition: 'all 0.3s ease',
+                                }}
+                                onMouseEnter={e => {
+                                    e.target.style.background = 'linear-gradient(135deg, #2563eb 0%, #1e40af 100%)';
+                                    e.target.style.transform = 'translateY(-2px)';
+                                    e.target.style.boxShadow = '0 8px 20px rgba(59, 130, 246, 0.4)';
+                                }}
+                                onMouseLeave={e => {
+                                    e.target.style.background = 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)';
+                                    e.target.style.transform = 'translateY(0)';
+                                    e.target.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)';
                                 }}
                                 onClick={() => setAddModalOpen(true)}
                             >
-                                Çocuk eklemek için tıklayın
+                                Çocuk Ekle
                             </button>
                         </div>
                     )}
@@ -166,7 +205,8 @@ const Information = () => {
                     left: 0,
                     width: '100vw',
                     height: '100vh',
-                    background: 'rgba(0,0,0,0.18)',
+                    background: 'rgba(0,0,0,0.5)',
+                    backdropFilter: 'blur(8px)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -175,12 +215,14 @@ const Information = () => {
                     <form
                         onSubmit={handleAddChild}
                         style={{
-                            background: '#fff',
+                            background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
                             borderRadius: 16,
-                            boxShadow: '0 8px 40px rgba(26,35,126,0.18)',
+                            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
                             padding: '2.2rem 2rem 2rem 2rem',
                             minWidth: 320,
-                            maxWidth: '95vw',
+                            maxWidth: '400px',
+                            width: '90vw',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: 18,
@@ -188,48 +230,109 @@ const Information = () => {
                             position: 'relative'
                         }}
                     >
-                        <h2 style={{ color: '#1a237e', marginBottom: 12 }}>Çocuk Ekle</h2>
-                        <label style={{ width: '100%', textAlign: 'left', marginBottom: 4 }}>Sporcu Numarası</label>
+                        <h2 style={{ 
+                            color: '#ffffff', 
+                            marginBottom: 12,
+                            fontSize: '20px',
+                            fontWeight: '700'
+                        }}>
+                            Çocuk Ekle
+                        </h2>
+                        <label style={{ 
+                            width: '100%', 
+                            textAlign: 'left', 
+                            marginBottom: 4,
+                            color: '#e2e8f0',
+                            fontSize: '14px',
+                            fontWeight: '600'
+                        }}>
+                            Sporcu Numarası
+                        </label>
                         <input
                             type="text"
                             value={athleteNumber}
                             onChange={e => setAthleteNumber(e.target.value)}
                             style={{
                                 width: '100%',
-                                padding: '10px',
+                                padding: '12px 16px',
                                 borderRadius: 8,
-                                border: '1.5px solid #cfd8dc',
+                                border: '1.5px solid #475569',
                                 fontSize: 16,
-                                marginBottom: 12
+                                marginBottom: 12,
+                                background: '#1e293b',
+                                color: '#e2e8f0',
+                                outline: 'none',
+                                transition: 'border 0.2s ease'
                             }}
+                            onFocus={e => e.target.style.border = '1.5px solid #3b82f6'}
+                            onBlur={e => e.target.style.border = '1.5px solid #475569'}
                         />
-                        <label style={{ width: '100%', textAlign: 'left', marginBottom: 4 }}>Doğum Tarihi</label>
+                        <label style={{ 
+                            width: '100%', 
+                            textAlign: 'left', 
+                            marginBottom: 4,
+                            color: '#e2e8f0',
+                            fontSize: '14px',
+                            fontWeight: '600'
+                        }}>
+                            Doğum Tarihi
+                        </label>
                         <input
                             type="date"
                             value={birthDate}
                             onChange={e => setBirthDate(e.target.value)}
                             style={{
                                 width: '100%',
-                                padding: '10px',
+                                padding: '12px 16px',
                                 borderRadius: 8,
-                                border: '1.5px solid #cfd8dc',
+                                border: '1.5px solid #475569',
                                 fontSize: 16,
-                                marginBottom: 12
+                                marginBottom: 12,
+                                background: '#1e293b',
+                                color: '#e2e8f0',
+                                outline: 'none',
+                                transition: 'border 0.2s ease'
                             }}
+                            onFocus={e => e.target.style.border = '1.5px solid #3b82f6'}
+                            onBlur={e => e.target.style.border = '1.5px solid #475569'}
                         />
-                        {addError && <div style={{ color: 'red', marginBottom: 8 }}>{addError}</div>}
+                        {addError && (
+                            <div style={{ 
+                                color: '#ef4444', 
+                                marginBottom: 8,
+                                padding: '8px 12px',
+                                background: 'rgba(239, 68, 68, 0.1)',
+                                border: '1px solid rgba(239, 68, 68, 0.2)',
+                                borderRadius: '6px',
+                                fontSize: '14px',
+                                width: '100%',
+                                textAlign: 'center'
+                            }}>
+                                {addError}
+                            </div>
+                        )}
                         <button
                             type="submit"
                             style={{
-                                padding: '10px 28px',
-                                borderRadius: 8,
-                                background: '#43a047',
+                                padding: '12px 32px',
+                                borderRadius: 12,
+                                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
                                 color: '#fff',
                                 fontWeight: 600,
-                                fontSize: 17,
+                                fontSize: 16,
                                 border: 'none',
                                 cursor: 'pointer',
-                                marginTop: 8
+                                marginTop: 8,
+                                boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
+                                transition: 'all 0.3s ease'
+                            }}
+                            onMouseEnter={e => {
+                                e.target.style.transform = 'translateY(-2px)';
+                                e.target.style.boxShadow = '0 8px 20px rgba(16, 185, 129, 0.4)';
+                            }}
+                            onMouseLeave={e => {
+                                e.target.style.transform = 'translateY(0)';
+                                e.target.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.3)';
                             }}
                         >
                             Ekle
@@ -241,11 +344,26 @@ const Information = () => {
                                 position: 'absolute',
                                 top: 12,
                                 right: 16,
-                                background: 'none',
+                                background: 'rgba(255, 255, 255, 0.1)',
                                 border: 'none',
                                 fontSize: 22,
-                                color: '#888',
-                                cursor: 'pointer'
+                                color: '#94a3b8',
+                                cursor: 'pointer',
+                                width: '32px',
+                                height: '32px',
+                                borderRadius: '50%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                transition: 'all 0.2s ease'
+                            }}
+                            onMouseEnter={e => {
+                                e.target.style.background = 'rgba(239, 68, 68, 0.1)';
+                                e.target.style.color = '#ef4444';
+                            }}
+                            onMouseLeave={e => {
+                                e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+                                e.target.style.color = '#94a3b8';
                             }}
                             aria-label="Kapat"
                         >

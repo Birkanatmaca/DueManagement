@@ -50,10 +50,10 @@ const AthleteDetailModal = ({ open, onClose, athlete }) => {
             <input type="text" value={athlete.dogumTarihi || ''} readOnly />
           </div>
 
-          <div style={{ marginTop: '20px', borderTop: '1px solid #e0e0e0', paddingTop: '20px' }}>
-            <h3 style={{ marginBottom: '15px', color: '#1a237e' }}>Eşleşmiş Veli Bilgileri</h3>
+          <div style={{ marginTop: '20px', borderTop: '2px solid #475569', paddingTop: '24px' }}>
+            <h3 style={{ marginBottom: '20px', color: '#e2e8f0', fontSize: '16px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Eşleşmiş Veli Bilgileri</h3>
             {loading ? (
-              <div style={{ textAlign: 'center', color: '#666' }}>Yükleniyor...</div>
+              <div style={{ textAlign: 'center', color: '#94a3b8', fontSize: '14px', padding: '20px' }}>Yükleniyor...</div>
             ) : parentInfo ? (
               <>
                 <div className="athlete-modal__field">
@@ -66,7 +66,7 @@ const AthleteDetailModal = ({ open, onClose, athlete }) => {
                 </div>
               </>
             ) : (
-              <div style={{ textAlign: 'center', color: '#e53935' }}>Eşleşmiş veli bulunamadı.</div>
+              <div style={{ textAlign: 'center', color: '#ef4444', fontSize: '14px', padding: '20px', background: 'rgba(239, 68, 68, 0.1)', borderRadius: '12px', border: '1px solid rgba(239, 68, 68, 0.2)' }}>Eşleşmiş veli bulunamadı.</div>
             )}
           </div>
         </div>

@@ -31,8 +31,28 @@ const UserDuesCard = ({ title, iconType, data, year }) => {
                         </div>
                     ))
                 ) : (
-                    <div style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
-                        Bu yıl için aidat kaydı bulunamadı.
+                    <div style={{ 
+                        textAlign: 'center', 
+                        padding: '40px 20px', 
+                        color: '#94a3b8',
+                        background: '#1e293b',
+                        borderRadius: '8px',
+                        border: '1px solid #475569',
+                        margin: '16px'
+                    }}>
+                        <div style={{
+                            fontSize: '16px',
+                            fontWeight: '600',
+                            marginBottom: '8px'
+                        }}>
+                            Aidat Kaydı Bulunamadı
+                        </div>
+                        <div style={{
+                            fontSize: '14px',
+                            color: '#64748b'
+                        }}>
+                            Bu yıl için henüz aidat kaydı bulunmuyor.
+                        </div>
                     </div>
                 )}
             </div>

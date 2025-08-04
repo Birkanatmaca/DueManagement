@@ -4,209 +4,499 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(30, 34, 60, 0.32);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2000;
+  padding: 20px;
+  animation: overlayFadeIn 0.3s ease;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .athlete-modal {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 8px 32px rgba(30,34,60,0.18);
-  padding: 32px 28px 24px 28px;
-  min-width: 320px;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 0;
+  min-width: 400px;
   max-width: 90vw;
-  min-height: 220px;
+  max-height: 90vh;
   position: relative;
-  animation: modalFadeIn 0.2s;
+  animation: modalSlideIn 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  margin: 0 auto;
 }
 
-@keyframes modalFadeIn {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+@keyframes modalSlideIn {
+  from { 
+    transform: scale(0.9) translateY(20px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: scale(1) translateY(0); 
+    opacity: 1; 
+  }
 }
 
 .athlete-modal__close {
   position: absolute;
-  top: 14px;
-  right: 18px;
-  background: none;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.1);
   border: none;
-  font-size: 28px;
-  color: #888;
+  font-size: 24px;
+  color: #6b7280;
   cursor: pointer;
-  transition: color 0.15s;
-}
-.athlete-modal__close:hover {
-  color: #d32f2f;
+  transition: all 0.2s ease;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
 }
 
+.athlete-modal__close:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  transform: scale(1.1);
+}
+
+.athlete-modal h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 32px 32px 24px 32px;
+  background: linear-gradient(135deg, #334155 0%, #475569 100%);
+  position: relative;
+  border-bottom: 2px solid #475569;
+}
+
+
+
 .athlete-modal__content {
-  margin-top: 18px;
+  padding: 32px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  font-size: 17px;
+  gap: 24px;
+  font-size: 14px;
+  max-height: 60vh;
+  overflow-y: auto;
 }
 
 .athlete-modal__field {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 }
 
 .athlete-modal__field label {
   font-weight: 600;
-  color: #1a237e;
-  margin-bottom: 2px;
-  font-size: 15px;
+  color: #e2e8f0;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
 }
 
 .athlete-modal__field input {
-  background: #f4f6fb;
-  border: 1.5px solid #d1d5db;
-  border-radius: 6px;
-  padding: 8px 12px;
-  font-size: 16px;
-  color: #222;
+  background: #1e293b;
+  border: 2px solid #475569;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 15px;
+  color: #e2e8f0;
   outline: none;
-  transition: border 0.2s;
+  transition: all 0.2s ease;
   font-family: inherit;
+  font-weight: 500;
 }
 
 .athlete-modal__field input[readonly] {
-  background: #f4f6fb;
-  color: #222;
+  background: #334155;
+  color: #94a3b8;
   cursor: default;
+  border-color: #64748b;
 }
 
 .athlete-modal__field input:focus {
-  border: 1.5px solid #1a237e;
+  border-color: #3b82f6;
+  background: #334155;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 .athlete-modal__field select {
-  background: #f4f6fb;
-  border: 1.5px solid #d1d5db;
-  border-radius: 6px;
-  padding: 8px 12px;
-  font-size: 16px;
-  color: #222;
+  background: #f9fafb;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 15px;
+  color: #374151;
   outline: none;
-  transition: border 0.2s;
+  transition: all 0.2s ease;
   font-family: inherit;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  box-shadow: 0 1px 4px rgba(26,35,126,0.04);
   cursor: pointer;
-}
-.athlete-modal__field select:focus {
-  border: 1.5px solid #1a237e;
-  background: #f0f3ff;
-}
-.athlete-modal__field option {
-  background: #fff;
-  color: #222;
+  font-weight: 500;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 48px;
 }
 
-.athlete-modal h2 {
-  margin: 0 0 10px 0;
-  font-size: 22px;
-  color: #1a237e;
-  text-align: center;
+.athlete-modal__field select:focus {
+  border-color: #667eea;
+  background-color: #f8fafc;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.athlete-modal__field option {
+  background: #ffffff;
+  color: #374151;
+  padding: 12px;
 }
 
 .athlete-modal__save {
-  margin-top: 18px;
+  margin-top: 8px;
   width: 100%;
-  padding: 10px 0;
-  background: #1a237e;
-  color: #fff;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
   border: none;
-  border-radius: 6px;
-  font-size: 17px;
+  border-radius: 12px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.18s;
-  box-shadow: 0 2px 8px rgba(26,35,126,0.08);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
-.athlete-modal__save:hover {
-  background: #26308c;
-} 
 
+.athlete-modal__save:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.athlete-modal__save:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Parent info section */
+.athlete-modal__content > div:last-child {
+  margin-top: 8px;
+  border-top: 2px solid #f3f4f6;
+  padding-top: 24px;
+}
+
+.athlete-modal__content > div:last-child h3 {
+  margin: 0 0 20px 0;
+  color: #374151;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Loading state */
+.athlete-modal__content .loading {
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+  padding: 20px;
+}
+
+/* Error state */
+.athlete-modal__content .error {
+  text-align: center;
+  color: #ef4444;
+  font-size: 14px;
+  padding: 20px;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Custom dropdown styles */
 .custom-dropdown {
   position: relative;
   width: 100%;
   font-family: inherit;
 }
+
 .custom-dropdown__control {
   width: 100%;
-  background: #f4f6fb;
-  border: 1.5px solid #d1d5db;
-  border-radius: 6px;
-  padding: 8px 12px;
-  font-size: 16px;
-  color: #222;
+  background: #f9fafb;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 15px;
+  color: #374151;
   outline: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  transition: border 0.2s, box-shadow 0.18s;
-  box-shadow: 0 1px 4px rgba(26,35,126,0.04);
+  transition: all 0.2s ease;
+  font-weight: 500;
 }
+
 .custom-dropdown__control.open,
 .custom-dropdown__control:focus {
-  border: 1.5px solid #1a237e;
-  background: #f0f3ff;
+  border-color: #667eea;
+  background: #f8fafc;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
+
 .custom-dropdown__value.placeholder {
-  color: #888;
+  color: #9ca3af;
   font-style: italic;
 }
+
 .custom-dropdown__arrow {
-  font-size: 13px;
+  font-size: 16px;
   margin-left: 8px;
-  color: #888;
-  transition: transform 0.18s;
+  color: #6b7280;
+  transition: transform 0.2s ease;
 }
+
 .custom-dropdown__control.open .custom-dropdown__arrow {
   transform: rotate(-180deg);
 }
+
 .custom-dropdown__menu {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(100% + 4px);
-  background: #fff;
-  border: 1.5px solid #d1d5db;
-  border-radius: 8px;
-  box-shadow: 0 4px 18px rgba(26,35,126,0.13);
+  top: calc(100% + 8px);
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   z-index: 10;
-  padding: 4px 0;
-  animation: dropdownFadeIn 0.18s;
+  padding: 8px 0;
+  animation: dropdownSlideIn 0.2s ease;
+  max-height: 200px;
+  overflow-y: auto;
 }
-@keyframes dropdownFadeIn {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
+
+@keyframes dropdownSlideIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(-8px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
 }
+
 .custom-dropdown__option {
-  padding: 10px 18px;
-  font-size: 15px;
-  color: #222;
+  padding: 12px 20px;
+  font-size: 14px;
+  color: #374151;
   cursor: pointer;
-  transition: background 0.13s, color 0.13s;
+  transition: all 0.2s ease;
+  font-weight: 500;
 }
+
 .custom-dropdown__option:hover,
 .custom-dropdown__option.selected {
-  background: #e8eafc;
-  color: #1a237e;
+  background: #f3f4f6;
+  color: #667eea;
 }
+
 .custom-dropdown.disabled .custom-dropdown__control {
-  background: #f0f0f0;
-  color: #aaa;
+  background: #f3f4f6;
+  color: #9ca3af;
   cursor: not-allowed;
-  border: 1.5px solid #e0e3ef;
+  border-color: #d1d5db;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .athlete-modal__overlay {
+    padding: 16px;
+  }
+  
+  .athlete-modal {
+    min-width: 360px;
+    max-width: 80vw;
+    margin: 0 auto;
+  }
+  
+  .athlete-modal h2 {
+    font-size: 22px;
+    padding: 28px 28px 22px 28px;
+  }
+  
+  .athlete-modal__content {
+    padding: 28px;
+    gap: 22px;
+  }
+  
+  .athlete-modal__field input,
+  .athlete-modal__field select {
+    padding: 15px 18px;
+    font-size: 14px;
+  }
+  
+  .athlete-modal__save {
+    padding: 15px 22px;
+    font-size: 15px;
+  }
+  
+  .athlete-modal__close {
+    top: 18px;
+    right: 18px;
+    width: 38px;
+    height: 38px;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .athlete-modal__overlay {
+    padding: 12px;
+  }
+  
+  .athlete-modal {
+    min-width: 320px;
+    border-radius: 20px;
+    max-width: 85vw;
+    margin: 0 auto;
+  }
+  
+  .athlete-modal h2 {
+    font-size: 20px;
+    padding: 24px 24px 20px 24px;
+  }
+  
+  .athlete-modal__content {
+    padding: 24px;
+    gap: 20px;
+    max-height: 70vh;
+  }
+  
+  .athlete-modal__field input,
+  .athlete-modal__field select {
+    padding: 14px 16px;
+    font-size: 14px;
+  }
+  
+  .athlete-modal__save {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+  
+  .athlete-modal__close {
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .athlete-modal__overlay {
+    padding: 8px;
+  }
+  
+  .athlete-modal {
+    min-width: 280px;
+    border-radius: 16px;
+    max-width: 90vw;
+    margin: 0 auto;
+  }
+  
+  .athlete-modal h2 {
+    font-size: 18px;
+    padding: 20px 20px 16px 20px;
+  }
+  
+  .athlete-modal__content {
+    padding: 20px;
+    gap: 16px;
+    max-height: 80vh;
+  }
+  
+  .athlete-modal__field input,
+  .athlete-modal__field select {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+  
+  .athlete-modal__save {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  
+  .athlete-modal__close {
+    top: 14px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 360px) {
+  .athlete-modal__overlay {
+    padding: 4px;
+  }
+  
+  .athlete-modal {
+    min-width: 260px;
+    border-radius: 12px;
+    max-width: 95vw;
+    margin: 0 auto;
+  }
+  
+  .athlete-modal h2 {
+    font-size: 16px;
+    padding: 16px 16px 12px 16px;
+  }
+  
+  .athlete-modal__content {
+    padding: 16px;
+    gap: 14px;
+    max-height: 85vh;
+  }
+  
+  .athlete-modal__field input,
+  .athlete-modal__field select {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  
+  .athlete-modal__save {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  
+  .athlete-modal__close {
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
 } 

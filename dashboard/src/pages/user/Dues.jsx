@@ -97,40 +97,76 @@ const Dues = () => {
             />
 
             <div style={{
-                marginLeft: isMobile ? 0 : (sidebarExpanded ? 260 : 72),
+                marginLeft: isMobile ? 0 : (sidebarExpanded ? 240 : 80),
                 marginTop: 64,
                 padding: 24,
                 transition: 'margin-left 0.2s',
-                background: '#f5f5f5',
-                minHeight: 'calc(100vh - 64px)'
+                backgroundColor: '#0f172a',
+                minHeight: '100vh',
             }}>
-                <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+                <div style={{ 
+                    maxWidth: 1200, 
+                    margin: '0 auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '24px'
+                }}>
                     <div style={{ 
                         marginBottom: 20, 
                         display: 'flex', 
                         justifyContent: 'center',
                         width: '100%',
                     }}>
-                        <div style={{ width: '200px' }}>
+                        <div style={{ 
+                            width: '200px',
+                            background: '#1e293b',
+                            borderRadius: '12px',
+                            border: '1px solid #475569'
+                        }}>
                             <CustomDropdown
                                 options={yearOptions}
                                 value={selectedYear}
                                 onChange={setSelectedYear}
                                 placeholder="Yıl Seçiniz"
+                                style={{
+                                    background: 'transparent',
+                                    border: 'none',
+                                    color: '#e2e8f0',
+                                    fontSize: '16px',
+                                    fontWeight: '600',
+                                    width: '100%',
+                                    padding: '12px 16px'
+                                }}
                             />
                         </div>
                     </div>
 
                     {loading ? (
-                        <div style={{ textAlign: 'center', padding: '50px' }}>
+                        <div style={{ 
+                            textAlign: 'center', 
+                            padding: '50px',
+                            color: '#94a3b8',
+                            fontSize: '16px'
+                        }}>
                             <div>Yükleniyor...</div>
                         </div>
                     ) : (
-                        <UserDuesCard
-                            title="Aidat Ödemeleri"
-                            data={formattedData}
-                            year={selectedYear}
-                        />
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            padding: isMobile ? '0' : '0 10%'
+                        }}>
+                            <div style={{
+                                width: '100%',
+                                maxWidth: isMobile ? '100%' : '900px'
+                            }}>
+                                <UserDuesCard
+                                    title="Aidat Ödemeleri"
+                                    data={formattedData}
+                                    year={selectedYear}
+                                />
+                            </div>
+                        </div>
                     )}
                 </div>
             </div>

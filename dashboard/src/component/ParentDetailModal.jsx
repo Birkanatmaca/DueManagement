@@ -28,10 +28,7 @@ const ParentDetailModal = ({ open, onClose, parent, getParentDetails }) => {
     <div className="parent-modal__overlay">
       <div className="parent-modal">
         <button className="parent-modal__close" onClick={onClose}>&times;</button>
-        <div className="parent-modal__header">
-          <MdFamilyRestroom size={32} color="#1a237e" />
-          <h2>Veli Detayları</h2>
-        </div>
+        <h2>Veli Detayları</h2>
         <div className="parent-modal__content">
           <div className="parent-modal__field">
             <label>Veli Adı:</label>
@@ -50,11 +47,11 @@ const ParentDetailModal = ({ open, onClose, parent, getParentDetails }) => {
             <input type="text" value={parent.email || ''} readOnly />
           </div>
           <div style={{ marginTop: '20px' }}>
-            <h3 style={{ marginBottom: '10px' }}>Çocuklar</h3>
+            <h3 style={{ marginBottom: '10px', color: '#e2e8f0' }}>Çocuklar</h3>
             {loading ? (
-              <div>Yükleniyor...</div>
+              <div style={{ color: '#94a3b8' }}>Yükleniyor...</div>
             ) : children.length === 0 ? (
-              <div style={{ color: '#e53935' }}>Hiçbir çocuk eşleşmemiş.</div>
+              <div style={{ color: '#ef4444' }}>Hiçbir çocuk eşleşmemiş.</div>
             ) : (
               <div className="parent-modal__children-list">
                 {children.map((child, index) => (

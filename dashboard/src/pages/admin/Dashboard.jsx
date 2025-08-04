@@ -9,9 +9,9 @@ import { listChildren, listParents, listDues } from '../../services/adminService
 
 const AdminDashboard = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
   React.useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 900);
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -94,6 +94,8 @@ const AdminDashboard = () => {
           marginTop: 64,
           padding: 24,
           transition: 'margin-left 0.2s',
+          backgroundColor: '#0f172a',
+          minHeight: '100vh',
         }}
       >
         {/* Üstte 4 özet kartı yan yana */}

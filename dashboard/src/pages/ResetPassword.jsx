@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../assets/login.scss';
+import '../assets/auth.scss';
 import { backendRequestPasswordReset, backendVerifyPasswordReset } from '../services/authServices';
 
 const CIRCLE_RADIUS = 18;
@@ -144,6 +144,8 @@ const ResetPassword = () => {
   const [error, setError] = useState('');
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [step, setStep] = useState('form');
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+  const formFieldsRef = useRef(null);
 
   const validatePassword = (pw) => ({
     length: pw.length >= 8,
@@ -151,6 +153,23 @@ const ResetPassword = () => {
     number: /\d/.test(pw),
   });
   const passwordRules = validatePassword(password);
+
+  // Scroll event handler
+  useEffect(() => {
+    const handleScroll = () => {
+      if (formFieldsRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = formFieldsRef.current;
+        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5; // 5px tolerance
+        setIsScrolledToBottom(isAtBottom);
+      }
+    };
+
+    const formFieldsElement = formFieldsRef.current;
+    if (formFieldsElement) {
+      formFieldsElement.addEventListener('scroll', handleScroll);
+      return () => formFieldsElement.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -173,80 +192,91 @@ const ResetPassword = () => {
 
   return (
     <div className="auth-container">
+      <div className="system-title">
+        <h1>AİDAT YÖNETİM PANELİ</h1>
+      </div>
+      
       <form className="auth-form" onSubmit={handleSubmit}>
         <h2>Şifre Sıfırla</h2>
-        <div className="form-group">
-          <label htmlFor="email">E-posta</label>
-          <input type="email" id="email" value={email} onChange={e => setEmail(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="phone">Telefon</label>
-          <input type="text" id="phone" value={phone} onChange={e => setPhone(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Yeni Şifre</label>
-          <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              id="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              onFocus={() => setPasswordFocused(true)}
-              onBlur={() => setPasswordFocused(false)}
-              required
-              style={{ flex: 1, paddingRight: 36 }}
-            />
-            <EyeIcon visible={showPassword} onClick={() => setShowPassword(v => !v)} />
+        <div 
+          ref={formFieldsRef}
+          className={`form-fields-container ${isScrolledToBottom ? 'scrolled-to-bottom' : ''}`}
+        >
+          <div className="form-group">
+            <label htmlFor="email">E-posta</label>
+            <input type="email" id="email" value={email} onChange={e => setEmail(e.target.value)} required />
           </div>
-          {passwordFocused && (
-            <ul className="password-rules">
-              <li className={passwordRules.length ? 'valid' : ''}>En az 8 karakter</li>
-              <li className={passwordRules.upper ? 'valid' : ''}>En az 1 büyük harf</li>
-              <li className={passwordRules.number ? 'valid' : ''}>En az 1 rakam</li>
-            </ul>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="repeatPassword">Şifre Tekrar</label>
-          <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-            <input
-              type={showRepeatPassword ? 'text' : 'password'}
-              id="repeatPassword"
-              value={repeatPassword}
-              onChange={e => setRepeatPassword(e.target.value)}
-              required
-              style={{ flex: 1, paddingRight: 36, borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
-            />
-            <EyeIcon visible={showRepeatPassword} onClick={() => setShowRepeatPassword(v => !v)} />
-            {/* Progress bar for password match, flush with input */}
-            <div style={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              bottom: -1,
-              height: 6,
-              borderBottomLeftRadius: 8,
-              borderBottomRightRadius: 8,
-              background: '#eee',
-              width: '100%',
-              overflow: 'hidden',
-              zIndex: 1
-            }}>
+          <div className="form-group">
+            <label htmlFor="phone">Telefon</label>
+            <input type="text" id="phone" value={phone} onChange={e => setPhone(e.target.value)} required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Yeni Şifre</label>
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                onFocus={() => setPasswordFocused(true)}
+                onBlur={() => setPasswordFocused(false)}
+                required
+                style={{ flex: 1, paddingRight: 36 }}
+              />
+              <EyeIcon visible={showPassword} onClick={() => setShowPassword(v => !v)} />
+            </div>
+            {passwordFocused && (
+              <ul className="password-rules">
+                <li className={passwordRules.length ? 'valid' : ''}>En az 8 karakter</li>
+                <li className={passwordRules.upper ? 'valid' : ''}>En az 1 büyük harf</li>
+                <li className={passwordRules.number ? 'valid' : ''}>En az 1 rakam</li>
+              </ul>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="repeatPassword">Şifre Tekrar</label>
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+              <input
+                type={showRepeatPassword ? 'text' : 'password'}
+                id="repeatPassword"
+                value={repeatPassword}
+                onChange={e => setRepeatPassword(e.target.value)}
+                required
+                style={{ flex: 1, paddingRight: 36, borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
+              />
+              <EyeIcon visible={showRepeatPassword} onClick={() => setShowRepeatPassword(v => !v)} />
+              {/* Progress bar for password match, flush with input */}
               <div style={{
-                height: '100%',
-                width: password.length === 0 ? '0%' : `${Math.min((repeatPassword.length / password.length) * 100, 100)}%`,
-                background: password && repeatPassword && password === repeatPassword ? '#2ecc71' : '#e74c3c',
-                transition: 'width 0.3s, background 0.3s'
-              }} />
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: -1,
+                height: 6,
+                borderBottomLeftRadius: 8,
+                borderBottomRightRadius: 8,
+                background: 'rgba(255, 255, 255, 0.1)',
+                width: '100%',
+                overflow: 'hidden',
+                zIndex: 1
+              }}>
+                <div style={{
+                  height: '100%',
+                  width: password.length === 0 ? '0%' : `${Math.min((repeatPassword.length / password.length) * 100, 100)}%`,
+                  background: password && repeatPassword && password === repeatPassword ? '#10b981' : '#ef4444',
+                  transition: 'width 0.3s, background 0.3s'
+                }} />
+              </div>
             </div>
           </div>
+          {error && <div className="error-message">{error}</div>}
         </div>
-        {error && <div className="error-message">{error}</div>}
         <button type="submit" className="auth-btn">Sıfırla</button>
-        <div className="auth-switch-text" style={{ marginTop: '0.5rem' }}>
+        <div className="auth-switch-text">
           <Link to="/login" className="auth-link">Giriş yap ekranına dön</Link>
         </div>
       </form>
+      
+
     </div>
   );
 };

@@ -1,211 +1,589 @@
-$primary: #1a237e;
-$accent: #ffd600;
-$success: #2ecc71;
-$background: #f4f6fb;
-$error: #e74c3c;
-$blue: #2196f3;
-$blue-dark: #1565c0;
+// Register sayfası ile uyumlu renk paleti
+$primary: #1e293b;
+$accent: #3b82f6;
+$success: #10b981;
+$gradient-start: #0f172a;
+$gradient-end: #1e293b;
+$glass-bg: rgba(255, 255, 255, 0.1);
+$glass-border: rgba(255, 255, 255, 0.2);
 
 .verify-modal-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, $gradient-start 0%, $gradient-end 50%, #334155 100%);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, $background 0%, #e3e6f3 100%);
-  padding: 0 4vw;
+  padding: 20px;
+  animation: overlayFadeIn 0.3s ease;
+  
+  // Animated background elements like register page
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+    animation: float 20s ease-in-out infinite;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+    animation: float 25s ease-in-out infinite reverse;
+  }
 }
-.verify-modal-blur {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  z-index: 1001;
-  backdrop-filter: blur(7px);
-  background: rgba(26,35,126,0.18);
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(30px, -30px) rotate(120deg);
+  }
+  66% {
+    transform: translate(-20px, 20px) rotate(240deg);
+  }
+}
+
 .verify-modal {
-  z-index: 1010;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 6px 32px rgba(26,35,126,0.10);
-  padding: 2.5rem 2rem;
-  max-width: 370px;
+  background: $glass-bg;
+  backdrop-filter: blur(20px);
+  border: 1px solid $glass-border;
+  border-radius: 24px;
+  padding: 0;
+  max-width: 450px;
   width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  margin: 0;
+  overflow: hidden;
+  animation: modalSlideIn 0.3s ease;
   position: relative;
-  border: 1.5px solid #e0e3ef;
-  display: flex;
-  flex-direction: column;
-  gap: 1.3rem;
-  animation: pop-in 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  align-items: center;
-  margin-left: auto;
-  margin-right: auto;
+  z-index: 10;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.5) 50%, transparent 100%);
+    border-radius: 24px 24px 0 0;
+  }
 }
+
+@keyframes modalSlideIn {
+  from { 
+    transform: scale(0.9) translateY(20px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: scale(1) translateY(0); 
+    opacity: 1; 
+  }
+}
+
 .verify-close {
   position: absolute;
   top: 18px;
   right: 18px;
-  font-size: 1.5rem;
-  color: #aaa;
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.7);
   background: none;
   border: none;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: all 0.2s ease;
   z-index: 1020;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
 }
+
 .verify-close:hover {
-  color: #e74c3c;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
 }
-.verify-info {
-  color: $primary;
-  font-weight: 700;
+
+.verify-title {
+  display: block;
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0;
   text-align: center;
-  margin-bottom: 0.5rem;
-  font-size: 1.15rem;
-  margin-top: 2.5rem;
+  color: #ffffff;
+  padding: 32px 32px 16px 32px;
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.025em;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, $accent 0%, #6366f1 100%);
+    border-radius: 2px;
+  }
 }
-.verify-form-label {
-  font-size: 1rem;
-  color: $primary;
+
+.verify-desc {
+  margin: 0;
+  padding: 24px 32px 8px 32px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  font-style: normal;
+  line-height: 1.5;
   font-weight: 500;
-  margin-bottom: 0.3rem;
-  text-align: center;
 }
-.verify-form-input {
+
+.verify-input-group {
+  padding: 0 32px 16px 32px;
+}
+
+.verify-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 8px;
+  text-align: left;
+  letter-spacing: 0.025em;
+}
+
+.verify-input {
   width: 100%;
-  max-width: 220px;
-  font-size: 1.5rem;
+  font-size: 18px;
   letter-spacing: 0.25em;
   text-align: center;
-  padding: 0.7rem 1rem;
-  border: 1.5px solid #cfd8dc;
-  border-radius: 10px;
-  background: #f9fafd;
-  color: $primary;
-  margin-bottom: 0.2rem;
-  transition: border 0.2s, box-shadow 0.2s;
+  padding: 16px 20px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  color: #ffffff;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 400;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $accent;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    transform: translateY(-2px);
+  }
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+  }
 }
-.verify-form-input:focus {
-  border-color: $accent;
-  box-shadow: 0 0 0 2px rgba(255,214,0,0.18);
-  outline: none;
-  background: lighten(#f9fafd, 2%);
+
+.verify-timer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 32px 16px 32px;
 }
-.verify-timer {
-  text-align: center;
-  color: $primary;
-  font-size: 1rem;
-  margin-bottom: 0.2rem;
+
+.verify-timer-circle {
+  position: relative;
+  width: 44px;
+  height: 44px;
 }
-.resend-btn {
+
+.verify-timer-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: $accent;
+  font-size: 16px;
+}
+
+.verify-resend-btn {
   background: none;
   border: none;
-  color: $blue;
+  color: $accent;
   font-weight: 600;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 14px;
   text-decoration: underline;
-  transition: color 0.2s;
-}
-.resend-btn:disabled {
-  color: #bbb;
-  cursor: not-allowed;
-}
-.resend-btn:hover,
-.resend-btn:focus {
-  color: $blue-dark;
-}
-.auth-btn {
-  background: $primary;
-  color: #fff;
-  border: none;
+  transition: all 0.3s ease;
+  padding: 8px 16px;
   border-radius: 8px;
-  font-size: 1.08rem;
+}
+
+.verify-resend-btn:disabled {
+  color: rgba(255, 255, 255, 0.4);
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.verify-resend-btn:hover:not(:disabled) {
+  color: #ffffff;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.verify-error {
+  color: #ef4444;
+  font-size: 14px;
+  margin: 0 32px 16px 32px;
   font-weight: 600;
-  cursor: pointer;
-  padding: 0.7rem 1rem;
-  margin-top: 0.2rem;
-  transition: background 0.2s, transform 0.18s;
-  box-shadow: 0 2px 8px rgba(26,35,126,0.08);
-}
-.auth-btn:hover {
-  background: darken($primary, 8%);
-  box-shadow: 0 6px 24px rgba(26,35,126,0.18);
-  transform: translateY(-2px) scale(1.04);
-}
-.auth-btn:active {
-  transform: scale(0.97);
-}
-.error-message {
-  color: $error;
-  font-size: 0.97rem;
-  margin-top: 0.2rem;
-  font-weight: 500;
-  animation: shake 0.4s cubic-bezier(0.36,0.07,0.19,0.97);
+  animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97);
   text-align: center;
+  padding: 0.75rem 1rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
 }
-.verify-success {
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.verify-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 0 32px 32px 32px;
+}
+
+.verify-btn {
+  min-width: 120px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+    transition: left 0.5s ease;
+  }
+}
+
+.verify-btn--confirm {
+  background: linear-gradient(135deg, $accent 0%, #6366f1 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+}
+
+.verify-btn--confirm:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.4);
+
+  &::before {
+    left: 100%;
+  }
+}
+
+.verify-btn--confirm:active {
+  transform: translateY(-1px);
+}
+
+.verify-success-content {
+  padding: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 60vh;
+}
+
+.verify-success-title {
+  font-size: 20px;
+  font-weight: 700;
   color: $success;
-  font-size: 1.2rem;
-  font-weight: 600;
+  margin: 0 0 16px 0;
   text-align: center;
 }
-.verify-success-message {
-  color: $success;
-  font-size: 1.15rem;
-  font-weight: 600;
+
+.verify-success-desc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 24px 0;
   text-align: center;
-  margin-bottom: 1.2rem;
+  line-height: 1.5;
+  font-weight: 500;
 }
-.verify-success-timer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
+
+.verify-success-animation {
+  position: relative;
   width: 60px;
   height: 60px;
+  margin-top: 8px;
 }
-@keyframes pop-in {
-  0% { transform: scale(0.95); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-6px); }
-  40%, 80% { transform: translateX(6px); }
-}
-@media (max-width: 600px) {
+
+/* Responsive design */
+@media (max-width: 1024px) {
   .verify-modal-overlay {
-    padding: 0 4vw;
-    align-items: center;
+    padding: 16px;
   }
+  
   .verify-modal {
     max-width: 95vw;
-    margin: 0 3vw;
-    padding: 1.2rem 0.7rem 1rem 0.7rem;
+  }
+  
+  .verify-title {
+    font-size: 18px;
+    padding: 28px 28px 14px 28px;
+  }
+  
+  .verify-desc {
+    padding: 20px 28px 6px 28px;
+  }
+  
+  .verify-input-group {
+    padding: 0 28px 14px 28px;
+  }
+  
+  .verify-timer-container {
+    padding: 0 28px 14px 28px;
+  }
+  
+  .verify-error {
+    margin: 0 28px 14px 28px;
+  }
+  
+  .verify-actions {
+    padding: 0 28px 28px 28px;
+  }
+  
+  .verify-btn {
+    min-width: 110px;
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .verify-modal-overlay {
+    padding: 12px;
+  }
+  
+  .verify-modal {
+    max-width: 98vw;
+    border-radius: 20px;
+  }
+  
+  .verify-title {
+    font-size: 16px;
+    padding: 24px 24px 12px 24px;
+  }
+  
+  .verify-desc {
+    padding: 16px 24px 4px 24px;
+  }
+  
+  .verify-input-group {
+    padding: 0 24px 12px 24px;
+  }
+  
+  .verify-input {
+    font-size: 16px;
+    padding: 14px 16px;
+  }
+  
+  .verify-timer-container {
+    padding: 0 24px 12px 24px;
+  }
+  
+  .verify-error {
+    margin: 0 24px 12px 24px;
+  }
+  
+  .verify-actions {
+    padding: 0 24px 24px 24px;
+    gap: 12px;
+  }
+  
+  .verify-btn {
+    min-width: 100px;
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+  
+  .verify-success-content {
+    padding: 24px;
+  }
+  
+  .verify-success-title {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .verify-modal-overlay {
+    padding: 8px;
+  }
+  
+  .verify-modal {
+    max-width: 100vw;
+    border-radius: 16px;
+  }
+  
+  .verify-title {
+    font-size: 14px;
+    padding: 20px 20px 10px 20px;
+  }
+  
+  .verify-desc {
+    padding: 12px 20px 2px 20px;
+    font-size: 13px;
+  }
+  
+  .verify-input-group {
+    padding: 0 20px 10px 20px;
+  }
+  
+  .verify-input {
+    font-size: 14px;
+    padding: 12px 14px;
+  }
+  
+  .verify-timer-container {
+    padding: 0 20px 10px 20px;
+  }
+  
+  .verify-error {
+    margin: 0 20px 10px 20px;
+  }
+  
+  .verify-actions {
+    padding: 0 20px 20px 20px;
+    gap: 8px;
+  }
+  
+  .verify-btn {
+    min-width: 90px;
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  
+  .verify-success-content {
+    padding: 20px;
+  }
+  
+  .verify-success-title {
+    font-size: 16px;
+  }
+  
+  .verify-success-desc {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 360px) {
+  .verify-modal-overlay {
+    padding: 4px;
+  }
+  
+  .verify-modal {
     border-radius: 12px;
   }
-  .verify-form-input {
-    font-size: 1rem;
-    padding: 0.5rem 0.5rem;
-    max-width: 30vw;
-    min-width: 120px;
+  
+  .verify-title {
+    font-size: 13px;
+    padding: 16px 16px 8px 16px;
   }
-  .verify-info {
-    margin-top: 2.2rem;
-    font-size: 1.01rem;
+  
+  .verify-desc {
+    padding: 8px 16px 0px 16px;
+    font-size: 12px;
   }
-  .verify-success-message {
-    font-size: 1.05rem;
-    margin-bottom: 1rem;
+  
+  .verify-input-group {
+    padding: 0 16px 8px 16px;
   }
-  .verify-success-timer {
-    width: 44px;
-    height: 44px;
+  
+  .verify-input {
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+  
+  .verify-timer-container {
+    padding: 0 16px 8px 16px;
+  }
+  
+  .verify-error {
+    margin: 0 16px 8px 16px;
+  }
+  
+  .verify-actions {
+    padding: 0 16px 16px 16px;
+    gap: 6px;
+  }
+  
+  .verify-btn {
+    min-width: 80px;
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+  
+  .verify-success-content {
+    padding: 16px;
+  }
+  
+  .verify-success-title {
+    font-size: 14px;
+  }
+  
+  .verify-success-desc {
+    font-size: 12px;
   }
 } 

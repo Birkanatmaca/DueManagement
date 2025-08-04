@@ -1,295 +1,505 @@
 // ParentDetailModal & ParentEditModal SCSS
 .parent-modal__overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(30, 34, 60, 0.32);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+  animation: overlayFadeIn 0.3s ease;
+  box-sizing: border-box;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.parent-modal {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 0;
+  width: 100%;
+  max-width: 500px;
+  min-width: 320px;
+  max-height: 75vh;
+  position: relative;
+  animation: modalSlideIn 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes modalSlideIn {
+  from { 
+    transform: scale(0.9) translateY(20px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: scale(1) translateY(0); 
+    opacity: 1; 
+  }
+}
+
+// Close button
+.parent-modal__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  font-size: 24px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.parent-modal__close:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  transform: scale(1.1);
+}
+
+// Header - Sporcu modallarıyla aynı yapı
+.parent-modal h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 32px 32px 24px 32px;
+  background: linear-gradient(135deg, #334155 0%, #475569 100%);
+  position: relative;
+  border-bottom: 2px solid #475569;
+}
+
+// Content
+.parent-modal__content {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-size: 14px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  flex: 1;
+  max-height: 50vh;
+}
+
+// Fields
+.parent-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.parent-modal__field label {
+  font-weight: 600;
+  color: #e2e8f0;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.parent-modal__field input,
+.parent-modal__field select,
+.parent-modal__field textarea {
+  background: #1e293b;
+  border: 2px solid #475569;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 15px;
+  color: #e2e8f0;
+  outline: none;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.parent-modal__field input[readonly] {
+  background: #334155;
+  color: #94a3b8;
+  cursor: default;
+  border-color: #64748b;
+}
+
+.parent-modal__field input:focus,
+.parent-modal__field select:focus,
+.parent-modal__field textarea:focus {
+  border-color: #3b82f6;
+  background: #334155;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.parent-modal__field option {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 12px;
+}
+
+// Save Button
+.parent-modal__save {
+  margin-top: 8px;
+  width: 100%;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.parent-modal__save:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.parent-modal__save:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+// Children list
+  .parent-modal__children-list {
+    max-height: 150px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px;
+}
+
+.parent-modal__child-card {
+  display: flex;
+  align-items: center;
+  background: #f8fafc;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 16px 20px;
+  gap: 16px;
+  border-left: 4px solid #10b981;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2000;
-    padding: 12px; // Kenarlardan boşluk
-    box-sizing: border-box;
+    font-size: 18px;
+    color: #10b981;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  
+  .info {
+    flex: 1;
+    
+    .name {
+      font-weight: 600;
+      font-size: 15px;
+      color: #374151;
+      margin-bottom: 4px;
+    }
+    
+    .meta {
+      font-size: 13px;
+      color: #6b7280;
+      
+      strong {
+        font-weight: 600;
+        color: #374151;
+      }
+    }
+  }
+}
+
+// RESPONSIVE
+@media (max-width: 1024px) {
+  .parent-modal__overlay {
+    padding: 12px;
   }
   
   .parent-modal {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(30, 34, 60, 0.18);
-    padding: 32px 28px 24px 28px;
-    width: 100%;
-    max-width: 400px; // Desktop için daha küçük max genişlik
-    min-width: 300px;
-    height: 60vh;
-    max-height: 600px;
-    position: relative;
-    animation: parentModalFadeIn 0.25s ease-out;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    margin: 0 auto; // Ortalamak için
+    max-width: 80vw;
+    margin: 0 auto;
   }
   
-  @keyframes parentModalFadeIn {
-    from { transform: scale(0.95); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-  
-  // Close button
-  .parent-modal__close {
-    position: absolute;
-    top: 14px;
-    right: 18px;
-    background: none;
-    border: none;
-    font-size: 28px;
-    color: #888;
-    cursor: pointer;
-    transition: color 0.15s;
-  }
-  .parent-modal__close:hover {
-    color: #d32f2f;
-  }
-  
-  // Header
   .parent-modal__header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 18px;
+    padding: 28px 28px 22px 28px;
+    
     h2 {
-      margin: 0;
-      font-weight: 800;
-      color: #1a237e;
-      font-size: 26px;
-      letter-spacing: -0.5px;
-      text-align: center;
-      flex: 1;
+      font-size: 22px;
     }
   }
   
-  // Content
   .parent-modal__content {
-    margin-top: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    font-size: 17px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    min-height: 0;
-    height: 100%;
+    padding: 28px;
+    gap: 22px;
   }
   
-  // Fields
-  .parent-modal__field {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .parent-modal__field label {
-    font-weight: 600;
-    color: #1a237e;
-    margin-bottom: 2px;
-    font-size: 17px;
-  }
   .parent-modal__field input,
   .parent-modal__field select,
   .parent-modal__field textarea {
-    background: #f4f6fb;
-    border: 1.5px solid #d1d5db;
-    border-radius: 6px;
-    padding: 10px 14px;
-    font-size: 16px;
-    color: #222;
-    outline: none;
-    transition: border 0.2s;
-    font-family: inherit;
-  }
-  .parent-modal__field input[readonly] {
-    background: #f4f6fb;
-    color: #222;
-    cursor: default;
-  }
-  .parent-modal__field input:focus,
-  .parent-modal__field select:focus,
-  .parent-modal__field textarea:focus {
-    border: 1.5px solid #1a237e;
-    background: #f0f3ff;
-  }
-  .parent-modal__field option {
-    background: #fff;
-    color: #222;
+    padding: 15px 18px;
+    font-size: 14px;
   }
   
-  // Save Button
   .parent-modal__save {
-    margin-top: 18px;
-    width: 100%;
-    padding: 10px 0;
-    background: #1a237e;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-size: 17px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.18s;
-    box-shadow: 0 2px 8px rgba(26, 35, 126, 0.08);
-  }
-  .parent-modal__save:hover {
-    background: #26308c;
+    padding: 15px 22px;
+    font-size: 15px;
   }
   
-  // Children list
+  .parent-modal__close {
+    top: 18px;
+    right: 18px;
+    width: 38px;
+    height: 38px;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .parent-modal__overlay {
+    padding: 8px;
+  }
+  
+  .parent-modal {
+    max-width: 85vw;
+    border-radius: 20px;
+    margin: 0 auto;
+  }
+  
+  .parent-modal__header {
+    padding: 24px 24px 20px 24px;
+    
+    h2 {
+      font-size: 20px;
+    }
+  }
+  
+  .parent-modal__content {
+    padding: 24px;
+    gap: 20px;
+    max-height: 60vh;
+  }
+  
+  .parent-modal__field input,
+  .parent-modal__field select,
+  .parent-modal__field textarea {
+    padding: 14px 16px;
+    font-size: 14px;
+  }
+  
+  .parent-modal__save {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+  
+  .parent-modal__close {
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+  
   .parent-modal__children-list {
-    max-height: 220px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+    max-height: 150px;
+    gap: 12px;
   }
   
   .parent-modal__child-card {
-    display: flex;
-    align-items: center;
-    background: #f7fafc;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(67, 160, 71, 0.10);
-    padding: 10px 14px;
+    padding: 12px 16px;
     gap: 12px;
-    border-left: 5px solid #43a047;
-    transition: box-shadow 0.18s;
+    
     .avatar {
       width: 36px;
       height: 36px;
-      border-radius: 50%;
-      background: #e3f2fd;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      color: #1a237e;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-    .info {
-      flex: 1;
-      .name {
-        font-weight: 700;
-        font-size: 17px;
-        color: #1a237e;
-      }
-      .meta {
-        font-size: 15px;
-        color: #333;
-        margin-top: 4px;
-        strong {
-          font-size: 15px;
-        }
-      }
-    }
-  }
-  
-  // RESPONSIVE
-  @media (max-width: 900px) {
-    .parent-modal {
-      padding: 24px 20px;
-      border-radius: 10px;
-      max-width: 350px;
-    }
-    .parent-modal__header h2 {
-      font-size: 24px;
-    }
-    .parent-modal__field label {
       font-size: 16px;
     }
-    .parent-modal__field input, 
-    .parent-modal__field select, 
-    .parent-modal__field textarea {
-      font-size: 15px;
-      padding: 9px 12px;
-    }
-    .parent-modal__children-list {
-      max-height: 120px;
-      gap: 7px;
-    }
-    .parent-modal__child-card {
-      padding: 6px 6px;
-      gap: 7px;
-      .avatar {
-        width: 26px;
-        height: 26px;
-        font-size: 12px;
-      }
-      .info .name {
-        font-size: 13px;
-      }
-      .info .meta {
-        font-size: 11px;
-      }
-    }
-    .parent-modal__close {
-      font-size: 22px;
-      top: 8px;
-      right: 8px;
-    }
-    .parent-modal__save {
-      font-size: 15px;
-      padding: 8px 0;
-    }
-  }
-  
-  @media (max-width: 600px) {
-    .parent-modal {
-      padding: 18px 14px;
-      border-radius: 8px;
-      max-width: 90vw;
-    }
-    .parent-modal__header h2 {
-      font-size: 22px;
-    }
-    .parent-modal__field label {
-      font-size: 15px;
-    }
-    .parent-modal__field input, 
-    .parent-modal__field select, 
-    .parent-modal__field textarea {
+    
+    .info .name {
       font-size: 14px;
-      padding: 8px 10px;
     }
-    .parent-modal__children-list {
-      max-height: 120px;
-      gap: 8px;
-    }
-    .parent-modal__child-card {
-      padding: 8px 8px;
-      gap: 8px;
-      .avatar {
-        width: 32px;
-        height: 32px;
-        font-size: 14px;
-      }
-      .info .name {
-        font-size: 15px;
-      }
-      .info .meta {
-        font-size: 13px;
-        strong {
-          font-size: 13px;
-        }
-      }
-    }
-    .parent-modal__close {
-      font-size: 24px;
-      top: 10px;
-      right: 10px;
-    }
-    .parent-modal__save {
-      font-size: 16px;
-      padding: 10px 0;
+    
+    .info .meta {
+      font-size: 12px;
     }
   }
+}
+
+@media (max-width: 480px) {
+  .parent-modal__overlay {
+    padding: 4px;
+  }
+  
+  .parent-modal {
+    max-width: 90vw;
+    border-radius: 16px;
+    margin: 0 auto;
+  }
+  
+  .parent-modal__header {
+    padding: 20px 20px 16px 20px;
+    
+    h2 {
+      font-size: 18px;
+    }
+  }
+  
+  .parent-modal__content {
+    padding: 20px;
+    gap: 16px;
+    max-height: 65vh;
+  }
+  
+  .parent-modal__field input,
+  .parent-modal__field select,
+  .parent-modal__field textarea {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+  
+  .parent-modal__save {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  
+  .parent-modal__close {
+    top: 14px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+  }
+  
+  .parent-modal__children-list {
+    max-height: 130px;
+    gap: 10px;
+  }
+  
+  .parent-modal__child-card {
+    padding: 10px 14px;
+    gap: 10px;
+    
+    .avatar {
+      width: 32px;
+      height: 32px;
+      font-size: 14px;
+    }
+    
+    .info .name {
+      font-size: 13px;
+    }
+    
+    .info .meta {
+      font-size: 11px;
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .parent-modal__overlay {
+    padding: 2px;
+  }
+  
+  .parent-modal {
+    max-width: 95vw;
+    border-radius: 12px;
+    margin: 0 auto;
+  }
+  
+  .parent-modal__header {
+    padding: 16px 16px 12px 16px;
+    
+    h2 {
+      font-size: 16px;
+    }
+  }
+  
+  .parent-modal__content {
+    padding: 16px;
+    gap: 14px;
+    max-height: 70vh;
+  }
+  
+  .parent-modal__field input,
+  .parent-modal__field select,
+  .parent-modal__field textarea {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  
+  .parent-modal__save {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  
+  .parent-modal__close {
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+  
+  .parent-modal__children-list {
+    max-height: 110px;
+    gap: 8px;
+  }
+  
+  .parent-modal__child-card {
+    padding: 8px 12px;
+    gap: 8px;
+    
+    .avatar {
+      width: 28px;
+      height: 28px;
+      font-size: 12px;
+    }
+    
+    .info .name {
+      font-size: 12px;
+    }
+    
+    .info .meta {
+      font-size: 10px;
+    }
+  }
+}
   

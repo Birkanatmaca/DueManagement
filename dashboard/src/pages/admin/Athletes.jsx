@@ -162,9 +162,11 @@ const Athletes = () => {
           marginTop: 64,
           padding: 24,
           transition: 'margin-left 0.2s',
+          backgroundColor: '#0f172a',
+          minHeight: '100vh',
         }}
       >
-        <h1 style={{ marginBottom: 32, textAlign: 'center', fontWeight: 700 }}>Sporcu Yönetimi</h1>
+        <h1 style={{ marginBottom: 32, textAlign: 'center', fontWeight: 700, color: '#ffffff' }}>Sporcu Yönetimi</h1>
         <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <input
             type="text"
@@ -174,16 +176,17 @@ const Athletes = () => {
             style={{
               padding: '10px 18px',
               borderRadius: 24,
-              border: '1.5px solid #d1d5db',
+              border: '1.5px solid #475569',
               width: 320,
               fontSize: 20,
-              boxShadow: '0 2px 8px rgba(26,35,126,0.06)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
               outline: 'none',
               transition: 'border 0.2s, box-shadow 0.2s',
-              background: '#fafbff',
+              background: '#1e293b',
+              color: '#ffffff',
             }}
-            onFocus={e => e.target.style.border = '1.5px solid #1a237e'}
-            onBlur={e => e.target.style.border = '1.5px solid #d1d5db'}
+            onFocus={e => e.target.style.border = '1.5px solid #3b82f6'}
+            onBlur={e => e.target.style.border = '1.5px solid #475569'}
           />
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
@@ -212,7 +215,7 @@ const Athletes = () => {
             { label: 'Sporcu Numarası', key: 'number', align: 'right' },
             { label: 'İşlemler', key: 'actions', align: 'left', render: (_, row, { onView, onEdit, onDelete }) => (
               <div style={{ display: 'flex', gap: isMobile ? 4 : 8, justifyContent: 'center' }}>
-                <button title="Görüntüle" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#1a237e' }} onClick={() => onView && onView(row)}><MdVisibility size={iconSize} /></button>
+                <button title="Görüntüle" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#3b82f6' }} onClick={() => onView && onView(row)}><MdVisibility size={iconSize} /></button>
                 <button title="Düzenle" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#43a047' }} onClick={() => onEdit && onEdit(row)}><MdEdit size={iconSize} /></button>
                 <button title="Sil" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#e53935' }} onClick={() => onDelete && onDelete(row)}><MdDelete size={iconSize} /></button>
               </div>

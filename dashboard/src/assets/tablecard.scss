@@ -1,212 +1,417 @@
+// Modern TableCard Styles
 .tablecard-row {
   display: flex;
-  gap: 20px;
+  gap: 24px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .tablecard {
-  flex: 1 1 220px;
-  min-width: 220px;
+  flex: 1 1 400px;
+  min-width: 400px;
   max-width: 100%;
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 16px rgba(26,35,126,0.08);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  border-radius: 24px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
   padding: 0;
   display: flex;
   flex-direction: column;
   margin: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.5) 50%, transparent 100%);
+  }
 }
 
+// Modern Header
 .tablecard__header {
+  background: linear-gradient(135deg, #334155 0%, #475569 100%);
+  padding: 24px 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.3) 50%, transparent 100%);
+  }
+}
+
+.tablecard__header-content {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 16px 16px 8px 16px;
-  border-bottom: 1px solid #eee;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tablecard__header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.tablecard__icon-wrapper {
+  display: flex;
+  align-items: center;
   justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(147, 51, 234, 0.2) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .tablecard__icon {
   font-size: 24px;
-  color: #1a237e;
+  color: #3b82f6;
+}
+
+.tablecard__title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .tablecard__title {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
-  color: #1a237e;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.025em;
 }
 
-.tablecard__body-responsive {
-  width: 100%;
-  overflow-x: hidden; /* changed from auto to hidden to prevent horizontal movement */
-  padding-bottom: 2px;
-}
-
-.tablecard__table {
-  width: 100%;
-  min-width: unset; /* remove min-width to prevent unnecessary horizontal scroll */
-  table-layout: fixed; /* ensure columns are fixed width */
-  background: #fff;
-}
-.tablecard__table th, .tablecard__table td {
-  padding: 10px 22px;
-  border-right: 1px solid #e0e3ef;
-  border-bottom: 1.5px solid #e0e3ef;
-  background: #fff;
-  transition: background 0.18s;
-  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-  font-weight: 400;
-  font-size: 15px;
-}
-.tablecard__table th {
-  text-align: left;
-  color: #1a237e;
-  font-weight: 600;
-  background: #f5f6fa;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  font-size: 15px;
-}
-.tablecard__table td:last-child, .tablecard__table th:last-child {
-  border-right: none;
-}
-.tablecard__table tr {
-  transition: background 0.18s;
-}
-.tablecard__table tr:nth-child(even) td {
-  background: #f8faff;
-}
-.tablecard__table tr:hover td {
-  background: #e8eafc;
-}
-.tablecard__table td {
-  word-break: break-word;
+.tablecard__subtitle {
   font-size: 14px;
+  color: #94a3b8;
+  font-weight: 500;
 }
-.tablecard__table tr:last-child td {
-  border-bottom: none;
-}
-.tablecard__footer {
+
+
+
+// Modern Content
+.tablecard__content {
+  flex: 1;
+  padding: 24px 32px;
+  background: #1e293b;
+  min-height: 300px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+}
+
+.tablecard__empty {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 12px 16px;
-  border-top: 1px solid #eee;
-  background: #fafbff;
-  font-size: 22px;
-}
-.tablecard__nav-btn {
-  background: none;
-  border: none;
-  color: #1a237e;
-  font-size: 26px;
-  cursor: pointer;
-  padding: 8px 16px;
-  margin: 0 10px;
-  border-radius: 4px;
-  transition: background 0.15s;
-}
-.tablecard__nav-btn:disabled {
-  color: #bbb;
-  cursor: not-allowed;
-  background: none;
-}
-.tablecard__footer span {
-  font-size: 24px;
-  font-weight: 700;
-}
-.paid {
-  color: #43a047;
-  font-weight: 600;
-}
-.unpaid {
-  color: #e53935;
-  font-weight: 600;
-}
-
-.athletes-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-.athletes-table th {
-  position: sticky;
-  top: 0;
-  background: #f5f6fa;
-  z-index: 2;
-  text-align: left;
-  font-weight: 700;
-  color: #1a237e;
-  padding: 8px 4px;
-}
-.athletes-table th:last-child,
-.athletes-table td:last-child {
+  justify-content: center;
   text-align: center;
-  min-width: 120px;
+  padding: 48px 24px;
+  height: 100%;
 }
-.athletes-table td {
-  padding: 8px 4px;
-  border-bottom: 1px solid #e0e3ef;
-  word-break: break-word;
-}
-.athletes-table tr:last-child td {
-  border-bottom: none;
-} 
 
-@media (max-width: 900px) {
+
+
+.tablecard__empty-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin: 0 0 8px 0;
+}
+
+.tablecard__empty-text {
+  font-size: 14px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.tablecard__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tablecard__item {
+  background: linear-gradient(135deg, #334155 0%, #475569 100%);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  &:hover {
+    border-color: rgba(59, 130, 246, 0.3);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+
+.tablecard__item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.tablecard__item-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.tablecard__field-label {
+  font-size: 13px;
+  color: #94a3b8;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tablecard__field-value {
+  font-size: 14px;
+  color: #e2e8f0;
+  font-weight: 600;
+  text-align: right;
+}
+
+
+
+// Modern Footer
+.tablecard__footer {
+  background: linear-gradient(135deg, #334155 0%, #475569 100%);
+  padding: 20px 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tablecard__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tablecard__nav-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e2e8f0;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px 16px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(59, 130, 246, 0.5);
+  }
+
+  &:disabled {
+    color: #64748b;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.tablecard__page-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.tablecard__page-text {
+  font-size: 14px;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.tablecard__page-details {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
   .tablecard {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    border-radius: 8px;
-    box-shadow: 0 1px 6px rgba(26,35,126,0.06);
+    flex: 1 1 350px;
+    min-width: 350px;
   }
+}
+
+@media (max-width: 1024px) {
+  .tablecard {
+    flex: 1 1 320px;
+    min-width: 320px;
+  }
+  
   .tablecard__header {
-    padding: 16px 10px 10px 10px;
-    gap: 8px;
-    justify-content: center;
-    text-align: center;
+    padding: 20px 24px;
   }
-  .tablecard__icon, .tablecard__title {
-    justify-content: center;
-    align-items: center;
-    display: flex;
+  
+  .tablecard__content {
+    padding: 20px 24px;
   }
-  .tablecard__icon {
-    font-size: 28px;
+  
+  .tablecard__footer {
+    padding: 16px 24px;
   }
+  
   .tablecard__title {
-    font-size: 20px;
-  }
-  .tablecard__body-responsive {
-    padding: 0 0 2px 0;
-    overflow-x: hidden; /* changed from auto to hidden for mobile as well */
-  }
-  .tablecard__table {
-    min-width: unset; /* remove min-width for mobile */
-    width: 100%;
-    table-layout: fixed;
-  }
-  .tablecard__table th, .tablecard__table td {
-    padding: 14px 10px;
-    font-size: 20px;
-  }
-  .tablecard__table th {
     font-size: 18px;
   }
-  .tablecard__table td {
-    font-size: 17px;
+  
+  .tablecard__item {
+    padding: 16px;
   }
+}
+
+@media (max-width: 768px) {
+  .tablecard {
+    flex: 1 1 100%;
+    min-width: 100%;
+    border-radius: 20px;
+    margin: 0 12px;
+  }
+  
+  .tablecard__header {
+    padding: 16px 20px;
+  }
+  
+  .tablecard__content {
+    padding: 16px 20px;
+  }
+  
   .tablecard__footer {
-    padding: 12px 10px;
+    padding: 12px 20px;
+  }
+  
+  .tablecard__title {
+    font-size: 16px;
+  }
+  
+  .tablecard__subtitle {
+    font-size: 13px;
+  }
+  
+  .tablecard__icon-wrapper {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .tablecard__icon {
     font-size: 20px;
   }
+  
+  .tablecard__item {
+    padding: 14px;
+  }
+  
+  .tablecard__item-field {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .tablecard__field-value {
+    text-align: left;
+  }
+  
+  .tablecard__pagination {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
   .tablecard__nav-btn {
-    font-size: 17px;
-    padding: 5px 10px;
-    margin: 0 6px;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .tablecard {
+    border-radius: 16px;
+    margin: 0 8px;
+  }
+  
+  .tablecard__header {
+    padding: 12px 16px;
+  }
+  
+  .tablecard__content {
+    padding: 12px 16px;
+  }
+  
+  .tablecard__footer {
+    padding: 8px 16px;
+  }
+  
+  .tablecard__title {
+    font-size: 15px;
+  }
+  
+  .tablecard__subtitle {
+    font-size: 12px;
+  }
+  
+  .tablecard__icon-wrapper {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .tablecard__icon {
+    font-size: 18px;
+  }
+  
+  .tablecard__item {
+    padding: 12px;
+  }
+  
+  .tablecard__field-label {
+    font-size: 12px;
+  }
+  
+  .tablecard__field-value {
+    font-size: 13px;
+  }
+  
+
+  
+  .tablecard__nav-btn {
+    font-size: 13px;
+    padding: 8px 12px;
   }
 } 

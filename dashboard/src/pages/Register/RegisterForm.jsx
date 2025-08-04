@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { backendRegister } from '../../../services/authService';
-import '../../../assets/auth.scss';
+import '../../../assets/register.scss';
 
 const RegisterForm = ({ setStep, setEmail }) => {
   const [name, setName] = useState('');
@@ -10,7 +10,8 @@ const RegisterForm = ({ setStep, setEmail }) => {
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [error, setError] = useState('');
-  const [passwordFocused, setPasswordFocused] = useState(false);
+  const [showPasswordRules, setShowPasswordRules] = useState(false);
+  const [passwordFieldFocused, setPasswordFieldFocused] = useState(false);
 
   const validatePassword = (pw) => ({
     length: pw.length >= 8,
@@ -64,11 +65,17 @@ const RegisterForm = ({ setStep, setEmail }) => {
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
-            onFocus={() => setPasswordFocused(true)}
-            onBlur={() => setPasswordFocused(false)}
+            onFocus={() => {
+              setShowPasswordRules(true);
+              setPasswordFieldFocused(true);
+            }}
+            onBlur={() => {
+              setShowPasswordRules(false);
+              setPasswordFieldFocused(false);
+            }}
             required
           />
-          {passwordFocused && (
+          {showPasswordRules && password && passwordFieldFocused && (
             <ul className="password-rules">
               <li className={passwordRules.length ? 'valid' : ''}>En az 8 karakter</li>
               <li className={passwordRules.upper ? 'valid' : ''}>En az 1 büyük harf</li>
@@ -78,7 +85,16 @@ const RegisterForm = ({ setStep, setEmail }) => {
         </div>
         <div className="form-group">
           <label>Şifre Tekrar</label>
-          <input type="password" value={repeatPassword} onChange={e => setRepeatPassword(e.target.value)} required />
+          <input 
+            type="password" 
+            value={repeatPassword} 
+            onChange={e => setRepeatPassword(e.target.value)}
+            onFocus={() => {
+              setShowPasswordRules(false);
+              setPasswordFieldFocused(false);
+            }}
+            required 
+          />
         </div>
         {error && <p className="error-message">{error}</p>}
         <button type="submit" className="auth-btn">Kayıt Ol</button>

@@ -57,7 +57,6 @@ const Dues = () => {
   const [selectedMonth, setSelectedMonth] = useState(monthOptions[new Date().getMonth()].value);
   const [selectedYear, setSelectedYear] = useState(yearOptions.find(y => y.value === String(new Date().getFullYear()))?.value || '2024');
 
-  // API'den aidatları çek
   const fetchDues = async () => {
     setLoading(true);
     try {
@@ -71,7 +70,7 @@ const Dues = () => {
           status: item.status || (item.is_paid ? 'Ödendi' : 'Ödenmedi'),
           athlete: (item.child_name && item.child_surname) ? `${item.child_name} ${item.child_surname}` : '',
           athleteNumber: item.athlete_number || '',
-          athleteBirth: '', // API'de yok, boş bırak
+          athleteBirth: '',
           amount: item.amount,
           due_date: item.due_date,
           paid_at: item.paid_at,
@@ -89,7 +88,6 @@ const Dues = () => {
 
   React.useEffect(() => {
     fetchDues();
-    // eslint-disable-next-line
   }, [selectedMonth, selectedYear]);
 
   const handleDelete = async () => {
@@ -112,7 +110,6 @@ const Dues = () => {
     setEditModalOpen(false);
     try {
       const token = localStorage.getItem('token');
-      // Aidat tutarını ve ödeme durumunu güncelle
       await updateDue(token, form.id, form.amount, form.status === 'Ödendi');
       setToastMsg('Aidat bilgileri başarıyla kaydedildi.');
       setToastOpen(true);
@@ -151,46 +148,102 @@ const Dues = () => {
           marginTop: 64,
           padding: 24,
           transition: 'margin-left 0.2s',
+          backgroundColor: '#0f172a',
+          minHeight: '100vh',
         }}
       >
-        <div className="dues-header">
-          <div className="dues-header__title">Aidat Yönetimi</div>
-          <div className="dues-filter-bar">
+        <h1 style={{ 
+          marginBottom: 32, 
+          textAlign: 'center', 
+          fontWeight: 700,
+          color: '#ffffff'
+        }}>
+          Aidat Yönetimi
+        </h1>
+        
+        {/* Filter Controls */}
+        <div style={{
+          display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
+          gap: isMobile ? '16px' : '20px',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 24
+        }}>
+          {/* Month Dropdown */}
+          <div style={{
+            background: '#1e293b',
+            borderRadius: '12px',
+            border: '1px solid #475569',
+            minWidth: isMobile ? '100%' : '140px'
+          }}>
             <CustomDropdown
               options={monthOptions}
               value={selectedMonth}
               onChange={setSelectedMonth}
               placeholder="Ay seç"
-              style={{ minWidth: 120 }}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#e2e8f0',
+                fontSize: isMobile ? '14px' : '16px',
+                fontWeight: '600',
+                width: '100%',
+                padding: '12px 16px'
+              }}
             />
+          </div>
+          
+          {/* Year Dropdown */}
+          <div style={{
+            background: '#1e293b',
+            borderRadius: '12px',
+            border: '1px solid #475569',
+            minWidth: isMobile ? '100%' : '120px'
+          }}>
             <CustomDropdown
               options={yearOptions}
               value={selectedYear}
               onChange={setSelectedYear}
               placeholder="Yıl seç"
-              style={{ minWidth: 100 }}
-            />
-            <button
               style={{
-                padding: '8px 22px',
-                borderRadius: 20,
+                background: 'transparent',
                 border: 'none',
-                background: '#1a237e',
-                color: '#fff',
-                fontWeight: 600,
-                fontSize: 15,
-                marginLeft: 10,
-                cursor: 'pointer',
-                boxShadow: '0 2px 8px rgba(26,35,126,0.08)',
-                transition: 'background 0.18s',
+                color: '#e2e8f0',
+                fontSize: isMobile ? '14px' : '16px',
+                fontWeight: '600',
+                width: '100%',
+                padding: '12px 16px'
               }}
-              onClick={fetchDues}
-            >
-              ARA
-            </button>
+            />
           </div>
+          
+          {/* Search Button */}
+          <button
+            style={{
+              background: '#3b82f6',
+              border: 'none',
+              borderRadius: '12px',
+              color: 'white',
+              padding: isMobile ? '12px 24px' : '14px 28px',
+              fontSize: isMobile ? '14px' : '16px',
+              fontWeight: '700',
+              cursor: 'pointer',
+              transition: 'background 0.2s ease',
+              minWidth: isMobile ? '100%' : '120px'
+            }}
+            onClick={fetchDues}
+          >
+            Ara
+          </button>
         </div>
-        <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        
+        <div style={{ 
+          marginBottom: 24, 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center'
+        }}>
           <input
             type="text"
             placeholder="Veli adı veya aidat durumu ile ara..."
@@ -199,32 +252,126 @@ const Dues = () => {
             style={{
               padding: '10px 18px',
               borderRadius: 24,
-              border: '1.5px solid #d1d5db',
+              border: '1.5px solid #475569',
               width: 320,
-              fontSize: 16,
-              boxShadow: '0 2px 8px rgba(26,35,126,0.06)',
+              fontSize: 20,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
               outline: 'none',
               transition: 'border 0.2s, box-shadow 0.2s',
-              background: '#fafbff',
+              background: '#1e293b',
+              color: '#ffffff',
             }}
-            onFocus={e => e.target.style.border = '1.5px solid #1a237e'}
-            onBlur={e => e.target.style.border = '1.5px solid #d1d5db'}
+            onFocus={e => e.target.style.border = '1.5px solid #3b82f6'}
+            onBlur={e => e.target.style.border = '1.5px solid #475569'}
           />
         </div>
+        
         <CrudTableCard
           title=""
           columns={[
-            { label: 'Sporcu Adı Soyadı', key: 'athlete', align: 'left', style: { flex: 1 } },
-            { label: 'Aidat Durumu', key: 'status', align: 'left', style: { flex: 1 }, render: (v) => (
-              <span className={`dues-status-badge ${v === 'Ödendi' ? 'paid' : 'unpaid'}`}>{v}</span>
-            ) },
-            { label: 'İşlemler', key: 'actions', align: 'left', render: (_, row, { onView, onEdit, onDelete }) => (
-              <div style={{ display: 'flex', gap: isMobile ? 4 : 8, justifyContent: 'center' }}>
-                <button title="Görüntüle" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#1a237e' }} onClick={() => { setSelectedDues(row); setDetailModalOpen(true); }}><MdVisibility size={iconSize} /></button>
-                <button title="Düzenle" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#43a047' }} onClick={() => { setEditDues(row); setEditModalOpen(true); }}><MdEdit size={iconSize} /></button>
-                <button title="Sil" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#e53935' }} onClick={() => { setDeleteConfirmOpen(true); setDeleteId(row.id); }}><MdDelete size={iconSize} /></button>
-              </div>
-            ) },
+            { 
+              label: 'Sporcu Adı Soyadı', 
+              key: 'athlete', 
+              align: 'left', 
+              style: { 
+                width: '40%',
+                minWidth: '150px'
+              },
+              render: (v, row) => (
+                <div style={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  fontSize: isMobile ? '13px' : '14px',
+                  fontWeight: '500'
+                }}>
+                  {v}
+                </div>
+              )
+            },
+            { 
+              label: 'Aidat Durumu', 
+              key: 'status', 
+              align: 'center', 
+              style: { 
+                width: '30%',
+                minWidth: '120px'
+              }, 
+              render: (v) => (
+                <span className={`dues-status-badge ${v === 'Ödendi' ? 'paid' : 'unpaid'}`}>
+                  {v}
+                </span>
+              )
+            },
+            { 
+              label: 'İşlemler', 
+              key: 'actions', 
+              align: 'center',
+              style: {
+                width: '30%',
+                minWidth: '100px'
+              },
+              render: (_, row, { onView, onEdit, onDelete }) => (
+                <div style={{ 
+                  display: 'flex', 
+                  gap: isMobile ? 4 : 8, 
+                  justifyContent: 'center',
+                  flexWrap: 'nowrap'
+                }}>
+                  <button 
+                    title="Görüntüle" 
+                    style={{ 
+                      background: 'none', 
+                      border: 'none', 
+                      cursor: 'pointer', 
+                      color: '#3b82f6',
+                      padding: '4px',
+                      borderRadius: '6px',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={e => e.target.style.background = 'rgba(59, 130, 246, 0.1)'}
+                    onMouseLeave={e => e.target.style.background = 'none'}
+                    onClick={() => { setSelectedDues(row); setDetailModalOpen(true); }}
+                  >
+                    <MdVisibility size={iconSize} />
+                  </button>
+                  <button 
+                    title="Düzenle" 
+                    style={{ 
+                      background: 'none', 
+                      border: 'none', 
+                      cursor: 'pointer', 
+                      color: '#10b981',
+                      padding: '4px',
+                      borderRadius: '6px',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={e => e.target.style.background = 'rgba(16, 185, 129, 0.1)'}
+                    onMouseLeave={e => e.target.style.background = 'none'}
+                    onClick={() => { setEditDues(row); setEditModalOpen(true); }}
+                  >
+                    <MdEdit size={iconSize} />
+                  </button>
+                  <button 
+                    title="Sil" 
+                    style={{ 
+                      background: 'none', 
+                      border: 'none', 
+                      cursor: 'pointer', 
+                      color: '#ef4444',
+                      padding: '4px',
+                      borderRadius: '6px',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={e => e.target.style.background = 'rgba(239, 68, 68, 0.1)'}
+                    onMouseLeave={e => e.target.style.background = 'none'}
+                    onClick={() => { setDeleteConfirmOpen(true); setDeleteId(row.id); }}
+                  >
+                    <MdDelete size={iconSize} />
+                  </button>
+                </div>
+              )
+            },
           ]}
           data={filteredDues}
           tableClassName="dues-table"

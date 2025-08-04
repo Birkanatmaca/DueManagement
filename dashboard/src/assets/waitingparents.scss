@@ -1,0 +1,357 @@
+// WaitingParents sayfası için modern stiller
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.action-buttons .btn {
+  border: none;
+  border-radius: 12px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  min-width: 40px;
+  height: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons .btn-view {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.action-buttons .btn-view:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.action-buttons .btn-approve {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.action-buttons .btn-approve:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.action-buttons .btn-reject {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+}
+
+.action-buttons .btn-reject:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+// Status badge stilleri
+.status-badge {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.status-pending {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: white;
+  border: none;
+}
+
+.status-approved {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+}
+
+.status-rejected {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+}
+
+// Modal içindeki detay stilleri
+.detail-section {
+  margin-bottom: 32px;
+}
+
+.detail-section h3 {
+  color: #e2e8f0;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #475569;
+  padding-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 16px 20px;
+  background: #1e293b;
+  border-radius: 12px;
+  border-left: 4px solid #3b82f6;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.detail-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.detail-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 140px;
+  font-weight: 600;
+  color: #e2e8f0;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-label svg {
+  font-size: 18px;
+  color: #3b82f6;
+}
+
+.detail-value {
+  flex: 1;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.children-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.child-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: #1e293b;
+  border: 2px solid #475569;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.child-item:hover {
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.child-name {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.child-birth {
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.notes-content {
+  background: #1e293b;
+  padding: 20px;
+  border: 2px solid #475569;
+  border-radius: 12px;
+  color: #e2e8f0;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+// Responsive tasarım
+@media (max-width: 1024px) {
+  .action-buttons .btn {
+    min-width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+  
+  .detail-item {
+    padding: 14px 18px;
+  }
+  
+  .detail-label {
+    min-width: 120px;
+    font-size: 12px;
+  }
+  
+  .child-item {
+    padding: 14px 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .action-buttons {
+    gap: 6px;
+  }
+  
+  .action-buttons .btn {
+    min-width: 32px;
+    height: 32px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+  
+  .detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+  
+  .detail-label {
+    min-width: unset;
+    font-size: 11px;
+  }
+  
+  .child-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+  
+  .child-name {
+    font-size: 14px;
+  }
+  
+  .child-birth {
+    font-size: 12px;
+  }
+  
+  .notes-content {
+    padding: 16px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .action-buttons {
+    gap: 4px;
+  }
+  
+  .action-buttons .btn {
+    min-width: 28px;
+    height: 28px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+  
+  .status-badge {
+    padding: 4px 12px;
+    font-size: 10px;
+  }
+  
+  .detail-section h3 {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .detail-item {
+    padding: 10px 14px;
+    gap: 6px;
+  }
+  
+  .detail-label {
+    font-size: 10px;
+  }
+  
+  .detail-value {
+    font-size: 13px;
+  }
+  
+  .child-item {
+    padding: 10px 14px;
+    gap: 6px;
+  }
+  
+  .child-name {
+    font-size: 13px;
+  }
+  
+  .child-birth {
+    font-size: 11px;
+  }
+  
+  .notes-content {
+    padding: 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .action-buttons .btn {
+    min-width: 24px;
+    height: 24px;
+    font-size: 11px;
+    border-radius: 6px;
+  }
+  
+  .status-badge {
+    padding: 3px 8px;
+    font-size: 9px;
+  }
+  
+  .detail-section h3 {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  
+  .detail-item {
+    padding: 8px 12px;
+    gap: 4px;
+  }
+  
+  .detail-label {
+    font-size: 9px;
+  }
+  
+  .detail-value {
+    font-size: 12px;
+  }
+  
+  .child-item {
+    padding: 8px 12px;
+    gap: 4px;
+  }
+  
+  .child-name {
+    font-size: 12px;
+  }
+  
+  .child-birth {
+    font-size: 10px;
+  }
+  
+  .notes-content {
+    padding: 10px;
+    font-size: 11px;
+  }
+} 

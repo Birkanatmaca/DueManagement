@@ -5,11 +5,13 @@ import Register from './pages/Register/Register';
 import AdminDashboard from './pages/admin/Dashboard';
 import Athletes from './pages/admin/Athletes';
 import Parents from './pages/admin/Parents';
+import WaitingParents from './pages/admin/WaitingParents';
 import UserDashboard from './pages/user/Dashboard';
 import Information from './pages/user/Information';
 import ResetPassword from './pages/ResetPassword';
 import Dues from './pages/admin/Dues';
 import UserDues from './pages/user/Dues';
+import Footer from './component/Footer';
 
 // Private Route bileşeni
 const PrivateRoute = ({ children }) => {
@@ -52,6 +54,11 @@ function App() {
                   <Parents />
               </PrivateRoute>
           } />
+          <Route path="/admin/waiting-parents" element={
+              <PrivateRoute>
+                  <WaitingParents />
+              </PrivateRoute>
+          } />
           <Route path="/admin/dues" element={
               <PrivateRoute>
                   <Dues />
@@ -78,6 +85,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
+        <Footer />
       </Router>
     </div>
   );

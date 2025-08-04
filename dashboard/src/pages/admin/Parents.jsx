@@ -9,9 +9,6 @@ import { listParents, updateParent, listChildren, matchChildToParentAdmin, unmat
 import ParentDetailModal from '../../component/ParentDetailModal';
 import ParentEditModal from '../../component/ParentEditModal';
 
-// Yeni Parent modal bileşenleri
-// (Buradaki eski ParentDetailModal ve ParentEditModal tanımlarını kaldırıyorum)
-
 const Parents = () => {
   const [sidebarExpanded, setSidebarExpanded] = React.useState(true);
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 900);
@@ -32,7 +29,6 @@ const Parents = () => {
   const [parents, setParents] = useState([]);
   const [addModalOpen, setAddModalOpen] = useState(false);
 
-  // Tekrarlanan liste yenileme kodunu fonksiyona al
   const refreshParentsList = () => {
     const token = localStorage.getItem('token') || 'demo-token';
     listParents(token)
@@ -46,16 +42,13 @@ const Parents = () => {
             email: parent.email,
             child: parent.child_name || '',
             matched_child_count: parent.matched_child_count,
-            children: parent.children // getParentDetails ile gelirse
+            children: parent.children
           })));
         } else {
           setParents([]);
         }
       })
-      .catch(() => setParents([]))
-      .finally(() => {
-        // setLoading(false); // This line was removed as per the edit hint.
-      });
+      .catch(() => setParents([]));
   };
 
   React.useEffect(() => {
@@ -73,7 +66,6 @@ const Parents = () => {
 
   const handleEditSave = async (form, shouldRefresh = false) => {
     const token = localStorage.getItem('token') || 'demo-token';
-    // Find the parent being edited to get the id
     const editingParent = parents.find(p => p.email === form.email && p.name === form.name);
     if (!editingParent) return;
     const parent_id = editingParent.id;
@@ -81,14 +73,10 @@ const Parents = () => {
     const last_name = form.surname;
     const email = form.email;
     const phone = form.phone;
-    
-    // Şifre alanı boşsa undefined gönder (şifre değişmesin)
-    // Şifre alanı doluysa yeni şifreyi gönder
     const password = form.password && form.password.trim() !== '' ? form.password : undefined;
     
     await updateParent(token, parent_id, name, last_name, email, phone, password);
     
-    // Eğer çocuk eşleştirme işlemi yapıldıysa parent listesini yenile
     if (shouldRefresh) {
       refreshParentsList();
       setToastMsg('Veli bilgileri ve çocuk eşleştirmeleri başarıyla güncellendi.');
@@ -100,7 +88,6 @@ const Parents = () => {
     setToastOpen(true);
   };
 
-  // Veli ekle
   const handleAddSave = async (form) => {
     const token = localStorage.getItem('token') || 'demo-token';
     await addParent(token, form.name, form.surname, form.email, form.phone, form.password || '');
@@ -110,7 +97,6 @@ const Parents = () => {
     setToastOpen(true);
   };
 
-  // Veli sil
   const handleDeleteConfirm = async () => {
     if (!selectedParent) return;
     const token = localStorage.getItem('token') || 'demo-token';
@@ -142,10 +128,24 @@ const Parents = () => {
           marginTop: 64,
           padding: 24,
           transition: 'margin-left 0.2s',
+          backgroundColor: '#0f172a',
+          minHeight: '100vh',
         }}
       >
-        <h1 style={{ marginBottom: 32, textAlign: 'center', fontWeight: 700 }}>Veli Yönetimi</h1>
-        <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <h1 style={{ 
+          marginBottom: 32, 
+          textAlign: 'center', 
+          fontWeight: 700,
+          color: '#ffffff'
+        }}>
+          Veli Yönetimi
+        </h1>
+        <div style={{ 
+          marginBottom: 24, 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center'
+        }}>
           <input
             type="text"
             placeholder="Veli, öğrenci adı veya numarası ile ara..."
@@ -154,19 +154,24 @@ const Parents = () => {
             style={{
               padding: '10px 18px',
               borderRadius: 24,
-              border: '1.5px solid #d1d5db',
+              border: '1.5px solid #475569',
               width: 320,
-              fontSize: 16,
-              boxShadow: '0 2px 8px rgba(26,35,126,0.06)',
+              fontSize: 20,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
               outline: 'none',
               transition: 'border 0.2s, box-shadow 0.2s',
-              background: '#fafbff',
+              background: '#1e293b',
+              color: '#ffffff',
             }}
-            onFocus={e => e.target.style.border = '1.5px solid #1a237e'}
-            onBlur={e => e.target.style.border = '1.5px solid #d1d5db'}
+            onFocus={e => e.target.style.border = '1.5px solid #3b82f6'}
+            onBlur={e => e.target.style.border = '1.5px solid #475569'}
           />
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          marginBottom: 16
+        }}>
           <button
             style={{
               background: '#43a047',
@@ -188,24 +193,131 @@ const Parents = () => {
         <CrudTableCard
           title=""
           columns={[
-            { label: 'Veli Adı Soyadı', key: 'fullName', align: 'left', style: { flex: 1 }, render: (v, row) => `${row.name} ${row.surname}` },
-            { label: 'Çocukla Eşleşme Durumu', key: 'matchStatus', align: 'center', style: { flex: 1 }, render: (v, row) => {
-              // row.children getParentDetails ile geliyorsa onu kullan
-              const hasMatch = Array.isArray(row.children) ? row.children.length > 0 : Number(row.matched_child_count) > 0;
-              const iconSize = window.innerWidth > 700 ? 32 : 20;
-              if (hasMatch) {
-                return <span style={{ color: '#43a047', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><MdCheckCircle style={{ marginRight: 4 }} size={iconSize} /> </span>;
-              } else {
-                return <span style={{ color: '#e53935', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><MdCancel style={{ marginRight: 4 }} size={iconSize} /> </span>;
+            { 
+              label: 'Adı-Soyadı', 
+              key: 'fullName', 
+              align: 'left', 
+              style: { 
+                width: '40%',
+                minWidth: '150px'
+              }, 
+              render: (v, row) => (
+                <div style={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  fontSize: isMobile ? '13px' : '14px',
+                  fontWeight: '500'
+                }}>
+                  {`${row.name} ${row.surname}`}
+                </div>
+              )
+            },
+            { 
+              label: 'Eşleşme Durumu', 
+              key: 'matchStatus', 
+              align: 'center', 
+              style: { 
+                width: '30%',
+                minWidth: '120px'
+              }, 
+              render: (v, row) => {
+                const hasMatch = Array.isArray(row.children) ? row.children.length > 0 : Number(row.matched_child_count) > 0;
+                const iconSize = isMobile ? 20 : 24;
+                if (hasMatch) {
+                  return (
+                    <span style={{ 
+                      color: '#10b981', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center' 
+                    }}>
+                      <MdCheckCircle size={iconSize} />
+                    </span>
+                  );
+                } else {
+                  return (
+                    <span style={{ 
+                      color: '#ef4444', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center' 
+                    }}>
+                      <MdCancel size={iconSize} />
+                    </span>
+                  );
+                }
               }
-            } },
-            { label: 'İşlemler', key: 'actions', align: 'center', render: (_, row, { onView, onEdit, onDelete }) => (
-              <div style={{ display: 'flex', gap: isMobile ? 4 : 8, justifyContent: 'center' }}>
-                <button title="Görüntüle" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#1a237e' }} onClick={() => onView && onView(row)}><MdVisibility size={iconSize} /></button>
-                <button title="Düzenle" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#43a047' }} onClick={() => onEdit && onEdit(row)}><MdEdit size={iconSize} /></button>
-                <button title="Sil" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#e53935' }} onClick={() => onDelete && onDelete(row)}><MdDelete size={iconSize} /></button>
-              </div>
-            ) },
+            },
+            { 
+              label: 'İşlemler', 
+              key: 'actions', 
+              align: 'center',
+              style: {
+                width: '30%',
+                minWidth: '100px'
+              },
+              render: (_, row, { onView, onEdit, onDelete }) => (
+                <div style={{ 
+                  display: 'flex', 
+                  gap: isMobile ? 4 : 8, 
+                  justifyContent: 'center',
+                  flexWrap: 'nowrap'
+                }}>
+                  <button 
+                    title="Görüntüle" 
+                    style={{ 
+                      background: 'none', 
+                      border: 'none', 
+                      cursor: 'pointer', 
+                      color: '#3b82f6',
+                      padding: '4px',
+                      borderRadius: '6px',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={e => e.target.style.background = 'rgba(59, 130, 246, 0.1)'}
+                    onMouseLeave={e => e.target.style.background = 'none'}
+                    onClick={() => onView && onView(row)}
+                  >
+                    <MdVisibility size={iconSize} />
+                  </button>
+                  <button 
+                    title="Düzenle" 
+                    style={{ 
+                      background: 'none', 
+                      border: 'none', 
+                      cursor: 'pointer', 
+                      color: '#10b981',
+                      padding: '4px',
+                      borderRadius: '6px',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={e => e.target.style.background = 'rgba(16, 185, 129, 0.1)'}
+                    onMouseLeave={e => e.target.style.background = 'none'}
+                    onClick={() => onEdit && onEdit(row)}
+                  >
+                    <MdEdit size={iconSize} />
+                  </button>
+                  <button 
+                    title="Sil" 
+                    style={{ 
+                      background: 'none', 
+                      border: 'none', 
+                      cursor: 'pointer', 
+                      color: '#ef4444',
+                      padding: '4px',
+                      borderRadius: '6px',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={e => e.target.style.background = 'rgba(239, 68, 68, 0.1)'}
+                    onMouseLeave={e => e.target.style.background = 'none'}
+                    onClick={() => onDelete && onDelete(row)}
+                  >
+                    <MdDelete size={iconSize} />
+                  </button>
+                </div>
+              )
+            },
           ]}
           data={filteredParents}
           tableClassName="parents-table"
