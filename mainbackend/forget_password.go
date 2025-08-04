@@ -11,6 +11,9 @@ import (
 
 // Handle password reset request
 func requestPasswordResetHandler(jsonParsed *gabs.Container) string {
+	// Rate limiting is now handled in the HTTP handler
+	// This function no longer needs to check rate limits
+
 	email, err := jsonCheckerString(jsonParsed, "data.request.email")
 	if err != nil {
 		return clearerrorreturn("Email required")

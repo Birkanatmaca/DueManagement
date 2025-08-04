@@ -105,7 +105,7 @@ func InitMigrations() error {
 	if err != nil {
 		return fmt.Errorf("failed to create migration manager: %v", err)
 	}
-	defer manager.Close()
+	// defer manager.Close() // Bu satırı kaldırdık çünkü veritabanı bağlantısını kapatıyor
 
 	// Migration'ları çalıştır
 	if err := manager.RunMigrations(); err != nil {

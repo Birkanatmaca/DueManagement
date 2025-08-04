@@ -30,8 +30,15 @@ func initDB() {
 	// Initialize database connection
 	DB, err = sql.Open("postgres", connStr)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error opening database:", err)
 	}
+
+	// Test the connection
+	if err := DB.Ping(); err != nil {
+		log.Fatal("Error connecting to database:", err)
+	}
+
+	log.Println("Database connection established successfully")
 }
 
 // Database maintenance loop - runs every 3 minutes

@@ -27,6 +27,10 @@ func adminHandler(jsonParsed *gabs.Container) string {
 		return adminDueRouter(jsonParsed)
 	case "parent":
 		return adminParentRouter(jsonParsed)
+	// case "ban":
+	// 	return adminBanRouter(jsonParsed)
+	case "user_management":
+		return adminUserManagementRouter(jsonParsed)
 
 	default:
 		return clearerrorreturn("Unknown admin category")

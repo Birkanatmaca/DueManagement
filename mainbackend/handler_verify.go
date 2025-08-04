@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -10,6 +11,12 @@ import (
 
 // Handle email verification code
 func verifyCodeHandler(jsonParsed *gabs.Container, r *http.Request) string {
+	// Check if database connection is alive
+	if err := DB.Ping(); err != nil {
+		log.Println("Database connection error:", err)
+		return clearerrorreturn("Database connection error")
+	}
+
 	email, err := jsonCheckerString(jsonParsed, "data.request.email")
 	if err != nil {
 		return clearerrorreturn("Email required")
@@ -48,42 +55,22 @@ func verifyCodeHandler(jsonParsed *gabs.Container, r *http.Request) string {
 		return clearerrorreturn("Incorrect verification code")
 	}
 
-	// 3. Start transaction: move pending_users -> users, delete pending_users and code
-	tx, err := DB.Begin()
+	// 3. Mark user as verified but keep is_verified as false for admin approval
+	_, err = DB.Exec("UPDATE pending_users SET is_verified = false WHERE id = $1", pendingID)
 	if err != nil {
-		return clearerrorreturn("Internal server error")
+		return clearerrorreturn("Failed to update verification status")
 	}
 
-	var newUserID int
-	err = tx.QueryRow(
-		"INSERT INTO users (name, last_name, email, phone, password, is_verified) VALUES ($1, $2, $3, $4, $5, true) RETURNING id",
-		name, lastName, email, phone, password,
-	).Scan(&newUserID)
+	// Delete verification code
+	_, err = DB.Exec("DELETE FROM verification_codes WHERE user_id = $1", pendingID)
 	if err != nil {
-		tx.Rollback()
-		return clearerrorreturn("Failed to create user")
-	}
-
-	_, err = tx.Exec("DELETE FROM pending_users WHERE id = $1", pendingID)
-	if err != nil {
-		tx.Rollback()
-		return clearerrorreturn("Failed to remove pending user")
-	}
-
-	_, err = tx.Exec("DELETE FROM verification_codes WHERE user_id = $1", pendingID)
-	if err != nil {
-		tx.Rollback()
 		return clearerrorreturn("Failed to remove verification code")
-	}
-
-	if err := tx.Commit(); err != nil {
-		return clearerrorreturn("Internal server error")
 	}
 
 	HTTPResponse := gabs.New()
 	HTTPResponse.Set("OK", "data", "status")
 	HTTPResponse.Set("VerificationSuccess", "data", "type")
-	HTTPResponse.Set("Your account has been successfully verified.", "data", "message")
+	HTTPResponse.Set("Email verified successfully! Your account is pending admin approval. You will be notified when approved.", "data", "message")
 	return HTTPResponse.String()
 }
 
